@@ -1,0 +1,62 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-enforce-an-online-only-restriction-so-the-traffic-jam-game-cannot-be-played-without-an-active-internet-connection-offline-play-must-be-blocked",
+      "featureTitle": "Enforce an online-only restriction so the Traffic Jam game cannot be played without an active internet connection (offline play must be blocked).",
+      "files": [
+        "frontend/src/components/OnlineRequiredBlocker.tsx",
+        "frontend/src/game/TrafficJamGame.tsx",
+        "frontend/src/game/scene/TrafficJamScene.tsx",
+        "frontend/src/hooks/useOnlineStatus.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-10"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-modify-the-pwa-service-worker-behavior-to-prevent-the-app-game-from-functioning-offline-do-not-cache-game-assets-for-offline-use-while-still-allowing-a-dedicated-offline-page-to-appear-when-navigation-occurs-without-network-connectivity",
+      "featureTitle": "Modify the PWA service worker behavior to prevent the app/game from functioning offline (do not cache game assets for offline use), while still allowing a dedicated offline page to appear when navigation occurs without network connectivity.",
+      "files": [
+        "frontend/public/sw.js"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-11"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-in-app-help-about-content-to-explicitly-state-in-english-that-traffic-jam-requires-an-active-internet-connection-and-does-not-support-offline-play",
+      "featureTitle": "Update the in-app Help/About content to explicitly state (in English) that Traffic Jam requires an active internet connection and does not support offline play.",
+      "files": [
+        "frontend/src/components/AboutHelp.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-12"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

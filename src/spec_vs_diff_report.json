@@ -1,0 +1,19 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-05T17:59:23.723Z",
+  "summary": "All three requested frontend requirements appear to be implemented: gameplay is blocked when offline with a blocking overlay and resumes on reconnect (REQ-10), the service worker is adjusted to avoid caching game assets while still serving offline.html for navigation failures (REQ-11), and the Help/About content now explicitly states that an internet connection is required and offline play is not supported (REQ-12). No unrequested features are clearly introduced in the provided diff summary.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.78,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/public/sw.js",
+    "frontend/src/components/AboutHelp.tsx",
+    "frontend/src/components/OnlineRequiredBlocker.tsx",
+    "frontend/src/game/TrafficJamGame.tsx",
+    "frontend/src/game/scene/TrafficJamScene.tsx",
+    "frontend/src/hooks/useOnlineStatus.ts",
+    "project_state.json"
+  ]
+}

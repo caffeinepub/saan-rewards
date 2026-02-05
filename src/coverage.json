@@ -1,0 +1,70 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-05T17:59:23.725Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 3,
+    "implemented": 3,
+    "items": [
+      {
+        "id": "REQ-10",
+        "summary": "Enforce an online-only restriction so the Traffic Jam game cannot be played without an active internet connection (offline play must be blocked).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useOnlineStatus.ts",
+          "frontend/src/components/OnlineRequiredBlocker.tsx",
+          "frontend/src/game/TrafficJamGame.tsx",
+          "frontend/src/game/scene/TrafficJamScene.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useOnlineStatus.ts",
+          "frontend/src/components/OnlineRequiredBlocker.tsx",
+          "frontend/src/game/TrafficJamGame.tsx",
+          "frontend/src/game/scene/TrafficJamScene.tsx"
+        ]
+      },
+      {
+        "id": "REQ-11",
+        "summary": "Modify the PWA service worker behavior to prevent the app/game from functioning offline (do not cache game assets for offline use), while still allowing a dedicated offline page to appear when navigation occurs without network connectivity.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/sw.js"
+        ],
+        "matchedFiles": [
+          "frontend/public/sw.js"
+        ]
+      },
+      {
+        "id": "REQ-12",
+        "summary": "Update the in-app Help/About content to explicitly state (in English) that Traffic Jam requires an active internet connection and does not support offline play.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/AboutHelp.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/AboutHelp.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/public/sw.js",
+    "frontend/src/components/AboutHelp.tsx",
+    "frontend/src/components/OnlineRequiredBlocker.tsx",
+    "frontend/src/game/TrafficJamGame.tsx",
+    "frontend/src/game/scene/TrafficJamScene.tsx",
+    "frontend/src/hooks/useOnlineStatus.ts",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

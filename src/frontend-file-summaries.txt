@@ -1,0 +1,17 @@
+{
+  "frontend/src/App.tsx": "Main application component that renders the Traffic Jam 3D game with header, game content, help dialog, and footer.",
+  "frontend/src/components/AboutHelp.tsx": "Help and about component with game instructions for desktop/mobile controls, gameplay rules, internet connection requirement notice, and legal/asset information.",
+  "frontend/src/index.css": "Global styles with OKLCH color system using racing-themed red, black, and yellow palette.",
+  "frontend/index.html": "HTML entry point with Traffic Jam PWA metadata, theme colors, and icon references.",
+  "frontend/public/manifest.webmanifest": "PWA manifest with Traffic Jam branding, game category, and icon references for installation.",
+  "frontend/public/sw.js": "Service worker configured for online-only gameplay, caching only offline.html and icons while forcing network requests for all game assets to prevent offline play.",
+  "frontend/public/offline.html": "Offline fallback page with Traffic Jam branding and connection status monitoring.",
+  "frontend/tailwind.config.js": "Tailwind configuration with extended theme tokens matching the racing/traffic game color palette.",
+  "frontend/src/game/TrafficJamGame.tsx": "Main game component managing game state, score tracking, restart functionality, and online status integration with blocking overlay when offline.",
+  "frontend/src/game/scene/TrafficJamScene.tsx": "3D game scene using React Three Fiber with player car, procedural obstacles, collision detection, lane-based movement, and isBlocked prop to pause gameplay when offline.",
+  "frontend/src/game/controls/useGameControls.ts": "Custom hook managing unified game controls from keyboard (desktop) and touch inputs (mobile) with shared state.",
+  "frontend/src/game/controls/TouchControls.tsx": "On-screen touch control overlay with left/right steering buttons and brake button for mobile gameplay.",
+  "frontend/src/game/ui/GameHud.tsx": "In-game HUD displaying current score and game-over overlay with final score and restart button.",
+  "frontend/src/hooks/useOnlineStatus.ts": "Custom React hook that tracks device online/offline status using navigator.onLine and window events, exposing isOnline boolean and recheck function.",
+  "frontend/src/components/OnlineRequiredBlocker.tsx": "Full-screen blocking overlay component that displays when offline, showing a connection required message with retry button using shadcn Card components."
+}

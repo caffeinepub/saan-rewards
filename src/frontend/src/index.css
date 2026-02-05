@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.75rem;
+        /* Racing/traffic game theme - red, black, yellow accents */
+        --background: 0.98 0.01 0;
+        --foreground: 0.20 0.02 0;
+        --card: 1 0 0;
+        --card-foreground: 0.20 0.02 0;
+        --popover: 1 0 0;
+        --popover-foreground: 0.20 0.02 0;
+        /* Bright red primary (racing red) */
+        --primary: 0.55 0.24 25;
+        --primary-foreground: 0.98 0 0;
+        /* Dark gray secondary */
+        --secondary: 0.85 0.01 0;
+        --secondary-foreground: 0.20 0.02 0;
+        --muted: 0.92 0.01 0;
+        --muted-foreground: 0.50 0.02 0;
+        /* Yellow accent (traffic warning) */
+        --accent: 0.75 0.18 90;
+        --accent-foreground: 0.20 0.02 0;
+        --destructive: 0.50 0.22 25;
+        --destructive-foreground: 0.98 0 0;
+        --border: 0.88 0.01 0;
+        --input: 0.88 0.01 0;
+        --ring: 0.55 0.24 25;
+        --chart-1: 0.55 0.24 25;
+        --chart-2: 0.75 0.18 90;
+        --chart-3: 0.45 0.20 220;
+        --chart-4: 0.60 0.16 150;
+        --chart-5: 0.50 0.18 30;
+    }
+
+    .dark {
+        /* Dark mode: deep black with bright racing accents */
+        --background: 0.15 0.02 0;
+        --foreground: 0.95 0.01 0;
+        --card: 0.20 0.02 0;
+        --card-foreground: 0.95 0.01 0;
+        --popover: 0.18 0.02 0;
+        --popover-foreground: 0.95 0.01 0;
+        /* Brighter red for dark mode */
+        --primary: 0.60 0.26 25;
+        --primary-foreground: 0.98 0 0;
+        --secondary: 0.25 0.02 0;
+        --secondary-foreground: 0.95 0.01 0;
+        --muted: 0.28 0.02 0;
+        --muted-foreground: 0.60 0.02 0;
+        /* Bright yellow accent for dark */
+        --accent: 0.80 0.20 90;
+        --accent-foreground: 0.15 0.02 0;
+        --destructive: 0.55 0.24 25;
+        --destructive-foreground: 0.95 0 0;
+        --border: 0.28 0.02 0;
+        --input: 0.28 0.02 0;
+        --ring: 0.60 0.26 25;
+        --chart-1: 0.60 0.26 25;
+        --chart-2: 0.80 0.20 90;
+        --chart-3: 0.50 0.22 220;
+        --chart-4: 0.65 0.18 150;
+        --chart-5: 0.55 0.20 30;
+    }
+
+    * {
+        @apply border-border;
+    }
+    
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+}

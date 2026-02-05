@@ -1,0 +1,84 @@
+{
+  "kind": "build_request",
+  "title": "Require active internet connection (disable offline/public offline play)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-10",
+      "text": "Enforce an online-only restriction so the Traffic Jam game cannot be played without an active internet connection (offline play must be blocked).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "Aap ismein yah future shamil Karen ki yah online ke Bina isko Koi public khel na sake"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If the device is offline, the app does not allow starting or continuing gameplay and instead shows a blocking UI stating that an internet connection is required.",
+        "If the connection drops while the app is open, gameplay is immediately blocked and the user is prompted to reconnect.",
+        "When the connection is restored, the user can proceed back into the game without a full manual reset (e.g., a clear retry / continue action or auto-unblock)."
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "text": "Modify the PWA service worker behavior to prevent the app/game from functioning offline (do not cache game assets for offline use), while still allowing a dedicated offline page to appear when navigation occurs without network connectivity.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "online ke Bina ... khel na sake"
+        ]
+      },
+      "acceptanceCriteria": [
+        "When offline, navigation requests resolve to the existing offline page (offline.html).",
+        "When offline, game JS/assets are not served from cache in a way that enables gameplay.",
+        "After installing the PWA and loading the game once, turning on airplane mode prevents gameplay and shows the offline blocking experience (either the offline page on reload or the in-app blocker if already open)."
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "text": "Update the in-app Help/About content to explicitly state (in English) that Traffic Jam requires an active internet connection and does not support offline play.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-5"
+        ],
+        "quotes": [
+          "online ke Bina ... khel na sake"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The Help/About panel includes a clear English sentence indicating the game requires an internet connection and offline play is not available.",
+        "No non-English user-facing text is introduced for this change."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files under frontend/src/components/ui (read-only UI components must be composed, not edited).",
+    "Do not modify any files listed in frontend.immutablePaths.",
+    "Backend must remain a single Motoko actor; do not add additional backend services."
+  ],
+  "nonGoals": [
+    "Adding user accounts, Internet Identity login, or online leaderboards.",
+    "Implementing real-time multiplayer or chat.",
+    "Publishing an APK/AAB or Play Store submission work."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
+  }
+}

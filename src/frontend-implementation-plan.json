@@ -1,0 +1,69 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Traffic Jam online-only enforcement (block offline play + PWA no-offline caching)",
+  "requirements": [
+    {
+      "id": "REQ-10",
+      "summary": "Block gameplay whenever the device is offline, show a blocking UI, and auto/unblock or provide a clear continue action when connectivity returns.",
+      "acceptanceCriteria": [
+        "If the device is offline, the app does not allow starting or continuing gameplay and instead shows a blocking UI stating that an internet connection is required.",
+        "If the connection drops while the app is open, gameplay is immediately blocked and the user is prompted to reconnect.",
+        "When the connection is restored, the user can proceed back into the game without a full manual reset (e.g., a clear retry / continue action or auto-unblock)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useOnlineStatus.ts",
+          "operation": "create",
+          "description": "Create a small React hook that tracks online/offline state using navigator.onLine plus window 'online'/'offline' events, exposing a boolean and an optional 'recheck' helper for a retry button."
+        },
+        {
+          "path": "frontend/src/components/OnlineRequiredBlocker.tsx",
+          "operation": "create",
+          "description": "Add a full-screen blocking overlay component (composed from existing shadcn-ui primitives, do not edit frontend/src/components/ui) that explains an internet connection is required and includes a clear Retry/Continue action. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/TrafficJamGame.tsx",
+          "operation": "modify",
+          "description": "Integrate the online/offline hook and render the OnlineRequiredBlocker overlay when offline; ensure gameplay state can resume without resetting when connectivity returns (do not force restart unless the user explicitly chooses)."
+        },
+        {
+          "path": "frontend/src/game/scene/TrafficJamScene.tsx",
+          "operation": "modify",
+          "description": "Add an explicit 'paused/blocked' prop (driven by offline state) and ensure the 3D game loop (useFrame) does not advance score, movement, spawns, or collisions while blocked; preserve current positions so play can continue after reconnect."
+        }
+      ]
+    },
+    {
+      "id": "REQ-11",
+      "summary": "Adjust the PWA service worker so the game cannot function offline (no caching of game JS/assets), while still serving offline.html for offline navigation.",
+      "acceptanceCriteria": [
+        "When offline, navigation requests resolve to the existing offline page (offline.html).",
+        "When offline, game JS/assets are not served from cache in a way that enables gameplay.",
+        "After installing the PWA and loading the game once, turning on airplane mode prevents gameplay and shows the offline blocking experience (either the offline page on reload or the in-app blocker if already open)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/sw.js",
+          "operation": "modify",
+          "description": "Update caching strategy to keep only the dedicated offline fallback (frontend/public/offline.html) and minimal static assets (e.g., icons) cached; remove/avoid caching '/' and remove the runtime cache-put behavior for fetched assets so game JS/assets are not available from cache. Keep navigation handling so offline navigations resolve to offline.html."
+        }
+      ]
+    },
+    {
+      "id": "REQ-12",
+      "summary": "Update Help/About to clearly state in English that Traffic Jam requires an active internet connection and does not support offline play.",
+      "acceptanceCriteria": [
+        "The Help/About panel includes a clear English sentence indicating the game requires an internet connection and offline play is not available.",
+        "No non-English user-facing text is introduced for this change."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/AboutHelp.tsx",
+          "operation": "modify",
+          "description": "Add a concise English note in the Help/About content stating that an active internet connection is required and offline play is not supported; ensure all newly added user-facing text is English only."
+        }
+      ]
+    }
+  ]
+}
