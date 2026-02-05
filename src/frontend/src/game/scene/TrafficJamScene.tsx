@@ -1,15 +1,19 @@
-import { useRef, useMemo, useEffect } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { useRef, useEffect } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { OrthographicCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { GameState } from '../TrafficJamGame';
 import TouchControls from '../controls/TouchControls';
 import { useGameControls } from '../controls/useGameControls';
+import CanvasErrorBoundary from '../ui/CanvasErrorBoundary';
+import { Button } from '@/components/ui/button';
+import PlayerCarModel from './PlayerCarModel';
 
 interface TrafficJamSceneProps {
   gameState: GameState;
   onGameOver: () => void;
   onScoreUpdate: (score: number) => void;
+  onRetry: () => void;
   isBlocked?: boolean;
 }
 
@@ -17,11 +21,12 @@ interface Obstacle {
   id: number;
   x: number;
   z: number;
-  type: 'car' | 'barrier';
 }
 
-function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: TrafficJamSceneProps) {
-  const playerRef = useRef<THREE.Mesh>(null);
+function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: Omit<TrafficJamSceneProps, 'onRetry'>) {
+  const playerRef = useRef<THREE.Group>(null);
+  const leftPlantsRef = useRef<THREE.InstancedMesh>(null);
+  const rightPlantsRef = useRef<THREE.InstancedMesh>(null);
   const obstaclesRef = useRef<Obstacle[]>([]);
   const scoreRef = useRef(0);
   const speedRef = useRef(0.1);
@@ -29,22 +34,20 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
   const lastSpawnZ = useRef(-10);
   const controls = useGameControls();
 
-  // Load player car texture
-  const playerTexture = useLoader(THREE.TextureLoader, '/assets/generated/traffic-jam-player-car-texture.dim_1024x512.png');
-
-  // Player car dimensions
+  // Player car dimensions (for collision detection)
   const playerWidth = 0.8;
-  const playerHeight = 0.4;
   const playerDepth = 1.2;
-
-  // Lane positions
-  const lanes = [-2, 0, 2];
-  const playerLane = useRef(1); // Start in middle lane
 
   // Road dimensions
   const roadWidth = 7;
   const shoulderWidth = 1.5;
   const totalRoadWidth = roadWidth + shoulderWidth * 2;
+
+  // Single-road steering parameters
+  const lateralSpeed = 5; // Units per second for left/right movement
+  const drivableRoadWidth = roadWidth - 0.5; // Leave margin from curbs
+  const maxPlayerX = drivableRoadWidth / 2 - playerWidth / 2;
+  const minPlayerX = -maxPlayerX;
 
   // Initialize obstacles
   useEffect(() => {
@@ -52,59 +55,59 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
     scoreRef.current = 0;
     speedRef.current = 0.1;
     lastSpawnZ.current = -10;
-    playerLane.current = 1;
   }, []);
 
-  // Spawn obstacles
+  // Create roadside plants using instanced meshes for performance
+  const plantCount = 30;
+  
+  // Initialize instanced meshes
+  useEffect(() => {
+    if (!leftPlantsRef.current || !rightPlantsRef.current) return;
+
+    const plantSpacing = 2.5;
+    const dummy = new THREE.Object3D();
+
+    // Set up left side plants
+    for (let i = 0; i < plantCount; i++) {
+      const z = -i * plantSpacing + 5;
+      const xOffset = totalRoadWidth / 2 + 1.2 + Math.random() * 0.5;
+      const scale = 0.6 + Math.random() * 0.4;
+      
+      dummy.position.set(-xOffset, 0, z);
+      dummy.scale.set(scale, scale * (1.2 + Math.random() * 0.6), scale);
+      dummy.updateMatrix();
+      leftPlantsRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    leftPlantsRef.current.instanceMatrix.needsUpdate = true;
+
+    // Set up right side plants
+    for (let i = 0; i < plantCount; i++) {
+      const z = -i * plantSpacing + 5;
+      const xOffset = totalRoadWidth / 2 + 1.2 + Math.random() * 0.5;
+      const scale = 0.6 + Math.random() * 0.4;
+      
+      dummy.position.set(xOffset, 0, z);
+      dummy.scale.set(scale, scale * (1.2 + Math.random() * 0.6), scale);
+      dummy.updateMatrix();
+      rightPlantsRef.current.setMatrixAt(i, dummy.matrix);
+    }
+    rightPlantsRef.current.instanceMatrix.needsUpdate = true;
+  }, [plantCount, totalRoadWidth]);
+
+  // Spawn obstacles (barriers only, no cars)
   const spawnObstacle = () => {
     const z = lastSpawnZ.current - (8 + Math.random() * 4);
-    const laneIndex = Math.floor(Math.random() * lanes.length);
-    const type = Math.random() > 0.3 ? 'car' : 'barrier';
+    // Spawn obstacles randomly across the drivable road width
+    const x = (Math.random() - 0.5) * drivableRoadWidth;
     
     obstaclesRef.current.push({
       id: nextObstacleId.current++,
-      x: lanes[laneIndex],
+      x,
       z,
-      type,
     });
     
     lastSpawnZ.current = z;
   };
-
-  // Create roadside plants using instanced meshes for performance
-  const { leftPlants, rightPlants } = useMemo(() => {
-    const plantCount = 30;
-    const plantSpacing = 2.5;
-    const leftPlantPositions: THREE.Matrix4[] = [];
-    const rightPlantPositions: THREE.Matrix4[] = [];
-
-    for (let i = 0; i < plantCount; i++) {
-      const z = -i * plantSpacing + 5;
-      const xOffset = totalRoadWidth / 2 + 1.2 + Math.random() * 0.5;
-      
-      // Left side plants
-      const leftMatrix = new THREE.Matrix4();
-      const leftScale = 0.6 + Math.random() * 0.4;
-      leftMatrix.compose(
-        new THREE.Vector3(-xOffset, 0, z),
-        new THREE.Quaternion(),
-        new THREE.Vector3(leftScale, leftScale * (1.2 + Math.random() * 0.6), leftScale)
-      );
-      leftPlantPositions.push(leftMatrix);
-
-      // Right side plants
-      const rightMatrix = new THREE.Matrix4();
-      const rightScale = 0.6 + Math.random() * 0.4;
-      rightMatrix.compose(
-        new THREE.Vector3(xOffset, 0, z),
-        new THREE.Quaternion(),
-        new THREE.Vector3(rightScale, rightScale * (1.2 + Math.random() * 0.6), rightScale)
-      );
-      rightPlantPositions.push(rightMatrix);
-    }
-
-    return { leftPlants: leftPlantPositions, rightPlants: rightPlantPositions };
-  }, []);
 
   useFrame((state, delta) => {
     // Block gameplay if offline or game is over
@@ -117,29 +120,18 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
     // Gradually increase speed
     speedRef.current = Math.min(0.25, 0.1 + scoreRef.current * 0.0001);
 
-    // Handle player movement
-    const targetX = lanes[playerLane.current];
-    const currentX = playerRef.current.position.x;
-    const moveSpeed = 8 * delta;
-    
-    if (controls.left && playerLane.current > 0) {
-      if (Math.abs(currentX - targetX) < 0.1) {
-        playerLane.current--;
-      }
+    // Handle continuous lateral movement
+    let targetXDelta = 0;
+    if (controls.left) {
+      targetXDelta = -lateralSpeed * delta;
     }
-    if (controls.right && playerLane.current < lanes.length - 1) {
-      if (Math.abs(currentX - targetX) < 0.1) {
-        playerLane.current++;
-      }
+    if (controls.right) {
+      targetXDelta = lateralSpeed * delta;
     }
 
-    // Smooth lane transition
-    const newTargetX = lanes[playerLane.current];
-    if (Math.abs(currentX - newTargetX) > 0.05) {
-      playerRef.current.position.x += (newTargetX - currentX) * moveSpeed;
-    } else {
-      playerRef.current.position.x = newTargetX;
-    }
+    // Apply lateral movement with clamping to road boundaries
+    const newX = playerRef.current.position.x + targetXDelta;
+    playerRef.current.position.x = Math.max(minPlayerX, Math.min(maxPlayerX, newX));
 
     // Apply brake
     const currentSpeed = controls.brake ? speedRef.current * 0.5 : speedRef.current;
@@ -153,7 +145,7 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
         return false;
       }
 
-      // Collision detection
+      // Collision detection (using gameplay dimensions, not visual mesh)
       if (
         Math.abs(obstacle.z - 0) < (playerDepth / 2 + 1) &&
         Math.abs(obstacle.x - playerRef.current!.position.x) < (playerWidth / 2 + 0.6)
@@ -221,65 +213,67 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
         <meshStandardMaterial color="#cccccc" />
       </mesh>
 
-      {/* Lane markers */}
-      {[-1, 1].map((x, i) => (
-        <mesh key={i} position={[x, 0, -5]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[0.1, 40]} />
-          <meshStandardMaterial color="#ffcc00" />
-        </mesh>
-      ))}
-
       {/* Left side plants (instanced) */}
-      <instancedMesh args={[undefined, undefined, leftPlants.length]} castShadow>
+      <instancedMesh ref={leftPlantsRef} args={[undefined, undefined, plantCount]} castShadow>
         <coneGeometry args={[0.4, 1.5, 6]} />
         <meshStandardMaterial color="#1a4d1a" roughness={0.8} />
-        {leftPlants.map((matrix, i) => (
-          <primitive key={i} object={matrix} attach={`instanceMatrix-${i}`} />
-        ))}
       </instancedMesh>
 
       {/* Right side plants (instanced) */}
-      <instancedMesh args={[undefined, undefined, rightPlants.length]} castShadow>
+      <instancedMesh ref={rightPlantsRef} args={[undefined, undefined, plantCount]} castShadow>
         <coneGeometry args={[0.4, 1.5, 6]} />
         <meshStandardMaterial color="#1a4d1a" roughness={0.8} />
-        {rightPlants.map((matrix, i) => (
-          <primitive key={i} object={matrix} attach={`instanceMatrix-${i}`} />
-        ))}
       </instancedMesh>
 
-      {/* Player car with texture */}
-      <mesh ref={playerRef} position={[0, 0.2, 0]} castShadow>
-        <boxGeometry args={[playerWidth, playerHeight, playerDepth]} />
-        <meshStandardMaterial map={playerTexture} />
-      </mesh>
+      {/* Player car with realistic 3D model */}
+      <group ref={playerRef}>
+        <PlayerCarModel position={[0, 0, 0]} />
+      </group>
 
-      {/* Obstacles */}
+      {/* Obstacles (barriers only - no cars) */}
       {obstaclesRef.current.map((obstacle) => (
         <mesh
           key={obstacle.id}
-          position={[obstacle.x, obstacle.type === 'car' ? 0.2 : 0.3, obstacle.z]}
+          position={[obstacle.x, 0.3, obstacle.z]}
           castShadow
         >
-          {obstacle.type === 'car' ? (
-            <>
-              <boxGeometry args={[0.8, 0.4, 1.2]} />
-              <meshStandardMaterial color="#4444ff" />
-            </>
-          ) : (
-            <>
-              <boxGeometry args={[1.2, 0.6, 0.6]} />
-              <meshStandardMaterial color="#ff8800" />
-            </>
-          )}
+          <boxGeometry args={[1.2, 0.6, 0.6]} />
+          <meshStandardMaterial color="#ff8800" />
         </mesh>
       ))}
     </>
   );
 }
 
+// Check WebGL support
+function checkWebGLSupport(): boolean {
+  try {
+    const canvas = document.createElement('canvas');
+    return !!(
+      window.WebGLRenderingContext &&
+      (canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
+    );
+  } catch (e) {
+    return false;
+  }
+}
+
 export default function TrafficJamScene(props: TrafficJamSceneProps) {
+  const hasWebGL = checkWebGLSupport();
+
+  if (!hasWebGL) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="text-center p-6">
+          <p className="text-destructive font-semibold mb-4">WebGL is not supported on your device</p>
+          <Button onClick={props.onRetry}>Retry</Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
+    <CanvasErrorBoundary onRetry={props.onRetry}>
       <Canvas
         shadows
         className="w-full h-full"
@@ -291,6 +285,6 @@ export default function TrafficJamScene(props: TrafficJamSceneProps) {
       
       {/* Touch controls overlay */}
       <TouchControls />
-    </>
+    </CanvasErrorBoundary>
   );
 }

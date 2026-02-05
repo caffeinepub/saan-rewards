@@ -1,38 +1,74 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-05T18:56:37.297Z",
+  "generatedAt": "2026-02-05T19:54:40.972Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 3,
+    "implemented": 3,
     "items": [
       {
-        "id": "REQ-27",
-        "summary": "Make the mobile on-screen Left and Right buttons reliably steer the player car in-game by ensuring press-and-hold sets the shared control state and release/cancel always clears it, across mobile touch and pointer input.",
+        "id": "REQ-41",
+        "summary": "Improve the overall UI/UX presentation so the Traffic Jam PWA feels like a high-quality, Play Store–ready app, with consistent styling across the Start/Home screen, Help/About dialogs, Share/Install flows, and in-game HUD (while keeping all user-facing text in English).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/game/controls/TouchControls.tsx",
-          "frontend/src/game/TrafficJamGame.tsx"
+          "frontend/src/index.css",
+          "frontend/src/components/TjDialogContent.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/StartHomeScreen.tsx",
+          "frontend/src/components/AboutHelp.tsx",
+          "frontend/src/game/ui/GameHud.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/game/controls/TouchControls.tsx",
-          "frontend/src/game/TrafficJamGame.tsx"
+          "frontend/src/index.css",
+          "frontend/src/components/TjDialogContent.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/StartHomeScreen.tsx",
+          "frontend/src/components/AboutHelp.tsx",
+          "frontend/src/game/ui/GameHud.tsx"
         ]
       },
       {
-        "id": "REQ-28",
-        "summary": "Update the touch control event handling to use robust mobile-safe events (pointer events and/or touch start/end + touch cancel) for Left/Right (and Brake if present), without changing gameplay logic other than making the controls responsive.",
+        "id": "REQ-42",
+        "summary": "Upgrade visual styling of key interactive elements to feel production-quality: primary/secondary buttons (Play/Download/Share), touch control buttons, dialog surfaces, and HUD elements (score and game-over overlay), including improved states (hover/pressed/disabled/loading) and consistent shadows/borders.",
         "status": "implemented",
         "plannedFiles": [
+          "frontend/src/index.css",
+          "frontend/src/components/StartHomeScreen.tsx",
           "frontend/src/game/controls/TouchControls.tsx",
-          "frontend/src/game/controls/useGameControls.ts"
+          "frontend/src/game/ui/GameHud.tsx",
+          "frontend/src/components/OnlineRequiredBlocker.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/game/controls/TouchControls.tsx"
+          "frontend/src/index.css",
+          "frontend/src/components/StartHomeScreen.tsx",
+          "frontend/src/game/controls/TouchControls.tsx",
+          "frontend/src/game/ui/GameHud.tsx",
+          "frontend/src/components/OnlineRequiredBlocker.tsx"
+        ]
+      },
+      {
+        "id": "REQ-43",
+        "summary": "Add lightweight app-like motion polish (subtle transitions/animations) for screen and dialog interactions (e.g., opening Help/About, Share, Install instructions) and for game state overlays (game over / restart) without impacting game performance on mobile.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/index.css",
+          "frontend/src/components/TjDialogContent.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/StartHomeScreen.tsx",
+          "frontend/src/game/ui/GameHud.tsx",
+          "frontend/src/components/OnlineRequiredBlocker.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/index.css",
+          "frontend/src/components/TjDialogContent.tsx",
+          "frontend/src/App.tsx",
+          "frontend/src/components/StartHomeScreen.tsx",
+          "frontend/src/game/ui/GameHud.tsx",
+          "frontend/src/components/OnlineRequiredBlocker.tsx"
         ]
       }
     ]
@@ -42,8 +78,14 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/game/TrafficJamGame.tsx",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AboutHelp.tsx",
+    "frontend/src/components/OnlineRequiredBlocker.tsx",
+    "frontend/src/components/StartHomeScreen.tsx",
+    "frontend/src/components/TjDialogContent.tsx",
     "frontend/src/game/controls/TouchControls.tsx",
+    "frontend/src/game/ui/GameHud.tsx",
+    "frontend/src/index.css",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

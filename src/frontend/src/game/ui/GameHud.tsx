@@ -12,10 +12,10 @@ export default function GameHud({ score, gameState, onRestart }: GameHudProps) {
   return (
     <>
       {/* Score display */}
-      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 pointer-events-none">
-        <div className="bg-card/80 backdrop-blur-sm rounded-lg px-6 py-3 shadow-lg border border-border">
+      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 pointer-events-none z-10">
+        <div className="tj-hud-chip">
           <div className="text-center">
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">Score</p>
+            <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Score</p>
             <p className="text-3xl font-bold text-foreground tabular-nums">{score}</p>
           </div>
         </div>
@@ -23,24 +23,24 @@ export default function GameHud({ score, gameState, onRestart }: GameHudProps) {
 
       {/* Game Over overlay */}
       {gameState === 'gameOver' && (
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center animate-in fade-in duration-300">
-          <div className="bg-card rounded-2xl shadow-2xl border border-border p-8 max-w-sm w-full mx-4 animate-in zoom-in-95 duration-300">
+        <div className="absolute inset-0 tj-game-overlay flex items-center justify-center z-50 tj-overlay-enter">
+          <div className="tj-surface-elevated rounded-2xl p-8 max-w-sm w-full mx-4 tj-gameover-enter">
             <div className="text-center space-y-6">
-              <div className="text-6xl">💥</div>
+              <div className="text-6xl animate-bounce">💥</div>
               <div>
                 <h2 className="text-3xl font-bold text-foreground mb-2">Game Over!</h2>
-                <p className="text-muted-foreground">You crashed into traffic</p>
+                <p className="text-muted-foreground text-base">You crashed into traffic</p>
               </div>
               
-              <div className="bg-accent/10 rounded-lg p-4 border border-accent/20">
-                <p className="text-sm text-muted-foreground mb-1">Final Score</p>
-                <p className="text-4xl font-bold text-primary tabular-nums">{score}</p>
+              <div className="bg-accent/10 rounded-xl p-5 border-2 border-accent/30 shadow-inner">
+                <p className="text-sm text-muted-foreground mb-1 font-semibold uppercase tracking-wide">Final Score</p>
+                <p className="text-5xl font-bold text-primary tabular-nums">{score}</p>
               </div>
 
               <Button
                 size="lg"
                 onClick={onRestart}
-                className="w-full text-lg h-14 shadow-md hover:shadow-lg transition-all"
+                className="w-full text-lg h-14 font-bold tj-btn-primary tj-interactive tj-focus-ring"
               >
                 <RotateCcw className="mr-2 h-5 w-5" />
                 Play Again

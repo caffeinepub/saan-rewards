@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 23,
+  "projectStateVersion": 35,
   "summary": "Shift project scope to a legal, browser-based (online) 3D car racing/traffic-jam game with a single vehicle, with an aim to publish on the Google Play Store.",
   "architectural_notes": [
     "Game scope: single vehicle only (legal constraint).",
@@ -8,12 +8,20 @@
     "Compliance requirement: keep implementation and monetization approach fully legal/Play-policy compliant.",
     "Gameplay access policy: enforce online-only play (block offline usage even if installed as a PWA).",
     "Do not share or distribute any Caffeine preview/admin URLs containing #caffeineAdminToken; use a public production URL or a token-free share link for users.",
-    "Support mobile touch UI controls: on-screen Left/Right buttons to steer the single player vehicle."
+    "Support mobile touch UI controls: on-screen Left/Right buttons to steer the single player vehicle.",
+    "Ensure mobile-first responsive layout: game canvas should occupy visible viewport and controls must not push gameplay off-screen; avoid scroll/zoom dependence by anchoring HUD and sizing canvas appropriately.",
+    "Gameplay constraint: only the player vehicle should exist in the scene; no AI/traffic vehicles ahead/behind.",
+    "Track layout constraint: create exactly one road/track path for the single player vehicle (avoid multiple parallel roads/lanes).",
+    "Quality/polish goal: make the experience feel like a Play Store–ready app (high-quality, app-like UI/UX and visuals)."
   ],
   "known_issues": [
     "User shared a Caffeine URL containing #caffeineAdminToken (sensitive). Must rotate/revoke token and provide a public/token-free link before sharing.",
     "Caffeine build/deploy failed due to an internal configuration issue; may require Caffeine team support to resolve.",
-    "Download/Install (\"Downloading\") flow is currently not working correctly; user reports downloads are failing and wants it to work when shared with friends."
+    "Download/Install (\"Downloading\") flow is currently not working correctly; user reports downloads are failing and wants it to work when shared with friends.",
+    "On mobile, only the top control buttons are visible; the road/track and car are not visible without scrolling/zooming (layout/viewport/camera framing issue).",
+    "User reports other cars/vehicles are appearing ahead/behind; needs to be removed so only the single player vehicle is present.",
+    "Player car model/texture is facing the wrong direction (orientation flipped from intended).",
+    "Road/track currently appears as multiple (three) roads/lanes; must be simplified to a single road/track."
   ],
   "isFixRequest": false,
   "existing_features": [
@@ -240,6 +248,126 @@
         "REQ-28"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-fix-the-mobile-game-layout-so-the-3d-game-view-road-track-and-player-car-is-always-visible-without-requiring-the-user-to-scroll-or-zoom-even-when-the-on-screen-control-buttons-left-brake-right-are-shown",
+      "title": "Fix the mobile game layout so the 3D game view (road/track and player car) is always visible without requiring the user to scroll or zoom, even when the on-screen control buttons (Left/Brake/Right) are shown.",
+      "reqIds": [
+        "REQ-29"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-adjust-the-in-game-camera-framing-start-of-game-and-during-normal-play-so-the-player-car-and-a-meaningful-section-of-the-road-ahead-are-clearly-visible-on-mobile-in-portrait-orientation",
+      "title": "Adjust the in-game camera framing (start-of-game and during normal play) so the player car and a meaningful section of the road ahead are clearly visible on mobile in portrait orientation.",
+      "reqIds": [
+        "REQ-30"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-road-track-environment-includes-clearly-visible-greenery-plant-decoration-along-both-the-left-and-right-sides-of-the-road-throughout-the-forward-direction-of-travel-and-confirm-plants-do-not-block-lanes-or-create-unintended-collisions",
+      "title": "Ensure the road/track environment includes clearly visible greenery/plant decoration along both the left and right sides of the road throughout the forward direction of travel, and confirm plants do not block lanes or create unintended collisions.",
+      "reqIds": [
+        "REQ-31"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-simple-in-game-visual-driving-demonstration-so-the-user-can-immediately-understand-how-the-car-moves-on-the-road-e-g-a-brief-automatic-forward-roll-and-or-slight-left-right-preview-at-the-beginning-with-english-user-facing-text-if-any-labels-are-shown",
+      "title": "Add a simple in-game visual driving demonstration so the user can immediately understand how the car moves on the road (e.g., a brief automatic forward roll and/or slight left-right preview at the beginning), with English user-facing text if any labels are shown.",
+      "reqIds": [
+        "REQ-32"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-game-viewport-layout-so-the-3d-canvas-always-has-a-non-zero-height-and-is-fully-visible-on-mobile-without-scrolling-including-when-the-on-screen-touch-controls-are-shown",
+      "title": "Fix the game viewport/layout so the 3D Canvas always has a non-zero height and is fully visible on mobile without scrolling, including when the on-screen touch controls are shown.",
+      "reqIds": [
+        "REQ-33"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-any-react-three-fiber-scene-issues-that-can-prevent-rendering-including-incorrect-instanced-mesh-usage-for-roadside-plants-so-the-scene-reliably-renders-without-runtime-errors",
+      "title": "Fix any React Three Fiber scene issues that can prevent rendering (including incorrect instanced-mesh usage for roadside plants) so the scene reliably renders without runtime errors.",
+      "reqIds": [
+        "REQ-34"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-user-facing-fallback-when-the-3d-scene-cannot-render-e-g-webgl-unavailable-or-scene-initialization-error-using-english-text-and-providing-a-clear-retry-action",
+      "title": "Add a user-facing fallback when the 3D scene cannot render (e.g., WebGL unavailable or scene initialization error), using English text and providing a clear retry action.",
+      "reqIds": [
+        "REQ-35"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-traffic-jam-gameplay-scene-so-that-no-other-vehicles-cars-appear-ahead-of-or-behind-the-player-at-any-time-the-only-car-in-the-scene-must-be-the-player-s-car-if-obstacles-remain-they-must-be-non-vehicle-objects-e-g-barriers-and-must-not-be-visually-represented-as-cars",
+      "title": "Update the Traffic Jam gameplay scene so that no other vehicles/cars appear ahead of or behind the player at any time; the only car in the scene must be the player’s car. If obstacles remain, they must be non-vehicle objects (e.g., barriers) and must not be visually represented as cars.",
+      "reqIds": [
+        "REQ-36"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-in-game-player-vehicle-rendering-so-the-player-car-looks-like-a-real-3d-car-e-g-distinct-body-cabin-wheels-instead-of-appearing-like-a-flat-image-texture-on-a-simple-box-while-keeping-all-gameplay-logic-controls-lane-movement-collisions-scoring-speed-unchanged",
+      "title": "Update the in-game player vehicle rendering so the player car looks like a real 3D car (e.g., distinct body + cabin + wheels), instead of appearing like a flat image/texture on a simple box, while keeping all gameplay logic (controls, lane movement, collisions, scoring, speed) unchanged.",
+      "reqIds": [
+        "REQ-37"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-player-car-s-facing-orientation-so-the-car-front-mouth-points-to-the-intended-forward-driving-direction-in-the-3d-scene-correct-the-current-flipped-direction-without-changing-the-car-s-geometry-details",
+      "title": "Fix the player car’s facing/orientation so the car front (“mouth”) points to the intended forward driving direction in the 3D scene (correct the current flipped direction) without changing the car’s geometry details.",
+      "reqIds": [
+        "REQ-38"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-change-the-traffic-jam-track-road-gameplay-from-a-3-lane-setup-to-a-single-road-path-remove-the-three-lane-logic-markers-and-ensure-the-car-drives-on-only-one-road-no-multiple-parallel-roads-lanes",
+      "title": "Change the Traffic Jam track/road gameplay from a 3-lane setup to a single-road path: remove the three-lane logic/markers and ensure the car drives on only one road (no multiple parallel roads/lanes).",
+      "reqIds": [
+        "REQ-39"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-player-steering-behavior-to-work-correctly-with-the-single-road-track-left-right-controls-should-move-the-car-within-the-single-road-boundaries-clamped-rather-than-lane-switching-across-multiple-lanes",
+      "title": "Update player steering behavior to work correctly with the single-road track: Left/Right controls should move the car within the single road boundaries (clamped), rather than lane-switching across multiple lanes.",
+      "reqIds": [
+        "REQ-40"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-the-overall-ui-ux-presentation-so-the-traffic-jam-pwa-feels-like-a-high-quality-play-store-ready-app-with-consistent-styling-across-the-start-home-screen-help-about-dialogs-share-install-flows-and-in-game-hud-while-keeping-all-user-facing-text-in-english",
+      "title": "Improve the overall UI/UX presentation so the Traffic Jam PWA feels like a high-quality, Play Store–ready app, with consistent styling across the Start/Home screen, Help/About dialogs, Share/Install flows, and in-game HUD (while keeping all user-facing text in English).",
+      "reqIds": [
+        "REQ-41"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-upgrade-visual-styling-of-key-interactive-elements-to-feel-production-quality-primary-secondary-buttons-play-download-share-touch-control-buttons-dialog-surfaces-and-hud-elements-score-and-game-over-overlay-including-improved-states-hover-pressed-disabled-loading-and-consistent-shadows-borders",
+      "title": "Upgrade visual styling of key interactive elements to feel production-quality: primary/secondary buttons (Play/Download/Share), touch control buttons, dialog surfaces, and HUD elements (score and game-over overlay), including improved states (hover/pressed/disabled/loading) and consistent shadows/borders.",
+      "reqIds": [
+        "REQ-42"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-lightweight-app-like-motion-polish-subtle-transitions-animations-for-screen-and-dialog-interactions-e-g-opening-help-about-share-install-instructions-and-for-game-state-overlays-game-over-restart-without-impacting-game-performance-on-mobile",
+      "title": "Add lightweight app-like motion polish (subtle transitions/animations) for screen and dialog interactions (e.g., opening Help/About, Share, Install instructions) and for game state overlays (game over / restart) without impacting game performance on mobile.",
+      "reqIds": [
+        "REQ-43"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -288,6 +416,48 @@
     {
       "id": "AR-8",
       "summary": "Add mobile on-screen Left/Right buttons to control the player car (touch controls mapped to steering).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Fix the game screen layout/camera so the road/track and player car are always visible on mobile (not hidden below the on-screen buttons); ensure the canvas/viewport fits correctly without requiring scroll/zoom.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add a simple in-game visual guidance/demo so the user can clearly see how the car drives on the track (e.g., start-of-game camera framing and/or brief auto-move/preview), without changing the single-vehicle gameplay rules.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Remove all other vehicles/traffic cars so only the single player car is present (no cars ahead or behind).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Replace the current player car that looks like a flat image/texture with a more realistic 3D car model/mesh (make the car look ‘real’).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Fix the player car orientation/facing direction (car ‘mouth/front’ should face the intended side; current edit flipped it incorrectly).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-14",
+      "summary": "Change the environment/track so there is only one road/track path for the car (not three roads/lanes); the car should drive only on that single road.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Improve overall app/game presentation to look high-quality and Play Store–ready (app-like UI/UX polish, production-quality visuals and layout).",
       "reqIds": [],
       "status": "pending"
     }

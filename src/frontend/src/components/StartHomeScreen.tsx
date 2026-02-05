@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Play, Share2, Download, Info, Copy, Check, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Card, CardContent } from '@/components/ui/card';
+import { Dialog, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { TjDialogContent } from '@/components/TjDialogContent';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
 import { usePwaInstall } from '@/hooks/usePwaInstall';
@@ -84,11 +85,11 @@ export default function StartHomeScreen({ onPlay }: StartHomeScreenProps) {
   const isInstalling = installFlowStatus === 'prompting';
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 p-4">
-      <Card className="w-full max-w-md shadow-2xl border-2 overflow-hidden">
-        <CardHeader className="text-center space-y-4 pb-4 relative">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 p-4 safe-top safe-bottom">
+      <Card className="w-full max-w-md tj-surface-elevated overflow-hidden">
+        <div className="relative">
           {/* Hero Image with Title Overlay */}
-          <div className="relative -mx-6 -mt-6 mb-4">
+          <div className="relative -mx-6 -mt-6">
             <div className="relative w-full aspect-[4/5] max-h-[400px] overflow-hidden">
               <img 
                 src="/assets/generated/traffic-jam-hero.dim_1080x1350.png" 
@@ -96,27 +97,27 @@ export default function StartHomeScreen({ onPlay }: StartHomeScreenProps) {
                 className="w-full h-full object-cover"
               />
               {/* Gradient overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
               
               {/* Title overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
                 <h1 className="text-5xl font-bold text-white drop-shadow-2xl mb-2">
                   Traffic Jam
                 </h1>
-                <p className="text-white/90 text-base drop-shadow-lg">
+                <p className="text-white/95 text-base drop-shadow-lg font-medium">
                   Navigate through traffic and survive as long as you can!
                 </p>
               </div>
             </div>
           </div>
-        </CardHeader>
+        </div>
 
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-4 pt-6">
           {/* Primary Play Button */}
           <Button
             onClick={onPlay}
             size="lg"
-            className="w-full text-lg h-14 font-bold shadow-lg hover:shadow-xl transition-all"
+            className="w-full text-lg h-14 font-bold tj-btn-primary tj-interactive tj-focus-ring"
           >
             <Play className="mr-2 h-6 w-6" />
             Play Now
@@ -128,7 +129,7 @@ export default function StartHomeScreen({ onPlay }: StartHomeScreenProps) {
               onClick={handleInstall}
               variant="outline"
               size="lg"
-              className="h-12"
+              className="h-12 tj-btn-secondary tj-interactive tj-focus-ring"
               disabled={isInstalled || isInstalling}
             >
               {isInstalling ? (
@@ -148,7 +149,7 @@ export default function StartHomeScreen({ onPlay }: StartHomeScreenProps) {
               onClick={handleShare}
               variant="outline"
               size="lg"
-              className="h-12"
+              className="h-12 tj-btn-secondary tj-interactive tj-focus-ring"
             >
               <Share2 className="mr-2 h-5 w-5" />
               Share
@@ -167,7 +168,7 @@ export default function StartHomeScreen({ onPlay }: StartHomeScreenProps) {
 
       {/* Install Instructions Dialog */}
       <Dialog open={showInstallDialog} onOpenChange={setShowInstallDialog}>
-        <DialogContent className="max-w-md">
+        <TjDialogContent>
           <DialogHeader>
             <DialogTitle>How to Install</DialogTitle>
             <DialogDescription>
@@ -194,17 +195,17 @@ export default function StartHomeScreen({ onPlay }: StartHomeScreenProps) {
             <Button 
               onClick={() => setShowInstallDialog(false)} 
               variant="outline" 
-              className="w-full"
+              className="w-full tj-btn-secondary tj-interactive tj-focus-ring"
             >
               Close
             </Button>
           </div>
-        </DialogContent>
+        </TjDialogContent>
       </Dialog>
 
       {/* Share Link Dialog */}
       <Dialog open={showShareDialog} onOpenChange={setShowShareDialog}>
-        <DialogContent className="max-w-md">
+        <TjDialogContent>
           <DialogHeader>
             <DialogTitle>Share Traffic Jam</DialogTitle>
             <DialogDescription>
@@ -240,13 +241,14 @@ export default function StartHomeScreen({ onPlay }: StartHomeScreenProps) {
                   <Input 
                     value={getSanitizedShareUrl()} 
                     readOnly 
-                    className="flex-1 text-sm"
+                    className="flex-1 text-sm tj-focus-ring"
                     onClick={(e) => (e.target as HTMLInputElement).select()}
                   />
                   <Button 
                     onClick={handleManualCopy}
                     variant="outline"
                     size="icon"
+                    className="tj-interactive-pressed tj-focus-ring"
                   >
                     <Copy className="h-4 w-4" />
                   </Button>
@@ -280,12 +282,12 @@ export default function StartHomeScreen({ onPlay }: StartHomeScreenProps) {
                 setShowManualCopy(false);
               }}
               variant="outline"
-              className="w-full"
+              className="w-full tj-btn-secondary tj-interactive tj-focus-ring"
             >
               Close
             </Button>
           </div>
-        </DialogContent>
+        </TjDialogContent>
       </Dialog>
     </div>
   );

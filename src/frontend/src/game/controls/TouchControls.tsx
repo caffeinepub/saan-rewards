@@ -105,14 +105,14 @@ export default function TouchControls() {
   };
 
   return (
-    <div className="absolute bottom-20 left-0 right-0 flex justify-center items-end gap-4 px-4 pointer-events-none md:hidden touch-none select-none">
+    <div className="absolute bottom-20 left-0 right-0 flex justify-center items-end gap-4 px-4 pointer-events-none md:hidden touch-none select-none z-20 safe-bottom">
       <div className="flex gap-3 pointer-events-auto">
         {/* Left button */}
         <Button
           ref={leftButtonRef}
           size="lg"
           variant="secondary"
-          className="h-16 w-16 rounded-full shadow-lg active:scale-95 transition-transform touch-none select-none"
+          className="h-16 w-16 rounded-full tj-touch-control touch-none select-none"
           onPointerDown={handleLeftPointerDown}
           onPointerUp={handleLeftPointerUp}
           onPointerCancel={handleLeftPointerCancel}
@@ -126,7 +126,7 @@ export default function TouchControls() {
           ref={brakeButtonRef}
           size="lg"
           variant="destructive"
-          className="h-16 w-20 rounded-full shadow-lg active:scale-95 transition-transform font-bold touch-none select-none"
+          className="h-16 w-20 rounded-full tj-touch-control font-bold text-base touch-none select-none"
           onPointerDown={handleBrakePointerDown}
           onPointerUp={handleBrakePointerUp}
           onPointerCancel={handleBrakePointerCancel}
@@ -140,7 +140,7 @@ export default function TouchControls() {
           ref={rightButtonRef}
           size="lg"
           variant="secondary"
-          className="h-16 w-16 rounded-full shadow-lg active:scale-95 transition-transform touch-none select-none"
+          className="h-16 w-16 rounded-full tj-touch-control touch-none select-none"
           onPointerDown={handleRightPointerDown}
           onPointerUp={handleRightPointerUp}
           onPointerCancel={handleRightPointerCancel}

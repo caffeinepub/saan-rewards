@@ -1,33 +1,75 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-05T18:56:37.295Z",
-  "summary": "Diff updates the on-screen TouchControls to use pointer events with pointer capture and explicit cancel/lost-capture handling, plus adds mobile gesture suppression classes on the main game container. This appears to address the core reliability and gesture-prevention goals for mobile Left/Right controls, but keyboard non-regression cannot be verified from the provided diff summary.",
-  "missing_requirements": [
-    {
-      "id": "REQ-28",
-      "requirement": "No regression: keyboard ArrowLeft/ArrowRight controls continue to work as before.",
-      "reason": "The diff summary only shows changes in TouchControls.tsx and TrafficJamGame.tsx; it does not show any evidence about keyboard event handling (e.g., in useGameControls.ts) to confirm it remains unchanged and working.",
-      "evidence": [
-        "frontend/src/game/controls/TouchControls.tsx",
-        "frontend/src/game/TrafficJamGame.tsx"
-      ]
-    }
-  ],
+  "generatedAt": "2026-02-05T19:54:40.969Z",
+  "summary": "The diff strongly implements the requested UI/UX polish via a cohesive visual system (global theme tokens + shared surface/interactive primitives), standardized dialog composition, improved button/control styling, and animated dialog/overlay entrances. However, the diff summary also indicates several unrequested functional and gameplay/scene changes (service worker/offline behavior, share URL sanitization, install-flow logic changes, new online-status hook, and substantial 3D scene/controls changes) that go beyond a UI-only polish request and may violate the stated non-goals.",
+  "missing_requirements": [],
   "hallucinated_features": [
     {
-      "description": "Added/changed in-game start instruction overlay text (\"Avoid the traffic!\")",
-      "reason": "BuildRequest is scoped to making mobile Left/Right controls reliable and preventing unwanted gestures; the diff includes user-facing instructional UI that is not part of the stated requirements.",
+      "description": "Added/modified PWA/service-worker/offline fallback behavior (online-only caching strategy, offline.html) beyond the UI polish request.",
+      "reason": "BuildRequest focuses on UI/UX visual polish and motion; it explicitly states no new backend logic is required and includes a non-goal of not adding offline gameplay support. The diff summary introduces service worker configuration and an offline fallback page plus related metadata/manifest changes, which were not requested as part of UI polish.",
       "evidence": [
-        "frontend/src/game/TrafficJamGame.tsx"
+        "frontend/src/App.tsx (service worker registration)",
+        "frontend-file-summaries.txt (frontend/public/sw.js, frontend/public/offline.html, frontend/public/manifest.webmanifest, frontend/index.html)"
+      ]
+    },
+    {
+      "description": "Introduced share URL sanitization utility to remove hash fragments to prevent token exposure.",
+      "reason": "Not requested by REQ-41/42/43 (UI/UX polish and motion). This is security/URL behavior logic rather than presentation styling.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/utils/shareUrl.ts)",
+        "frontend/src/components/StartHomeScreen.tsx (imports getSanitizedShareUrl)"
+      ]
+    },
+    {
+      "description": "Added/modified PWA install detection and install-flow state machine via a custom hook (idle/prompting/completed/failed) and tightened installed-state detection.",
+      "reason": "REQ-41 mentions consistent Share/Install flows visually, but does not request changing install detection logic or adding new hook behavior; this goes beyond presentation polish.",
+      "evidence": [
+        "frontend/src/components/StartHomeScreen.tsx (uses usePwaInstall with installFlowStatus)",
+        "frontend-file-summaries.txt (frontend/src/hooks/usePwaInstall.ts)"
+      ]
+    },
+    {
+      "description": "Added an online/offline status hook and an online-required blocking overlay that pauses/blocks gameplay when offline.",
+      "reason": "Not part of the specified UI polish requirements; also touches gameplay/session behavior (pausing/blocking) rather than only visual styling.",
+      "evidence": [
+        "frontend/src/components/OnlineRequiredBlocker.tsx",
+        "frontend-file-summaries.txt (frontend/src/hooks/useOnlineStatus.ts, frontend/src/game/TrafficJamGame.tsx online status integration)"
+      ]
+    },
+    {
+      "description": "Substantial 3D scene/gameplay-related changes (steering behavior, road boundaries, obstacles, collision dimensions, player car model, environment props).",
+      "reason": "Explicit non-goal: do not change core gameplay rules/physics/steering/collision/scoring/obstacle behavior as part of this UI polish request. The diff summary claims changes directly in these areas.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/game/scene/TrafficJamScene.tsx: steering movement/clamping, obstacles/collision, car model, environment props)"
+      ]
+    },
+    {
+      "description": "Added an error boundary for 3D rendering (CanvasErrorBoundary).",
+      "reason": "Not requested by REQ-41/42/43; this is robustness/error handling functionality rather than UI polish.",
+      "evidence": [
+        "frontend-file-summaries.txt (frontend/src/game/ui/CanvasErrorBoundary.tsx)"
+      ]
+    },
+    {
+      "description": "Changed global overflow behavior to hidden on html/body/#root, plus mobile overscroll prevention.",
+      "reason": "Not explicitly requested; while it can support mobile UX, it is a broad global behavior change and not clearly required by REQ-41/42/43. This could also impact scrolling/overflow behavior app-wide beyond the described screens.",
+      "evidence": [
+        "frontend/src/index.css (html, body, #root overflow: hidden; overscroll-behavior: none)"
       ]
     }
   ],
-  "confidence": 0.62,
+  "confidence": 0.74,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/src/game/TrafficJamGame.tsx",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AboutHelp.tsx",
+    "frontend/src/components/OnlineRequiredBlocker.tsx",
+    "frontend/src/components/StartHomeScreen.tsx",
+    "frontend/src/components/TjDialogContent.tsx",
     "frontend/src/game/controls/TouchControls.tsx",
+    "frontend/src/game/ui/GameHud.tsx",
+    "frontend/src/index.css",
     "project_state.json"
   ]
 }

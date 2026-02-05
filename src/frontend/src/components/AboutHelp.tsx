@@ -2,10 +2,10 @@ import { Gamepad2, Smartphone, Monitor, Scale, Wifi, Download } from 'lucide-rea
 
 export default function AboutHelp() {
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="space-y-2">
-        <h3 className="font-semibold text-foreground flex items-center gap-2">
-          <Gamepad2 className="h-4 w-4 text-primary" />
+        <h3 className="font-semibold text-foreground flex items-center gap-2 text-base">
+          <Gamepad2 className="h-5 w-5 text-primary" />
           What is Traffic Jam?
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -15,8 +15,8 @@ export default function AboutHelp() {
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-semibold text-foreground flex items-center gap-2">
-          <Wifi className="h-4 w-4 text-primary" />
+        <h3 className="font-semibold text-foreground flex items-center gap-2 text-base">
+          <Wifi className="h-5 w-5 text-primary" />
           Internet Connection Required
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -26,8 +26,8 @@ export default function AboutHelp() {
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-semibold text-foreground flex items-center gap-2">
-          <Download className="h-4 w-4 text-primary" />
+        <h3 className="font-semibold text-foreground flex items-center gap-2 text-base">
+          <Download className="h-5 w-5 text-primary" />
           How to Install
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed mb-2">
@@ -47,64 +47,64 @@ export default function AboutHelp() {
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-semibold text-foreground flex items-center gap-2">
-          <Monitor className="h-4 w-4 text-primary" />
+        <h3 className="font-semibold text-foreground flex items-center gap-2 text-base">
+          <Monitor className="h-5 w-5 text-primary" />
           Desktop Controls
         </h3>
         <ul className="text-sm text-muted-foreground space-y-1.5">
           <li className="flex items-start gap-2">
-            <span className="text-primary mt-0.5">•</span>
-            <span><strong>Arrow Keys</strong> or <strong>A/D</strong> - Steer left and right</span>
+            <span className="text-primary mt-0.5 font-bold">•</span>
+            <span><strong className="text-foreground">Arrow Keys</strong> or <strong className="text-foreground">A/D</strong> - Steer left and right</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-primary mt-0.5">•</span>
-            <span><strong>Space</strong> - Brake/Slow down</span>
+            <span className="text-primary mt-0.5 font-bold">•</span>
+            <span><strong className="text-foreground">Space</strong> - Brake/Slow down</span>
           </li>
         </ul>
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-semibold text-foreground flex items-center gap-2">
-          <Smartphone className="h-4 w-4 text-primary" />
+        <h3 className="font-semibold text-foreground flex items-center gap-2 text-base">
+          <Smartphone className="h-5 w-5 text-primary" />
           Mobile Controls
         </h3>
         <ul className="text-sm text-muted-foreground space-y-1.5">
           <li className="flex items-start gap-2">
-            <span className="text-primary mt-0.5">•</span>
-            <span>Use the on-screen <strong>Left</strong> and <strong>Right</strong> buttons to steer</span>
+            <span className="text-primary mt-0.5 font-bold">•</span>
+            <span>Use the on-screen <strong className="text-foreground">Left</strong> and <strong className="text-foreground">Right</strong> buttons to steer</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-primary mt-0.5">•</span>
-            <span>Tap the <strong>Brake</strong> button to slow down</span>
+            <span className="text-primary mt-0.5 font-bold">•</span>
+            <span>Tap the <strong className="text-foreground">Brake</strong> button to slow down</span>
           </li>
         </ul>
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-semibold text-foreground">How to Play</h3>
+        <h3 className="font-semibold text-foreground text-base">How to Play</h3>
         <ul className="text-sm text-muted-foreground space-y-1.5">
           <li className="flex items-start gap-2">
-            <span className="text-primary mt-0.5">•</span>
+            <span className="text-primary mt-0.5 font-bold">•</span>
             <span>Avoid hitting traffic obstacles (other cars and barriers)</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-primary mt-0.5">•</span>
+            <span className="text-primary mt-0.5 font-bold">•</span>
             <span>Your score increases the longer you survive</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-primary mt-0.5">•</span>
+            <span className="text-primary mt-0.5 font-bold">•</span>
             <span>Collision ends the game - tap Restart to try again</span>
           </li>
           <li className="flex items-start gap-2">
-            <span className="text-primary mt-0.5">•</span>
+            <span className="text-primary mt-0.5 font-bold">•</span>
             <span>Stay in your lane and watch for upcoming obstacles</span>
           </li>
         </ul>
       </div>
 
       <div className="space-y-2">
-        <h3 className="font-semibold text-foreground flex items-center gap-2">
-          <Scale className="h-4 w-4 text-primary" />
+        <h3 className="font-semibold text-foreground flex items-center gap-2 text-base">
+          <Scale className="h-5 w-5 text-primary" />
           Legal & Assets
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">
@@ -114,7 +114,7 @@ export default function AboutHelp() {
         </p>
       </div>
 
-      <div className="pt-2 border-t border-border">
+      <div className="pt-3 border-t border-border">
         <p className="text-xs text-muted-foreground leading-relaxed">
           Traffic Jam runs entirely in your web browser using WebGL technology. 
           Install this Progressive Web App (PWA) on your home screen for quick access and an app-like experience.

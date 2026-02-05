@@ -1,47 +1,123 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Reliable mobile press-and-hold steering via robust pointer/touch-safe control handling",
+  "title": "Traffic Jam PWA UI/UX polish for Play Store–ready visual quality",
   "requirements": [
     {
-      "id": "REQ-27",
-      "summary": "Ensure mobile Left/Right (and Brake) on-screen buttons use press-and-hold shared control state and always clear it on release/cancel to prevent stuck steering and unwanted browser gestures.",
+      "id": "REQ-41",
+      "summary": "Unify the Start/Home screen, dialogs (Help/About, Share, Install), and in-game HUD into a cohesive mobile-first visual system with consistent typography, spacing, and surfaces (English-only UI text).",
       "acceptanceCriteria": [
-        "On a mobile device, pressing and holding the Left button moves the car left by at least one lane (when possible).",
-        "On a mobile device, pressing and holding the Right button moves the car right by at least one lane (when possible).",
-        "If the user lifts their finger outside the button area (touch cancel / pointer cancel), the corresponding control state is cleared and the car does not keep steering.",
-        "The on-screen controls do not trigger unwanted page scrolling/zooming while playing (no accidental browser gestures caused by the control presses)."
+        "Start/Home screen, dialogs, and in-game UI share a cohesive visual system (colors, typography, spacing, button styles) with no mismatched component styling.",
+        "UI layout is mobile-first and app-like: clear hierarchy, strong primary CTA, consistent padding/margins, and no accidental overflow/scrollbars on common Android viewport sizes.",
+        "All user-facing strings shown in the UI remain English-only (no mixed-language labels introduced by the polish pass)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/game/controls/TouchControls.tsx",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Refactor Left/Right/Brake button input handling to be press-and-hold reliable: set shared control state true on press, and always clear it on pointerup/pointercancel/lostpointercapture (and on component unmount). Use pointer capture and a window-level safety clear while a control is held so releasing outside the button reliably clears. Add gesture-prevention (preventDefault/stopPropagation where appropriate) and Tailwind classes (e.g., touch-action disabling / overscroll prevention / user-select none) on the controls overlay/buttons to avoid scroll/zoom during gameplay. Verify the component's usage instructions before implementing."
+          "description": "Add a small set of reusable, app-wide styling primitives (e.g., consistent surface, elevated-card, HUD chip, and focus-ring classes) using Tailwind @layer so Start/Home, dialogs, and HUD share the same spacing/typography/shadow language; include safeguards for mobile overflow (e.g., consistent safe-area padding utilities where appropriate)."
         },
         {
-          "path": "frontend/src/game/TrafficJamGame.tsx",
+          "path": "frontend/src/components/TjDialogContent.tsx",
+          "operation": "create",
+          "description": "Create a lightweight wrapper around shadcn-ui DialogContent to standardize dialog width, padding, scroll behavior, and surface styling across Help/About, Share, and Install flows (compose shadcn-ui; do not edit frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Ensure the game container (or a wrapper around the active play area) applies mobile gesture suppression while playing (e.g., Tailwind touch-action and overscroll behavior classes) so on-screen control presses don’t scroll/zoom the page. Keep gameplay logic unchanged aside from preventing unwanted browser gestures."
+          "description": "Apply the shared visual system to the in-game shell (header and Help/About dialog) by using the new standardized dialog wrapper, aligning spacing/typography with Start/Home, and ensuring mobile-first layout does not introduce overflow; continue composing shadcn-ui Button/Dialog without editing the ui components. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/StartHomeScreen.tsx",
+          "operation": "modify",
+          "description": "Align Start/Home screen layout and the Share/Install dialogs with the same surface, spacing, and typography primitives; ensure the hero card and CTAs remain app-like on common Android viewports and avoid accidental scrollbars; keep all user-facing strings in English. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AboutHelp.tsx",
+          "operation": "modify",
+          "description": "Normalize typography hierarchy (section titles/body text) and spacing to match the same dialog content system used elsewhere, without changing the meaning or language of existing English strings. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/ui/GameHud.tsx",
+          "operation": "modify",
+          "description": "Update HUD surfaces (score chip and game-over panel) to use the same app-wide surface/shadow/typography primitives so in-game UI matches the Start/Home and dialogs. Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-28",
-      "summary": "Update touch control event handling to use robust mobile-safe events (pointer events and/or touch start/end/cancel) without regressing keyboard controls or changing gameplay logic.",
+      "id": "REQ-42",
+      "summary": "Upgrade styling and feedback states for primary/secondary buttons, touch controls, dialog surfaces, and HUD elements with consistent shadows/borders and clear pressed/disabled/loading UI states (presentation-only).",
       "acceptanceCriteria": [
-        "TouchControls provides consistent behavior on Android Chrome: press sets control true, release sets it false, and cancel sets it false.",
-        "No regression: keyboard ArrowLeft/ArrowRight controls continue to work as before."
+        "Buttons and controls have clear pressed/active/disabled/loading states and meet basic contrast/readability expectations on both light and dark backgrounds.",
+        "Touch controls and HUD look intentional and consistent with the rest of the app theme (matching shapes, colors, typography).",
+        "No new gameplay behavior is introduced; changes are limited to presentation/styling and UI feedback states."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/game/controls/TouchControls.tsx",
+          "path": "frontend/src/index.css",
           "operation": "modify",
-          "description": "Replace current mixed onTouch/onMouse handlers with a single robust pointer-events-based implementation for Left/Right (and Brake): onPointerDown sets control true, onPointerUp sets false, and onPointerCancel/lostpointercapture sets false. Ensure the implementation is resilient across touch and pointer input and does not change movement/scoring/collision logic beyond making controls responsive. Verify the component's usage instructions before implementing."
+          "description": "Define consistent interactive styling helpers (e.g., primary/secondary action styles, pressed/active transforms, disabled opacity, focus-visible ring) that can be applied via className to shadcn-ui Buttons and other interactive elements; keep changes presentation-only."
         },
         {
-          "path": "frontend/src/game/controls/useGameControls.ts",
+          "path": "frontend/src/components/StartHomeScreen.tsx",
           "operation": "modify",
-          "description": "Review and (if needed) minimally adjust control-state updating to ensure no regression for keyboard ArrowLeft/ArrowRight/space behavior while mobile controls are improved (e.g., avoid unintended persistence and ensure cleanup remains correct). Keep existing gameplay semantics intact."
+          "description": "Apply upgraded interactive states to Play/Download/Share buttons (pressed/hover/disabled/loading) and ensure consistent borders/shadows across Card/Dialogs while continuing to compose shadcn-ui components (no edits under frontend/src/components/ui). Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/controls/TouchControls.tsx",
+          "operation": "modify",
+          "description": "Polish touch control buttons to match the global theme (consistent shape, shadow, typography) and add clearer pressed/active feedback via styling only; do not change control logic or gameplay behavior. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/ui/GameHud.tsx",
+          "operation": "modify",
+          "description": "Enhance HUD readability and production feel (score chip, game-over overlay, restart button) with consistent borders/shadows and button feedback states, without changing any gameplay state transitions. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/OnlineRequiredBlocker.tsx",
+          "operation": "modify",
+          "description": "Align the offline blocker’s Card and Retry button styling with the same surface and interactive state system used across Start/Home and HUD, ensuring strong contrast and mobile-friendly spacing. Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-43",
+      "summary": "Add subtle, consistent motion polish for dialogs and overlays (Help/About, Share, Install, game over/restart, offline blocker) with reduced-motion support and no gameplay performance impact.",
+      "acceptanceCriteria": [
+        "Dialogs and overlays animate in/out smoothly and consistently (no jarring jumps).",
+        "Animations remain subtle and do not reduce readability or interfere with gameplay controls.",
+        "No noticeable frame drops are introduced during normal gameplay on mobile due to UI animations."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add reduced-motion handling (prefers-reduced-motion) to minimize/disable non-essential UI animations and ensure motion remains subtle; keep animations limited to opacity/transform for performance."
+        },
+        {
+          "path": "frontend/src/components/TjDialogContent.tsx",
+          "operation": "modify",
+          "description": "Add consistent, lightweight enter/exit animation classNames for dialog content (subtle fade/slide/scale) using existing Tailwind animation utilities; ensure reduced-motion settings are respected. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Use the standardized dialog motion for the Help/About dialog so it opens/closes smoothly and consistently with other dialogs, without changing any text content. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/StartHomeScreen.tsx",
+          "operation": "modify",
+          "description": "Apply consistent motion polish to Share and Install dialogs and any related overlays (subtle transitions only), ensuring animations do not introduce layout jumps or interfere with touch interactions. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/ui/GameHud.tsx",
+          "operation": "modify",
+          "description": "Refine game-over overlay/restart transition timing and consistency (subtle fade/scale), ensuring no impact to gameplay controls and respecting reduced-motion preferences. Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/OnlineRequiredBlocker.tsx",
+          "operation": "modify",
+          "description": "Add subtle overlay/card entrance motion for the online-required blocker that matches the app’s dialog/overlay motion language, while keeping the overlay fully readable and non-distracting. Verify the component's usage instructions before implementing."
         }
       ]
     }

@@ -69,8 +69,203 @@
         @apply border-border;
     }
     
+    html, body, #root {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+    
     body {
         @apply bg-background text-foreground;
         font-feature-settings: "rlig" 1, "calt" 1;
+        /* Prevent pull-to-refresh and overscroll on mobile */
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@layer components {
+    /* App-wide surface styling primitives */
+    .tj-surface {
+        background-color: oklch(var(--card) / 0.9);
+        backdrop-filter: blur(12px);
+        @apply border border-border;
+    }
+
+    .tj-surface-elevated {
+        @apply bg-card backdrop-blur-lg border-2 border-border shadow-2xl;
+    }
+
+    .tj-hud-chip {
+        background-color: oklch(var(--card) / 0.8);
+        backdrop-filter: blur(8px);
+        @apply rounded-xl px-5 py-3 shadow-lg border border-border;
+    }
+
+    .tj-game-overlay {
+        background-color: oklch(var(--background) / 0.9);
+        backdrop-filter: blur(12px);
+    }
+
+    /* Interactive state helpers */
+    .tj-interactive {
+        @apply transition-all duration-200 ease-out;
+    }
+
+    .tj-interactive-pressed {
+        @apply active:scale-[0.97] active:brightness-95;
+    }
+
+    .tj-focus-ring {
+        @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
+    }
+
+    /* Button enhancement classes */
+    .tj-btn-primary {
+        @apply shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg;
+    }
+
+    .tj-btn-secondary {
+        @apply shadow-md hover:shadow-lg active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed;
+    }
+
+    /* Touch control enhancements */
+    .tj-touch-control {
+        @apply shadow-xl backdrop-blur-sm;
+        @apply active:scale-95 active:shadow-lg;
+        @apply transition-all duration-150 ease-out;
+        border: 2px solid oklch(var(--border) / 0.3);
+    }
+
+    .tj-touch-control:active {
+        border-color: oklch(var(--border) / 0.5);
+    }
+
+    /* Dialog motion */
+    .tj-dialog-enter {
+        animation: tj-dialog-fade-in 0.2s ease-out, tj-dialog-scale-in 0.2s ease-out;
+    }
+
+    .tj-dialog-exit {
+        animation: tj-dialog-fade-out 0.15s ease-in, tj-dialog-scale-out 0.15s ease-in;
+    }
+
+    /* Overlay motion */
+    .tj-overlay-enter {
+        animation: tj-overlay-fade-in 0.25s ease-out;
+    }
+
+    /* Game over panel motion */
+    .tj-gameover-enter {
+        animation: tj-gameover-fade-in 0.3s ease-out, tj-gameover-scale-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+}
+
+@layer utilities {
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+        .tj-dialog-enter,
+        .tj-dialog-exit,
+        .tj-overlay-enter,
+        .tj-gameover-enter {
+            animation: none !important;
+        }
+
+        .tj-interactive,
+        .tj-interactive-pressed,
+        .tj-btn-primary,
+        .tj-btn-secondary,
+        .tj-touch-control {
+            transition: none !important;
+        }
+
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* Safe area padding utilities for mobile notches */
+    .safe-top {
+        padding-top: env(safe-area-inset-top);
+    }
+
+    .safe-bottom {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .safe-left {
+        padding-left: env(safe-area-inset-left);
+    }
+
+    .safe-right {
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* Keyframe animations */
+@keyframes tj-dialog-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes tj-dialog-fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes tj-dialog-scale-in {
+    from {
+        transform: scale(0.95);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes tj-dialog-scale-out {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(0.95);
+    }
+}
+
+@keyframes tj-overlay-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes tj-gameover-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes tj-gameover-scale-in {
+    from {
+        transform: scale(0.9);
+    }
+    to {
+        transform: scale(1);
     }
 }

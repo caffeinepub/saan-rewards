@@ -1,56 +1,87 @@
 {
   "kind": "build_request",
-  "title": "Fix and ensure mobile Left/Right on-screen buttons reliably control the player car",
+  "title": "Polish UI/UX and visual quality to feel Play Store–ready",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-27",
-      "text": "Make the mobile on-screen Left and Right buttons reliably steer the player car in-game by ensuring press-and-hold sets the shared control state and release/cancel always clears it, across mobile touch and pointer input.",
+      "id": "REQ-41",
+      "text": "Improve the overall UI/UX presentation so the Traffic Jam PWA feels like a high-quality, Play Store–ready app, with consistent styling across the Start/Home screen, Help/About dialogs, Share/Install flows, and in-game HUD (while keeping all user-facing text in English).",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4"
         ],
         "quotes": [
-          "Abhi aisa karo ismein na vah gadi to jo left wala button hai aur right wala button Hai is per control hona chahie gadi ka mobile laga do left or right ke button ki gadi control left or right button per honi chahie vah laga do uske"
+          "Aap ek kam aur kar do isko itna achcha banaa do ki jaise yah Play store ke upar main usko public Maine karna to yah ek app ke Tarah dikhe iski Koi aapki Tarah look banaa do acchi wali high quality wala"
         ]
       },
       "acceptanceCriteria": [
-        "On a mobile device, pressing and holding the Left button moves the car left by at least one lane (when possible).",
-        "On a mobile device, pressing and holding the Right button moves the car right by at least one lane (when possible).",
-        "If the user lifts their finger outside the button area (touch cancel / pointer cancel), the corresponding control state is cleared and the car does not keep steering.",
-        "The on-screen controls do not trigger unwanted page scrolling/zooming while playing (no accidental browser gestures caused by the control presses)."
+        "Start/Home screen, dialogs, and in-game UI share a cohesive visual system (colors, typography, spacing, button styles) with no mismatched component styling.",
+        "UI layout is mobile-first and app-like: clear hierarchy, strong primary CTA, consistent padding/margins, and no accidental overflow/scrollbars on common Android viewport sizes.",
+        "All user-facing strings shown in the UI remain English-only (no mixed-language labels introduced by the polish pass)."
       ]
     },
     {
-      "id": "REQ-28",
-      "text": "Update the touch control event handling to use robust mobile-safe events (pointer events and/or touch start/end + touch cancel) for Left/Right (and Brake if present), without changing gameplay logic other than making the controls responsive.",
+      "id": "REQ-42",
+      "text": "Upgrade visual styling of key interactive elements to feel production-quality: primary/secondary buttons (Play/Download/Share), touch control buttons, dialog surfaces, and HUD elements (score and game-over overlay), including improved states (hover/pressed/disabled/loading) and consistent shadows/borders.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-1"
+          "msg-4"
         ],
         "quotes": [
-          "mobile laga do left or right ke button ki gadi control left or right button per honi chahie"
+          "...ek app ke Tarah dikhe... acchi wali high quality wala"
         ]
       },
       "acceptanceCriteria": [
-        "TouchControls provides consistent behavior on Android Chrome: press sets control true, release sets it false, and cancel sets it false.",
-        "No regression: keyboard ArrowLeft/ArrowRight controls continue to work as before."
+        "Buttons and controls have clear pressed/active/disabled/loading states and meet basic contrast/readability expectations on both light and dark backgrounds.",
+        "Touch controls and HUD look intentional and consistent with the rest of the app theme (matching shapes, colors, typography).",
+        "No new gameplay behavior is introduced; changes are limited to presentation/styling and UI feedback states."
+      ]
+    },
+    {
+      "id": "REQ-43",
+      "text": "Add lightweight app-like motion polish (subtle transitions/animations) for screen and dialog interactions (e.g., opening Help/About, Share, Install instructions) and for game state overlays (game over / restart) without impacting game performance on mobile.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "...high quality wala"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Dialogs and overlays animate in/out smoothly and consistently (no jarring jumps).",
+        "Animations remain subtle and do not reduce readability or interfere with gameplay controls.",
+        "No noticeable frame drops are introduced during normal gameplay on mobile due to UI animations."
       ]
     }
   ],
   "constraints": [
-    "Do not edit files under frontend/src/components/ui (read-only UI components).",
-    "Keep the backend as-is; this change should be frontend-only.",
-    "Use English for any user-facing text."
+    "Do not modify any files under frontend/src/components/ui (read-only shadcn components must be composed, not edited).",
+    "Do not edit immutable hook paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx.",
+    "Keep the backend as a single Motoko actor; no new backend logic is required for this UI polish request."
   ],
   "nonGoals": [
-    "Adding new gameplay features beyond making Left/Right mobile controls work reliably (e.g., new levels, new vehicles, multiplayer).",
-    "Changing the game’s core movement/scoring/collision logic beyond what is required to correctly apply the existing left/right control state."
+    "Do not change core gameplay rules, physics, steering logic, collision logic, scoring, or obstacle behavior as part of this request.",
+    "Do not add third-party auth providers or external services.",
+    "Do not add offline gameplay support (the app remains online-only)."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
+  },
+  "userProfileUpdate": {
+    "goalsToAdd": [],
+    "goalsToRemove": [],
+    "preferencesToAdd": [
+      "Prefer a high-quality, Play Store–ready, app-like visual polish for the Traffic Jam PWA while keeping all user-facing text in English."
+    ],
+    "preferencesToRemove": [],
+    "miscToAdd": [],
+    "miscToRemove": [],
+    "fieldsToSet": {},
+    "fieldsToDelete": []
   }
 }

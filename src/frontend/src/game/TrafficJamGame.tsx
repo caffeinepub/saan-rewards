@@ -22,6 +22,10 @@ export default function TrafficJamGame() {
     setGameKey(prev => prev + 1);
   }, []);
 
+  const handleSceneRetry = useCallback(() => {
+    setGameKey(prev => prev + 1);
+  }, []);
+
   const handleScoreUpdate = useCallback((newScore: number) => {
     setScore(newScore);
   }, []);
@@ -34,6 +38,7 @@ export default function TrafficJamGame() {
         gameState={gameState}
         onGameOver={handleGameOver}
         onScoreUpdate={handleScoreUpdate}
+        onRetry={handleSceneRetry}
         isBlocked={!isOnline}
       />
 
