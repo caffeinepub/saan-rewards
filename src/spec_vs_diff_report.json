@@ -1,19 +1,33 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-02-05T17:59:23.723Z",
-  "summary": "All three requested frontend requirements appear to be implemented: gameplay is blocked when offline with a blocking overlay and resumes on reconnect (REQ-10), the service worker is adjusted to avoid caching game assets while still serving offline.html for navigation failures (REQ-11), and the Help/About content now explicitly states that an internet connection is required and offline play is not supported (REQ-12). No unrequested features are clearly introduced in the provided diff summary.",
-  "missing_requirements": [],
-  "hallucinated_features": [],
-  "confidence": 0.78,
+  "generatedAt": "2026-02-05T18:56:37.295Z",
+  "summary": "Diff updates the on-screen TouchControls to use pointer events with pointer capture and explicit cancel/lost-capture handling, plus adds mobile gesture suppression classes on the main game container. This appears to address the core reliability and gesture-prevention goals for mobile Left/Right controls, but keyboard non-regression cannot be verified from the provided diff summary.",
+  "missing_requirements": [
+    {
+      "id": "REQ-28",
+      "requirement": "No regression: keyboard ArrowLeft/ArrowRight controls continue to work as before.",
+      "reason": "The diff summary only shows changes in TouchControls.tsx and TrafficJamGame.tsx; it does not show any evidence about keyboard event handling (e.g., in useGameControls.ts) to confirm it remains unchanged and working.",
+      "evidence": [
+        "frontend/src/game/controls/TouchControls.tsx",
+        "frontend/src/game/TrafficJamGame.tsx"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Added/changed in-game start instruction overlay text (\"Avoid the traffic!\")",
+      "reason": "BuildRequest is scoped to making mobile Left/Right controls reliable and preventing unwanted gestures; the diff includes user-facing instructional UI that is not part of the stated requirements.",
+      "evidence": [
+        "frontend/src/game/TrafficJamGame.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.62,
   "changed_files": [
     "frontend-file-summaries.txt",
-    "frontend/public/sw.js",
-    "frontend/src/components/AboutHelp.tsx",
-    "frontend/src/components/OnlineRequiredBlocker.tsx",
     "frontend/src/game/TrafficJamGame.tsx",
-    "frontend/src/game/scene/TrafficJamScene.tsx",
-    "frontend/src/hooks/useOnlineStatus.ts",
+    "frontend/src/game/controls/TouchControls.tsx",
     "project_state.json"
   ]
 }

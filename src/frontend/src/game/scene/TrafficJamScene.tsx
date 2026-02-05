@@ -1,5 +1,5 @@
 import { useRef, useMemo, useEffect } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { OrthographicCamera } from '@react-three/drei';
 import * as THREE from 'three';
 import { GameState } from '../TrafficJamGame';
@@ -29,6 +29,9 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
   const lastSpawnZ = useRef(-10);
   const controls = useGameControls();
 
+  // Load player car texture
+  const playerTexture = useLoader(THREE.TextureLoader, '/assets/generated/traffic-jam-player-car-texture.dim_1024x512.png');
+
   // Player car dimensions
   const playerWidth = 0.8;
   const playerHeight = 0.4;
@@ -37,6 +40,11 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
   // Lane positions
   const lanes = [-2, 0, 2];
   const playerLane = useRef(1); // Start in middle lane
+
+  // Road dimensions
+  const roadWidth = 7;
+  const shoulderWidth = 1.5;
+  const totalRoadWidth = roadWidth + shoulderWidth * 2;
 
   // Initialize obstacles
   useEffect(() => {
@@ -62,6 +70,41 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
     
     lastSpawnZ.current = z;
   };
+
+  // Create roadside plants using instanced meshes for performance
+  const { leftPlants, rightPlants } = useMemo(() => {
+    const plantCount = 30;
+    const plantSpacing = 2.5;
+    const leftPlantPositions: THREE.Matrix4[] = [];
+    const rightPlantPositions: THREE.Matrix4[] = [];
+
+    for (let i = 0; i < plantCount; i++) {
+      const z = -i * plantSpacing + 5;
+      const xOffset = totalRoadWidth / 2 + 1.2 + Math.random() * 0.5;
+      
+      // Left side plants
+      const leftMatrix = new THREE.Matrix4();
+      const leftScale = 0.6 + Math.random() * 0.4;
+      leftMatrix.compose(
+        new THREE.Vector3(-xOffset, 0, z),
+        new THREE.Quaternion(),
+        new THREE.Vector3(leftScale, leftScale * (1.2 + Math.random() * 0.6), leftScale)
+      );
+      leftPlantPositions.push(leftMatrix);
+
+      // Right side plants
+      const rightMatrix = new THREE.Matrix4();
+      const rightScale = 0.6 + Math.random() * 0.4;
+      rightMatrix.compose(
+        new THREE.Vector3(xOffset, 0, z),
+        new THREE.Quaternion(),
+        new THREE.Vector3(rightScale, rightScale * (1.2 + Math.random() * 0.6), rightScale)
+      );
+      rightPlantPositions.push(rightMatrix);
+    }
+
+    return { leftPlants: leftPlantPositions, rightPlants: rightPlantPositions };
+  }, []);
 
   useFrame((state, delta) => {
     // Block gameplay if offline or game is over
@@ -142,10 +185,40 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
         zoom={50}
       />
 
-      {/* Road */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, -5]} receiveShadow>
-        <planeGeometry args={[10, 40]} />
-        <meshStandardMaterial color="#2a2a2a" />
+      {/* Ground plane (grass) */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.15, -5]} receiveShadow>
+        <planeGeometry args={[30, 40]} />
+        <meshStandardMaterial color="#2d5a2d" />
+      </mesh>
+
+      {/* Main road surface */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.05, -5]} receiveShadow>
+        <planeGeometry args={[roadWidth, 40]} />
+        <meshStandardMaterial color="#2a2a2a" roughness={0.9} />
+      </mesh>
+
+      {/* Left shoulder */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[-(roadWidth / 2 + shoulderWidth / 2), -0.08, -5]} receiveShadow>
+        <planeGeometry args={[shoulderWidth, 40]} />
+        <meshStandardMaterial color="#4a4a4a" roughness={0.95} />
+      </mesh>
+
+      {/* Right shoulder */}
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[(roadWidth / 2 + shoulderWidth / 2), -0.08, -5]} receiveShadow>
+        <planeGeometry args={[shoulderWidth, 40]} />
+        <meshStandardMaterial color="#4a4a4a" roughness={0.95} />
+      </mesh>
+
+      {/* Left road edge/curb */}
+      <mesh position={[-roadWidth / 2, 0.05, -5]} castShadow>
+        <boxGeometry args={[0.15, 0.15, 40]} />
+        <meshStandardMaterial color="#cccccc" />
+      </mesh>
+
+      {/* Right road edge/curb */}
+      <mesh position={[roadWidth / 2, 0.05, -5]} castShadow>
+        <boxGeometry args={[0.15, 0.15, 40]} />
+        <meshStandardMaterial color="#cccccc" />
       </mesh>
 
       {/* Lane markers */}
@@ -156,10 +229,28 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
         </mesh>
       ))}
 
-      {/* Player car */}
+      {/* Left side plants (instanced) */}
+      <instancedMesh args={[undefined, undefined, leftPlants.length]} castShadow>
+        <coneGeometry args={[0.4, 1.5, 6]} />
+        <meshStandardMaterial color="#1a4d1a" roughness={0.8} />
+        {leftPlants.map((matrix, i) => (
+          <primitive key={i} object={matrix} attach={`instanceMatrix-${i}`} />
+        ))}
+      </instancedMesh>
+
+      {/* Right side plants (instanced) */}
+      <instancedMesh args={[undefined, undefined, rightPlants.length]} castShadow>
+        <coneGeometry args={[0.4, 1.5, 6]} />
+        <meshStandardMaterial color="#1a4d1a" roughness={0.8} />
+        {rightPlants.map((matrix, i) => (
+          <primitive key={i} object={matrix} attach={`instanceMatrix-${i}`} />
+        ))}
+      </instancedMesh>
+
+      {/* Player car with texture */}
       <mesh ref={playerRef} position={[0, 0.2, 0]} castShadow>
         <boxGeometry args={[playerWidth, playerHeight, playerDepth]} />
-        <meshStandardMaterial color="#ff4444" />
+        <meshStandardMaterial map={playerTexture} />
       </mesh>
 
       {/* Obstacles */}
@@ -182,12 +273,6 @@ function GameScene({ gameState, onGameOver, onScoreUpdate, isBlocked = false }: 
           )}
         </mesh>
       ))}
-
-      {/* Ground plane */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, -5]} receiveShadow>
-        <planeGeometry args={[30, 40]} />
-        <meshStandardMaterial color="#1a5f1a" />
-      </mesh>
     </>
   );
 }

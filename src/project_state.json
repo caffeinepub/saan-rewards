@@ -1,14 +1,20 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 9,
+  "projectStateVersion": 23,
   "summary": "Shift project scope to a legal, browser-based (online) 3D car racing/traffic-jam game with a single vehicle, with an aim to publish on the Google Play Store.",
   "architectural_notes": [
     "Game scope: single vehicle only (legal constraint).",
     "Target: runs online in a web browser; consider packaging path for Google Play Store (e.g., WebView/TWA) if required.",
     "Compliance requirement: keep implementation and monetization approach fully legal/Play-policy compliant.",
-    "Gameplay access policy: enforce online-only play (block offline usage even if installed as a PWA)."
+    "Gameplay access policy: enforce online-only play (block offline usage even if installed as a PWA).",
+    "Do not share or distribute any Caffeine preview/admin URLs containing #caffeineAdminToken; use a public production URL or a token-free share link for users.",
+    "Support mobile touch UI controls: on-screen Left/Right buttons to steer the single player vehicle."
   ],
-  "known_issues": [],
+  "known_issues": [
+    "User shared a Caffeine URL containing #caffeineAdminToken (sensitive). Must rotate/revoke token and provide a public/token-free link before sharing.",
+    "Caffeine build/deploy failed due to an internal configuration issue; may require Caffeine team support to resolve.",
+    "Download/Install (\"Downloading\") flow is currently not working correctly; user reports downloads are failing and wants it to work when shared with friends."
+  ],
   "isFixRequest": false,
   "existing_features": [
     {
@@ -106,6 +112,134 @@
         "REQ-12"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-add-an-app-like-start-home-screen-before-gameplay-begins-with-clear-actions-in-english-play-how-to-install-and-share-link-the-start-screen-must-be-mobile-first-and-should-make-the-experience-feel-like-a-real-app-clean-layout-strong-primary-cta-minimal-distractions",
+      "title": "Add an app-like Start / Home screen (before gameplay begins) with clear actions in English: “Play”, “How to Install”, and “Share Link”. The Start screen must be mobile-first and should make the experience feel like a real app (clean layout, strong primary CTA, minimal distractions).",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-in-app-pwa-install-flow-detect-when-the-app-is-installable-via-the-browser-install-prompt-and-show-an-install-app-button-in-the-start-home-screen-and-or-in-the-help-dialog-if-installation-is-not-available-show-simple-english-instructions-for-installing-on-android-chrome-menu-add-to-home-screen",
+      "title": "Implement an in-app PWA install flow: detect when the app is installable (via the browser install prompt) and show an “Install App” button in the Start / Home screen (and/or in the Help dialog). If installation is not available, show simple English instructions for installing on Android Chrome (Menu → “Add to Home screen”).",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-safe-share-link-feature-that-copies-a-public-url-without-any-caffeineadmintoken-fragment-if-the-current-url-contains-caffeineadmintoken-in-the-hash-the-app-must-a-avoid-displaying-it-anywhere-and-b-copy-a-sanitized-link-that-removes-the-full-hash-fragment-from-the-shared-url",
+      "title": "Add a safe “Share Link” feature that copies a public URL without any `#caffeineAdminToken=...` fragment. If the current URL contains `caffeineAdminToken` in the hash, the app must (a) avoid displaying it anywhere, and (b) copy a sanitized link that removes the full hash fragment from the shared URL.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-brief-security-note-english-user-facing-on-the-share-screen-section-do-not-share-admin-links-that-contain-tokens-this-note-must-not-include-or-echo-any-token-value",
+      "title": "Add a brief security note (English, user-facing) on the Share screen/section: “Do not share admin links that contain tokens.” This note must not include or echo any token value.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-user-provided-uploaded-image-as-a-hero-banner-on-the-start-home-screen-and-display-the-game-name-traffic-jam-over-above-the-image-in-a-clear-readable-style-english-text",
+      "title": "Add the user-provided uploaded image as a hero/banner on the Start / Home screen and display the game name \"Traffic Jam\" over/above the image in a clear, readable style (English text).",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-start-home-screen-include-a-clearly-labeled-download-action-that-triggers-the-existing-pwa-install-flow-or-shows-install-instructions-when-install-prompting-is-not-available-use-english-user-facing-text",
+      "title": "Make the Start / Home screen include a clearly labeled \"Download\" action that triggers the existing PWA install flow (or shows install instructions when install prompting is not available). Use English user-facing text.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-start-home-screen-hero-banner-image-to-use-the-newly-uploaded-car-image-instead-of-the-previous-hero-image-keeping-all-user-facing-text-in-english",
+      "title": "Update the Start / Home screen hero/banner image to use the newly uploaded car image instead of the previous hero image, keeping all user-facing text in English.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-in-game-player-vehicle-visuals-so-the-player-car-uses-the-newly-uploaded-car-image-as-its-appearance-texture-sprite-mesh-material-while-keeping-gameplay-logic-unchanged",
+      "title": "Update the in-game player vehicle visuals so the player car uses the newly uploaded car image as its appearance (texture/sprite/mesh material), while keeping gameplay logic unchanged.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-start-home-screen-download-action-so-users-can-reliably-install-the-app-as-a-pwa-on-android-chrome-and-are-never-blocked-by-incorrect-installed-detection",
+      "title": "Fix the Start / Home screen “Download” action so users can reliably install the app as a PWA on Android Chrome and are never blocked by incorrect “Installed” detection.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-shared-link-flow-friend-friendly-by-ensuring-the-share-ui-provides-a-reliable-share-copy-method-and-clear-next-step-guidance-that-the-recipient-should-tap-download-to-install-english-text-only",
+      "title": "Make the shared link flow friend-friendly by ensuring the Share UI provides a reliable share/copy method and clear next-step guidance that the recipient should tap “Download” to install (English text only).",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-visible-in-progress-state-for-the-start-home-screen-download-action-so-users-get-clear-feedback-while-the-pwa-install-prompt-is-being-triggered-and-while-the-app-is-waiting-for-the-user-s-response",
+      "title": "Add a visible in-progress state for the Start / Home screen “Download” action so users get clear feedback while the PWA install prompt is being triggered and while the app is waiting for the user’s response.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-track-and-expose-an-install-flow-status-in-the-pwa-install-hook-and-or-start-home-screen-so-the-ui-can-reliably-render-the-downloading-installing-progress-state-without-race-conditions",
+      "title": "Track and expose an install-flow status in the PWA install hook and/or Start / Home screen so the UI can reliably render the “Downloading/Installing” progress state without race conditions.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-3d-traffic-jam-environment-to-include-a-distinct-attractive-road-track-that-clearly-defines-where-the-player-car-drives-a-dedicated-road-surface-with-edges-shoulders-replacing-the-current-plain-flat-road-appearance-while-keeping-gameplay-logic-unchanged",
+      "title": "Update the 3D Traffic Jam environment to include a distinct, attractive road/track that clearly defines where the player car drives (a dedicated road surface with edges/shoulders), replacing the current plain flat road appearance while keeping gameplay logic unchanged.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-visible-greenery-plant-decoration-along-both-sides-of-the-road-throughout-the-forward-direction-of-travel-using-original-procedural-geometry-no-third-party-copyrighted-models-and-ensuring-the-plants-do-not-block-lanes-or-cause-collisions",
+      "title": "Add visible greenery/plant decoration along both sides of the road throughout the forward direction of travel, using original/procedural geometry (no third-party copyrighted models) and ensuring the plants do not block lanes or cause collisions.",
+      "reqIds": [
+        "REQ-26"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-the-mobile-on-screen-left-and-right-buttons-reliably-steer-the-player-car-in-game-by-ensuring-press-and-hold-sets-the-shared-control-state-and-release-cancel-always-clears-it-across-mobile-touch-and-pointer-input",
+      "title": "Make the mobile on-screen Left and Right buttons reliably steer the player car in-game by ensuring press-and-hold sets the shared control state and release/cancel always clears it, across mobile touch and pointer input.",
+      "reqIds": [
+        "REQ-27"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-touch-control-event-handling-to-use-robust-mobile-safe-events-pointer-events-and-or-touch-start-end-touch-cancel-for-left-right-and-brake-if-present-without-changing-gameplay-logic-other-than-making-the-controls-responsive",
+      "title": "Update the touch control event handling to use robust mobile-safe events (pointer events and/or touch start/end + touch cancel) for Left/Right (and Brake if present), without changing gameplay logic other than making the controls responsive.",
+      "reqIds": [
+        "REQ-28"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -124,6 +258,36 @@
     {
       "id": "AR-3",
       "summary": "Add an online-only restriction so the game cannot be played offline (require an active internet connection; prevent public/offline play).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Add a “Download” button so users can download/install the app/game (user requested a downloading button).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Replace the previous hero/banner image with the newly provided car image, and use that same car asset as the in-game player vehicle.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-6",
+      "summary": "Add a small progress indicator to the Download/Downloading flow (show download/install progress feedback to the user).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Create a distinct, attractive road/track environment for the car to drive on, with plants/greenery placed along both sides of the road.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-8",
+      "summary": "Add mobile on-screen Left/Right buttons to control the player car (touch controls mapped to steering).",
       "reqIds": [],
       "status": "pending"
     }

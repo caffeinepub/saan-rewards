@@ -1,52 +1,38 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-05T17:59:23.725Z",
+  "generatedAt": "2026-02-05T18:56:37.297Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
-        "id": "REQ-10",
-        "summary": "Enforce an online-only restriction so the Traffic Jam game cannot be played without an active internet connection (offline play must be blocked).",
+        "id": "REQ-27",
+        "summary": "Make the mobile on-screen Left and Right buttons reliably steer the player car in-game by ensuring press-and-hold sets the shared control state and release/cancel always clears it, across mobile touch and pointer input.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/hooks/useOnlineStatus.ts",
-          "frontend/src/components/OnlineRequiredBlocker.tsx",
-          "frontend/src/game/TrafficJamGame.tsx",
-          "frontend/src/game/scene/TrafficJamScene.tsx"
+          "frontend/src/game/controls/TouchControls.tsx",
+          "frontend/src/game/TrafficJamGame.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/hooks/useOnlineStatus.ts",
-          "frontend/src/components/OnlineRequiredBlocker.tsx",
-          "frontend/src/game/TrafficJamGame.tsx",
-          "frontend/src/game/scene/TrafficJamScene.tsx"
+          "frontend/src/game/controls/TouchControls.tsx",
+          "frontend/src/game/TrafficJamGame.tsx"
         ]
       },
       {
-        "id": "REQ-11",
-        "summary": "Modify the PWA service worker behavior to prevent the app/game from functioning offline (do not cache game assets for offline use), while still allowing a dedicated offline page to appear when navigation occurs without network connectivity.",
+        "id": "REQ-28",
+        "summary": "Update the touch control event handling to use robust mobile-safe events (pointer events and/or touch start/end + touch cancel) for Left/Right (and Brake if present), without changing gameplay logic other than making the controls responsive.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/sw.js"
+          "frontend/src/game/controls/TouchControls.tsx",
+          "frontend/src/game/controls/useGameControls.ts"
         ],
         "matchedFiles": [
-          "frontend/public/sw.js"
-        ]
-      },
-      {
-        "id": "REQ-12",
-        "summary": "Update the in-app Help/About content to explicitly state (in English) that Traffic Jam requires an active internet connection and does not support offline play.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/AboutHelp.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/AboutHelp.tsx"
+          "frontend/src/game/controls/TouchControls.tsx"
         ]
       }
     ]
@@ -56,12 +42,8 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/public/sw.js",
-    "frontend/src/components/AboutHelp.tsx",
-    "frontend/src/components/OnlineRequiredBlocker.tsx",
     "frontend/src/game/TrafficJamGame.tsx",
-    "frontend/src/game/scene/TrafficJamScene.tsx",
-    "frontend/src/hooks/useOnlineStatus.ts",
+    "frontend/src/game/controls/TouchControls.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
 import TrafficJamScene from './scene/TrafficJamScene';
 import GameHud from './ui/GameHud';
 import OnlineRequiredBlocker from '@/components/OnlineRequiredBlocker';
@@ -28,7 +27,7 @@ export default function TrafficJamGame() {
   }, []);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full touch-none overscroll-none">
       {/* 3D Game Scene */}
       <TrafficJamScene
         key={gameKey}

@@ -1,84 +1,56 @@
 {
   "kind": "build_request",
-  "title": "Require active internet connection (disable offline/public offline play)",
+  "title": "Fix and ensure mobile Left/Right on-screen buttons reliably control the player car",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-10",
-      "text": "Enforce an online-only restriction so the Traffic Jam game cannot be played without an active internet connection (offline play must be blocked).",
+      "id": "REQ-27",
+      "text": "Make the mobile on-screen Left and Right buttons reliably steer the player car in-game by ensuring press-and-hold sets the shared control state and release/cancel always clears it, across mobile touch and pointer input.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-1"
         ],
         "quotes": [
-          "Aap ismein yah future shamil Karen ki yah online ke Bina isko Koi public khel na sake"
+          "Abhi aisa karo ismein na vah gadi to jo left wala button hai aur right wala button Hai is per control hona chahie gadi ka mobile laga do left or right ke button ki gadi control left or right button per honi chahie vah laga do uske"
         ]
       },
       "acceptanceCriteria": [
-        "If the device is offline, the app does not allow starting or continuing gameplay and instead shows a blocking UI stating that an internet connection is required.",
-        "If the connection drops while the app is open, gameplay is immediately blocked and the user is prompted to reconnect.",
-        "When the connection is restored, the user can proceed back into the game without a full manual reset (e.g., a clear retry / continue action or auto-unblock)."
+        "On a mobile device, pressing and holding the Left button moves the car left by at least one lane (when possible).",
+        "On a mobile device, pressing and holding the Right button moves the car right by at least one lane (when possible).",
+        "If the user lifts their finger outside the button area (touch cancel / pointer cancel), the corresponding control state is cleared and the car does not keep steering.",
+        "The on-screen controls do not trigger unwanted page scrolling/zooming while playing (no accidental browser gestures caused by the control presses)."
       ]
     },
     {
-      "id": "REQ-11",
-      "text": "Modify the PWA service worker behavior to prevent the app/game from functioning offline (do not cache game assets for offline use), while still allowing a dedicated offline page to appear when navigation occurs without network connectivity.",
+      "id": "REQ-28",
+      "text": "Update the touch control event handling to use robust mobile-safe events (pointer events and/or touch start/end + touch cancel) for Left/Right (and Brake if present), without changing gameplay logic other than making the controls responsive.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-5"
+          "msg-1"
         ],
         "quotes": [
-          "online ke Bina ... khel na sake"
+          "mobile laga do left or right ke button ki gadi control left or right button per honi chahie"
         ]
       },
       "acceptanceCriteria": [
-        "When offline, navigation requests resolve to the existing offline page (offline.html).",
-        "When offline, game JS/assets are not served from cache in a way that enables gameplay.",
-        "After installing the PWA and loading the game once, turning on airplane mode prevents gameplay and shows the offline blocking experience (either the offline page on reload or the in-app blocker if already open)."
-      ]
-    },
-    {
-      "id": "REQ-12",
-      "text": "Update the in-app Help/About content to explicitly state (in English) that Traffic Jam requires an active internet connection and does not support offline play.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-5"
-        ],
-        "quotes": [
-          "online ke Bina ... khel na sake"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The Help/About panel includes a clear English sentence indicating the game requires an internet connection and offline play is not available.",
-        "No non-English user-facing text is introduced for this change."
+        "TouchControls provides consistent behavior on Android Chrome: press sets control true, release sets it false, and cancel sets it false.",
+        "No regression: keyboard ArrowLeft/ArrowRight controls continue to work as before."
       ]
     }
   ],
   "constraints": [
-    "Do not modify files under frontend/src/components/ui (read-only UI components must be composed, not edited).",
-    "Do not modify any files listed in frontend.immutablePaths.",
-    "Backend must remain a single Motoko actor; do not add additional backend services."
+    "Do not edit files under frontend/src/components/ui (read-only UI components).",
+    "Keep the backend as-is; this change should be frontend-only.",
+    "Use English for any user-facing text."
   ],
   "nonGoals": [
-    "Adding user accounts, Internet Identity login, or online leaderboards.",
-    "Implementing real-time multiplayer or chat.",
-    "Publishing an APK/AAB or Play Store submission work."
+    "Adding new gameplay features beyond making Left/Right mobile controls work reliably (e.g., new levels, new vehicles, multiplayer).",
+    "Changing the game’s core movement/scoring/collision logic beyond what is required to correctly apply the existing left/right control state."
   ],
   "imageRequirements": {
     "required": [],
     "edits": []
-  },
-  "userProfileUpdate": {
-    "goalsToAdd": [],
-    "goalsToRemove": [],
-    "preferencesToAdd": [],
-    "preferencesToRemove": [],
-    "miscToAdd": [],
-    "miscToRemove": [],
-    "fieldsToSet": {},
-    "fieldsToDelete": []
   }
 }

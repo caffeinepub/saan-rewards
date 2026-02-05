@@ -1,4 +1,4 @@
-import { Gamepad2, Smartphone, Monitor, Scale, Wifi } from 'lucide-react';
+import { Gamepad2, Smartphone, Monitor, Scale, Wifi, Download } from 'lucide-react';
 
 export default function AboutHelp() {
   return (
@@ -23,6 +23,27 @@ export default function AboutHelp() {
           Traffic Jam requires an active internet connection to play. Offline play is not supported. 
           If your connection drops during gameplay, the game will pause until you're back online.
         </p>
+      </div>
+
+      <div className="space-y-2">
+        <h3 className="font-semibold text-foreground flex items-center gap-2">
+          <Download className="h-4 w-4 text-primary" />
+          How to Install
+        </h3>
+        <p className="text-sm text-muted-foreground leading-relaxed mb-2">
+          Install Traffic Jam on your device for quick access and an app-like experience.
+        </p>
+        <div className="text-sm text-muted-foreground space-y-2">
+          <p className="font-medium text-foreground">Android Chrome:</p>
+          <ol className="list-decimal list-inside space-y-1 ml-2">
+            <li>Tap the menu icon (three dots) in the top-right corner</li>
+            <li>Select "Add to Home screen"</li>
+            <li>Confirm by tapping "Add" or "Install"</li>
+          </ol>
+          <p className="text-xs pt-1">
+            For other browsers, look for "Add to Home screen" or "Install" in the browser menu.
+          </p>
+        </div>
       </div>
 
       <div className="space-y-2">

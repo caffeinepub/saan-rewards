@@ -4,9 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import AboutHelp from '@/components/AboutHelp';
 import TrafficJamGame from '@/game/TrafficJamGame';
+import StartHomeScreen from '@/components/StartHomeScreen';
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
     // Register service worker for PWA functionality
@@ -17,6 +19,15 @@ function App() {
         .catch((err) => console.error('Service Worker registration failed:', err));
     }
   }, []);
+
+  const handlePlay = () => {
+    setHasStarted(true);
+  };
+
+  // Show start screen if game hasn't started yet
+  if (!hasStarted) {
+    return <StartHomeScreen onPlay={handlePlay} />;
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
