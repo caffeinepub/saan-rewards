@@ -12,16 +12,17 @@ export function usePwaInstall() {
   const [isInstallable, setIsInstallable] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
   const [installFlowStatus, setInstallFlowStatus] = useState<InstallFlowStatus>('idle');
+  const [hasPromptReady, setHasPromptReady] = useState(false);
 
   useEffect(() => {
-    // Check if already installed - only check standalone mode for Android Chrome
+    // Check if already installed - conservative detection using standalone mode only
     const checkInstalled = () => {
-      // Only check display-mode: standalone for reliable detection
+      // Primary check: display-mode standalone (most reliable for Android Chrome)
       if (window.matchMedia('(display-mode: standalone)').matches) {
         return true;
       }
       
-      // Check if running as PWA on iOS
+      // iOS PWA check
       if ((window.navigator as any).standalone === true) {
         return true;
       }
@@ -32,7 +33,14 @@ export function usePwaInstall() {
     const initialInstalled = checkInstalled();
     setIsInstalled(initialInstalled);
 
-    // Listen for display mode changes
+    // If already installed, mark as completed and not installable
+    if (initialInstalled) {
+      setInstallFlowStatus('completed');
+      setIsInstallable(false);
+      setHasPromptReady(false);
+    }
+
+    // Listen for display mode changes (detects when app is opened in standalone mode)
     const standaloneMedia = window.matchMedia('(display-mode: standalone)');
     const handleDisplayModeChange = (e: MediaQueryListEvent) => {
       if (e.matches) {
@@ -40,6 +48,7 @@ export function usePwaInstall() {
         setIsInstallable(false);
         setInstallPrompt(null);
         setInstallFlowStatus('completed');
+        setHasPromptReady(false);
       }
     };
 
@@ -52,6 +61,12 @@ export function usePwaInstall() {
       const promptEvent = e as BeforeInstallPromptEvent;
       setInstallPrompt(promptEvent);
       setIsInstallable(true);
+      setHasPromptReady(true);
+      // Reset status to idle when prompt becomes available
+      // This ensures Download button is enabled
+      if (installFlowStatus !== 'completed') {
+        setInstallFlowStatus('idle');
+      }
     };
 
     const handleAppInstalled = () => {
@@ -59,6 +74,7 @@ export function usePwaInstall() {
       setIsInstallable(false);
       setInstallPrompt(null);
       setInstallFlowStatus('completed');
+      setHasPromptReady(false);
     };
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
@@ -71,10 +87,13 @@ export function usePwaInstall() {
         standaloneMedia.removeEventListener('change', handleDisplayModeChange);
       }
     };
-  }, []);
+  }, [installFlowStatus]);
 
   const install = async () => {
-    if (!installPrompt) return false;
+    if (!installPrompt) {
+      // No prompt available - return failure
+      return { success: false, dismissed: false };
+    }
 
     try {
       setInstallFlowStatus('prompting');
@@ -82,20 +101,19 @@ export function usePwaInstall() {
       const choiceResult = await installPrompt.userChoice;
       
       if (choiceResult.outcome === 'accepted') {
-        setIsInstallable(false);
-        setInstallPrompt(null);
-        setInstallFlowStatus('completed');
-        // Note: isInstalled will be set by appinstalled event or display-mode change
-        return true;
+        // User accepted - installation will complete via appinstalled event
+        // Keep prompting state until appinstalled fires
+        return { success: true, dismissed: false };
       } else {
-        // User dismissed the prompt
-        setInstallFlowStatus('failed');
-        return false;
+        // User dismissed the prompt - reset to idle so they can try again
+        setInstallFlowStatus('idle');
+        return { success: false, dismissed: true };
       }
     } catch (error) {
       console.error('Install prompt error:', error);
-      setInstallFlowStatus('failed');
-      return false;
+      // Real error - reset to idle to allow retry
+      setInstallFlowStatus('idle');
+      return { success: false, dismissed: false };
     }
   };
 
@@ -104,5 +122,6 @@ export function usePwaInstall() {
     isInstalled,
     installFlowStatus,
     install,
+    hasPromptReady,
   };
 }

@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#ff4444">
-    <title>Offline - Saan Rewards</title>
+    <title>Teen Patti - Offline</title>
     <style>
         * {
             margin: 0;
@@ -13,115 +12,99 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
-            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
             padding: 20px;
-            color: #ffffff;
         }
         .container {
             text-align: center;
             max-width: 400px;
-            background: #2a2a2a;
-            padding: 40px 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid #3a3a3a;
         }
         .icon {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
+            font-size: 64px;
+            margin-bottom: 20px;
         }
         h1 {
-            font-size: 24px;
+            font-size: 28px;
             margin-bottom: 12px;
-            color: #ffffff;
+            color: #16a34a;
         }
         p {
-            color: #aaaaaa;
-            line-height: 1.6;
-            margin-bottom: 24px;
-            font-size: 15px;
-        }
-        .button {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-            color: white;
-            padding: 14px 32px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
             font-size: 16px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(255, 68, 68, 0.3);
-        }
-        .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 68, 68, 0.4);
-        }
-        .button:active {
-            transform: translateY(0);
+            line-height: 1.6;
+            color: #a0a0a0;
+            margin-bottom: 24px;
         }
         .status {
-            margin-top: 20px;
-            padding: 12px;
-            background: #3a2a2a;
-            border-radius: 8px;
+            display: inline-block;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             font-size: 14px;
-            color: #ff8888;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            margin-bottom: 20px;
         }
-        .wifi-icon {
-            font-size: 18px;
+        .status.offline {
+            color: #ef4444;
+        }
+        .status.online {
+            color: #16a34a;
+        }
+        button {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #15803d;
+        }
+        button:disabled {
+            background: #4a4a4a;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="icon">📡</div>
-        <h1>You're Offline</h1>
-        <p>Saan Rewards needs an internet connection to load. Please check your network settings and try again.</p>
-        <button class="button" onclick="window.location.reload()">
-            Try Again
-        </button>
-        <div class="status">
-            <span class="wifi-icon">📶</span>
-            <span>Waiting for connection...</span>
-        </div>
+        <div class="icon">🃏</div>
+        <h1>Teen Patti</h1>
+        <div class="status offline" id="status">Offline</div>
+        <p>You're currently offline. Please check your internet connection to play Teen Patti.</p>
+        <button id="retryBtn" onclick="location.reload()">Try Again</button>
     </div>
 
     <script>
-        // Auto-reload when connection is restored
-        window.addEventListener('online', () => {
-            window.location.reload();
-        });
-
-        // Update status indicator
-        function updateStatus() {
-            const status = document.querySelector('.status');
+        function updateOnlineStatus() {
+            const status = document.getElementById('status');
+            const retryBtn = document.getElementById('retryBtn');
+            
             if (navigator.onLine) {
-                status.innerHTML = '<span class="wifi-icon">✅</span><span>Connection restored!</span>';
-                status.style.background = '#2a3a2a';
-                status.style.color = '#88ff88';
-                setTimeout(() => window.location.reload(), 1000);
+                status.textContent = 'Back Online';
+                status.className = 'status online';
+                retryBtn.disabled = false;
+                setTimeout(() => {
+                    location.reload();
+                }, 1000);
+            } else {
+                status.textContent = 'Offline';
+                status.className = 'status offline';
+                retryBtn.disabled = false;
             }
         }
 
-        setInterval(updateStatus, 2000);
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        
+        // Check status on load
+        updateOnlineStatus();
     </script>
 </body>
 </html>

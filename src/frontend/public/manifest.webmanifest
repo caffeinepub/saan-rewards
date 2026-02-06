@@ -1,46 +1,46 @@
 {
-  "name": "Saan Rewards",
-  "short_name": "Saan Rewards",
-  "description": "Quick access to the Saan Rewards website - Install for convenient access from your home screen",
+  "name": "Teen Patti - Card Game",
+  "short_name": "Teen Patti",
+  "description": "Classic 3-card poker game - Play with chips and enjoy this entertainment-only card game. No real money gambling.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "background_color": "#1a1a1a",
-  "theme_color": "#ff4444",
+  "theme_color": "#16a34a",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/assets/generated/saan-rewards-app-icon.dim_512x512.png",
-      "sizes": "512x512",
+      "src": "/assets/generated/teenpatti-chip-icon.dim_256x256.png",
+      "sizes": "256x256",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/generated/saan-rewards-app-icon-maskable.dim_512x512.png",
-      "sizes": "512x512",
+      "src": "/assets/generated/teenpatti-chip-icon.dim_256x256.png",
+      "sizes": "256x256",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/assets/generated/saan-rewards-app-icon.dim_512x512.png",
+      "src": "/assets/generated/teenpatti-chip-icon.dim_256x256.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     }
   ],
-  "categories": ["utilities", "productivity"],
+  "categories": ["games", "entertainment"],
   "shortcuts": [
     {
-      "name": "Open Saan Rewards",
-      "short_name": "Open",
-      "description": "Open the Saan Rewards website",
+      "name": "Play Teen Patti",
+      "short_name": "Play",
+      "description": "Start playing Teen Patti",
       "url": "/",
       "icons": [
         {
-          "src": "/assets/generated/saan-rewards-app-icon.dim_512x512.png",
-          "sizes": "512x512"
+          "src": "/assets/generated/teenpatti-chip-icon.dim_256x256.png",
+          "sizes": "256x256"
         }
       ]
     }

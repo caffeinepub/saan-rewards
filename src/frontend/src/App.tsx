@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { TjDialogContent } from '@/components/TjDialogContent';
 import AboutHelp from '@/components/AboutHelp';
-import SaanRewardsHomeScreen from '@/components/SaanRewardsHomeScreen';
+import { TeenPattiGameShell } from '@/game/teenpatti/TeenPattiGameShell';
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
@@ -19,14 +19,18 @@ function App() {
     }
   }, []);
 
+  const handleShowRules = () => {
+    setShowAbout(true);
+  };
+
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Header */}
       <header className="tj-surface z-50 shadow-md flex-shrink-0">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="text-2xl">🎁</div>
-            <h1 className="text-lg font-bold text-foreground">Saan Rewards</h1>
+            <div className="text-2xl">🃏</div>
+            <h1 className="text-lg font-bold text-foreground">Teen Patti</h1>
           </div>
           <Dialog open={showAbout} onOpenChange={setShowAbout}>
             <DialogTrigger asChild>
@@ -41,8 +45,8 @@ function App() {
             </DialogTrigger>
             <TjDialogContent>
               <DialogHeader>
-                <DialogTitle>About Saan Rewards</DialogTitle>
-                <DialogDescription>App information and help</DialogDescription>
+                <DialogTitle>About Teen Patti</DialogTitle>
+                <DialogDescription>Game rules and information</DialogDescription>
               </DialogHeader>
               <AboutHelp />
             </TjDialogContent>
@@ -52,7 +56,7 @@ function App() {
 
       {/* Main Content */}
       <main className="flex-1 min-h-0 relative">
-        <SaanRewardsHomeScreen />
+        <TeenPattiGameShell onShowRules={handleShowRules} />
       </main>
 
       {/* Footer */}

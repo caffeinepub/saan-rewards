@@ -5,14 +5,14 @@
 @layer base {
     :root {
         --radius: 0.75rem;
-        /* Racing/traffic game theme - red, black, yellow accents */
+        /* Sky Dodge game theme - vibrant gaming colors */
         --background: 0.98 0.01 0;
         --foreground: 0.20 0.02 0;
         --card: 1 0 0;
         --card-foreground: 0.20 0.02 0;
         --popover: 1 0 0;
         --popover-foreground: 0.20 0.02 0;
-        /* Bright red primary (racing red) */
+        /* Bright red primary (gaming red) */
         --primary: 0.55 0.24 25;
         --primary-foreground: 0.98 0 0;
         /* Dark gray secondary */
@@ -20,7 +20,7 @@
         --secondary-foreground: 0.20 0.02 0;
         --muted: 0.92 0.01 0;
         --muted-foreground: 0.50 0.02 0;
-        /* Yellow accent (traffic warning) */
+        /* Yellow accent (achievement gold) */
         --accent: 0.75 0.18 90;
         --accent-foreground: 0.20 0.02 0;
         --destructive: 0.50 0.22 25;
@@ -36,7 +36,7 @@
     }
 
     .dark {
-        /* Dark mode: deep black with bright racing accents */
+        /* Dark mode: deep black with bright gaming accents */
         --background: 0.15 0.02 0;
         --foreground: 0.95 0.01 0;
         --card: 0.20 0.02 0;

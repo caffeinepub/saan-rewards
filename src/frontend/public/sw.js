@@ -1,20 +1,19 @@
-const CACHE_NAME = 'saan-rewards-v1';
+const CACHE_NAME = 'teenpatti-v1';
 const OFFLINE_URL = '/offline.html';
 
-// Cache offline page and app icons
+// Assets to cache
 const ASSETS_TO_CACHE = [
-  '/offline.html',
-  '/assets/generated/saan-rewards-app-icon.dim_512x512.png',
-  '/assets/generated/saan-rewards-app-icon-maskable.dim_512x512.png'
+  OFFLINE_URL,
+  '/assets/generated/teenpatti-chip-icon.dim_256x256.png',
+  '/assets/generated/teenpatti-table-bg.dim_1536x1024.png',
+  '/assets/generated/teenpatti-card-back.dim_768x1024.png'
 ];
 
-// Install event - cache offline page and icons
+// Install event - cache assets
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE).catch((err) => {
-        console.error('Failed to cache offline assets:', err);
-      });
+      return cache.addAll(ASSETS_TO_CACHE);
     })
   );
   self.skipWaiting();
@@ -36,35 +35,28 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event - network-first, offline page for navigation failures
+// Fetch event - network first, fallback to cache, then offline page
 self.addEventListener('fetch', (event) => {
-  // Skip cross-origin requests
-  if (!event.request.url.startsWith(self.location.origin)) {
-    return;
-  }
-
-  // Handle navigation requests (HTML pages)
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
-        .catch(() => {
-          // Show offline page when navigation fails
-          return caches.match(OFFLINE_URL);
-        })
-    );
-    return;
-  }
-
-  // For icon requests, try cache first
-  if (event.request.url.includes('/assets/generated/saan-rewards-app-icon')) {
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        return cachedResponse || fetch(event.request);
+      fetch(event.request).catch(() => {
+        return caches.match(OFFLINE_URL);
       })
     );
-    return;
+  } else {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          // Clone the response and cache it
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+          return response;
+        })
+        .catch(() => {
+          return caches.match(event.request);
+        })
+    );
   }
-
-  // For all other requests, use network
-  event.respondWith(fetch(event.request));
 });

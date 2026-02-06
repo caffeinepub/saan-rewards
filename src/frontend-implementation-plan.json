@@ -1,48 +1,211 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Upgrade Traffic Jam player vehicle visuals to a smaller race car with new texture",
+  "title": "Original Teen Patti–style (chips-only) card game PWA replacing Sky Dodge",
   "requirements": [
     {
-      "id": "REQ-48",
-      "summary": "Revise the 3D player car model to a clearly recognizable small race-car silhouette while keeping all gameplay behavior unchanged.",
+      "id": "REQ-71",
+      "summary": "Replace the Sky Dodge primary experience with a new, original Teen Patti–style card game that is mobile-first and playable as a PWA in-browser.",
       "acceptanceCriteria": [
-        "In gameplay, the only vehicle (player car) has a clearly recognizable race-car style silhouette (e.g., low profile body, sportier proportions, racing details such as a simple spoiler/wing or aerodynamic shapes).",
-        "The player car is visually smaller than before (reduced overall scale) while remaining clearly visible on mobile.",
-        "Gameplay behavior is unchanged: steering, speed progression, scoring, and collision detection outcomes remain the same as before this change.",
-        "No additional vehicles are introduced; only the player car is present as a vehicle."
+        "Opening the app no longer shows the Sky Dodge canvas game; it shows the new Teen Patti–style game start screen.",
+        "The game runs fully in-browser with touch-friendly controls and responsive layout for mobile portrait.",
+        "No third-party/copyrighted card artwork or branded assets are used in the new game."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/game/scene/PlayerCarModel.tsx",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Update the player car’s Three.js mesh composition to look like a small sport/race car (lower profile chassis, more aerodynamic front/rear shaping, and a simple spoiler/wing), and reduce the model’s visual scale (e.g., via the returned group scale) while keeping the same public API and without touching any control/speed/score/collision logic."
+          "description": "Replace OriginalGameShell as the main content with the new TeenPattiGameShell; update the header and About dialog labels to match the new card game. Use existing shadcn/ui primitives already in use (Button/Dialog) for consistent UI—Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/game/scene/TrafficJamScene.tsx",
-          "operation": "modify",
-          "description": "Confirm the scene continues to use the existing gameplay collision dimensions/constants and player positioning logic unchanged; if any visual scale adjustments require minor positioning tweaks for ground contact, keep them visual-only (do not alter scoring/speed/steering/collision outcomes)."
+          "path": "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
+          "operation": "create",
+          "description": "Create the main Teen Patti–style game container coordinating game states (start, hand, showdown, result) and rendering the appropriate UI screens in a mobile-first layout. Use shadcn/ui building blocks (e.g., Card, Button) to match the app’s design system—Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
+          "operation": "create",
+          "description": "Create the new start screen for the Teen Patti–style game (English-only), including a primary action to start a hand and an area for quick rules/disclaimer. Use shadcn/ui (Card/Button) for layout—Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
+          "operation": "create",
+          "description": "Create the in-hand table view (the ‘table’ UI) that renders the felt background, player/opponent card areas, chip counts, pot, and action controls in a touch-friendly format. Use shadcn/ui Buttons for actions—Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-49",
-      "summary": "Replace the player car body texture with a new generated racing-style texture and ensure it maps cleanly on the car model.",
+      "id": "REQ-72",
+      "summary": "Implement a complete Teen Patti–style gameplay loop with English UI: start screen → deal → player actions (Fold/Call-Check/Raise) → simple AI → showdown → result → play again.",
       "acceptanceCriteria": [
-        "The player car no longer uses /assets/generated/traffic-jam-player-car-texture.dim_1024x512.png as its primary body texture.",
-        "A new racing-style texture from frontend/public/assets/generated is used on the player car body material(s).",
-        "The new texture appears correctly oriented (not mirrored unintentionally) and looks sharp (no obvious stretching) on the car body."
+        "A user can start a new hand from the start screen and complete a full hand to a clear result (win/lose) without errors.",
+        "During a hand, the user can always choose Fold, and at least one non-fold betting action (Call/Check) and one increase action (Raise).",
+        "After the hand ends, the UI shows the outcome and provides a clearly labeled English action to play the next hand."
       ],
       "file_operations": [
         {
-          "path": "frontend/public/assets/generated/race-car-texture.dim_1024x512.png",
+          "path": "frontend/src/game/teenpatti/engine/cards.ts",
           "operation": "create",
-          "description": "Add the new generated racing-style texture asset (bold stripes and a simple number panel) as a static frontend asset at this exact path/filename."
+          "description": "Implement card/deck utilities (card type, ranks/suits, deck generation, shuffle, dealing 3-card hands) for the Teen Patti–style game."
         },
         {
-          "path": "frontend/src/game/scene/PlayerCarModel.tsx",
+          "path": "frontend/src/game/teenpatti/engine/handRanking.ts",
+          "operation": "create",
+          "description": "Implement Teen Patti–style 3-card hand evaluation and comparison logic (hand categories and tie-break rules) to support showdown outcomes."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/engine/ai.ts",
+          "operation": "create",
+          "description": "Implement a simple opponent AI that selects Fold/Call-Check/Raise using basic heuristics derived from evaluated hand strength and current bet state."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/engine/gameState.ts",
+          "operation": "create",
+          "description": "Define the game state model and pure state transition helpers for a full hand loop (start hand, post blinds/antes if used, player action, AI action, reveal/showdown, settle chips, reset for next hand)."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiActionBar.tsx",
+          "operation": "create",
+          "description": "Create the action controls UI that always exposes Fold and provides Call/Check and Raise (with clear English labels and simple raise sizing). Use shadcn/ui Button (and optional input controls if needed) for consistent interactions—Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiResultOverlay.tsx",
+          "operation": "create",
+          "description": "Create a result overlay/panel shown after showdown indicating win/lose, hand names, chip changes, and a clear English ‘Play Next Hand’ action. Use shadcn/ui Card/Button for the overlay—Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
           "operation": "modify",
-          "description": "Switch the loaded texture from frontend/public/assets/generated/traffic-jam-player-car-texture.dim_1024x512.png to frontend/public/assets/generated/race-car-texture.dim_1024x512.png, and adjust material/texture settings (e.g., flipY/wrapping/anisotropy as appropriate) to prevent unintended mirroring and reduce visible stretching on the main body surfaces."
+          "description": "Wire the engine (deal, actions, AI, showdown, settlement) into the UI: Start screen starts a hand, in-hand view handles actions, AI responds, showdown reveals, result allows restarting the loop. Use React state/hooks and keep the flow deterministic and error-free for repeated hands."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
+          "operation": "modify",
+          "description": "Render dealt cards (player visible; opponent optionally hidden until showdown), pot/current bet, chip stacks, and integrate TeenPattiActionBar callbacks to drive the gameplay loop. Ensure layout remains usable in mobile portrait and via touch."
+        }
+      ]
+    },
+    {
+      "id": "REQ-73",
+      "summary": "Ensure the game is clearly non-gambling: play chips only, no real-money wording/features, and include an English entertainment-only/no real-money gambling disclaimer accessible via help/about/legal UI.",
+      "acceptanceCriteria": [
+        "All currency is presented as 'chips' (or equivalent play currency) with no references to real money.",
+        "An in-app English disclaimer is visible from an info/help/legal area stating the game is for entertainment only and involves no real-money gambling.",
+        "There are no UI elements for payments, withdrawals, deposits, or betting with real money."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/AboutHelp.tsx",
+          "operation": "modify",
+          "description": "Replace Sky Dodge/Saan Rewards website content with Teen Patti–style game help: short rules overview, PWA install guidance (as appropriate), and a clearly labeled English disclaimer stating the game uses play chips only and has no real-money gambling. Keep all user-facing text English."
+        },
+        {
+          "path": "frontend/src/game/original/ui/LegalOwnershipDialog.tsx",
+          "operation": "modify",
+          "description": "Update Legal & Ownership dialog content to match the new card game and include a prominent non-gambling disclaimer (entertainment-only; no real-money gambling) alongside ownership/source-code statements. Use existing shadcn/ui Alert/Dialog patterns already in the file—Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
+          "operation": "modify",
+          "description": "Display an on-screen chips-only note (English) on the start screen and ensure all labels refer to ‘chips’ (not money). Keep wording clearly non-gambling."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
+          "operation": "modify",
+          "description": "Ensure all in-game counters/values are labeled as chips and avoid any real-money/payment vocabulary. Do not add any payment, wallet, deposit, withdrawal, or cashout UI."
+        }
+      ]
+    },
+    {
+      "id": "REQ-74",
+      "summary": "Add original lightweight Teen Patti–style visuals (table background, card back, chip icon) as generated static assets and render them in the UI.",
+      "acceptanceCriteria": [
+        "All newly created images are stored under frontend/public/assets/generated and are loaded directly by the frontend (not via the backend).",
+        "The Teen Patti–style game UI uses the generated assets (table/background styling, card back design, and chip icon) in a cohesive way.",
+        "The app builds without missing-asset errors (no 404s for required generated images)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png",
+          "operation": "create",
+          "description": "Add the generated original card-table felt background texture asset at this exact path for direct frontend loading."
+        },
+        {
+          "path": "frontend/public/assets/generated/teenpatti-card-back.dim_768x1024.png",
+          "operation": "create",
+          "description": "Add the generated original card back design asset at this exact path for direct frontend loading."
+        },
+        {
+          "path": "frontend/public/assets/generated/teenpatti-chip-icon.dim_256x256.png",
+          "operation": "create",
+          "description": "Add the generated original poker chip icon asset at this exact path for direct frontend loading."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
+          "operation": "modify",
+          "description": "Render the felt table background using frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png and use the chip icon frontend/public/assets/generated/teenpatti-chip-icon.dim_256x256.png near chip counts/pot for cohesive table UI."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiCard.tsx",
+          "operation": "create",
+          "description": "Create a lightweight card rendering component that can show a face-down state using frontend/public/assets/generated/teenpatti-card-back.dim_768x1024.png and a simple original face layout (text + suit symbols) without any third-party artwork."
+        },
+        {
+          "path": "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
+          "operation": "modify",
+          "description": "Use frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png as part of the start screen visual identity (e.g., background/hero area) to match the in-game table style."
+        }
+      ]
+    },
+    {
+      "id": "REQ-75",
+      "summary": "Update app naming and user-facing text to match the new Teen Patti–style game (English only), including header title and PWA manifest name/description.",
+      "acceptanceCriteria": [
+        "The in-app header no longer says 'Sky Dodge' and instead uses the new Teen Patti–style game name (English).",
+        "frontend/public/manifest.webmanifest no longer describes Sky Dodge; it describes the new card game and remains a valid PWA manifest JSON.",
+        "All user-facing text changed/introduced by this request is in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Update the in-app header title and About dialog title/description from Sky Dodge to the new Teen Patti–style game name (English only). Use existing shadcn/ui Dialog elements already present—Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/public/manifest.webmanifest",
+          "operation": "modify",
+          "description": "Update manifest name/short_name/description/shortcuts text to the new Teen Patti–style card game (English only) while keeping a valid manifest JSON and portrait-primary orientation."
+        },
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Update the HTML title and relevant meta tags (application-name, apple-mobile-web-app-title, description) to match the new Teen Patti–style game name/description (English only)."
+        },
+        {
+          "path": "frontend/src/game/original/ui/GameStartScreen.tsx",
+          "operation": "modify",
+          "description": "Remove or de-emphasize Sky Dodge-specific English copy (title/alt text) so it does not appear in the primary app experience; keep file consistent if still referenced anywhere inadvertently. Use existing shadcn/ui components already in the file—Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-76",
+      "summary": "Update help/about/legal content for the new card game and explicitly state (English) the user has full access to the source code and included original assets within the project.",
+      "acceptanceCriteria": [
+        "The help/about/legal content no longer describes Sky Dodge gameplay.",
+        "The content includes an English statement that the project source code and included original assets are available to the user within the project.",
+        "The content does not promise Play Store publishing, monetization integrations, or real-money gambling functionality."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/AboutHelp.tsx",
+          "operation": "modify",
+          "description": "Rewrite the About/Help content to describe the Teen Patti–style game (rules + controls), include the entertainment-only/no real-money gambling disclaimer, and include a clear English statement that the user has full access to the project source code and included original assets within this project. Remove references to Sky Dodge gameplay and any monetization/publishing promises."
+        },
+        {
+          "path": "frontend/src/game/original/ui/LegalOwnershipDialog.tsx",
+          "operation": "modify",
+          "description": "Update the legal/ownership statements to explicitly say the project source code and included original assets are available to the user within this project, and ensure it does not promise Play Store publishing, monetization integrations, or real-money gambling functionality. Use existing shadcn/ui Alert/Dialog structures already present—Verify the component's usage instructions before implementing."
         }
       ]
     }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 39,
-  "summary": "Shift project scope to a legal, browser-based (online) 3D car racing/traffic-jam game with a single vehicle, with an aim to publish on the Google Play Store.",
+  "projectStateVersion": 55,
+  "summary": "User requests a new game similar to Teen Patti (card game), asking that everything (source/assets) be provided to them; this suggests pivoting away from the current 3D Traffic Jam direction toward an original, copyright-safe Teen Patti-like card game experience under the user’s full control/ownership.",
   "architectural_notes": [
     "Game scope: single vehicle only (legal constraint).",
     "Target: runs online in a web browser; consider packaging path for Google Play Store (e.g., WebView/TWA) if required.",
@@ -21,10 +21,13 @@
     "On mobile, only the top control buttons are visible; the road/track and car are not visible without scrolling/zooming (layout/viewport/camera framing issue).",
     "User reports other cars/vehicles are appearing ahead/behind; needs to be removed so only the single player vehicle is present.",
     "Player car model/texture is facing the wrong direction (orientation flipped from intended).",
-    "Road/track currently appears as multiple (three) roads/lanes; must be simplified to a single road/track."
+    "Road/track currently appears as multiple (three) roads/lanes; must be simplified to a single road/track.",
+    "App/webview is showing a broken-page/error icon and the embedded site (sites.google.com) fails to load (\"refused to connect\" / cannot open website).",
+    "User expects tapping “Download/Downloading” to trigger the native install prompt and install directly; currently it often falls back to showing manual “Add to Home screen” instructions instead of prompting.",
+    "Users are copying the link and pasting it into Google search instead of the browser address bar, causing confusion and preventing install; app should provide clearer share/open guidance and a friend-friendly install path."
   ],
   "isFixRequest": false,
-  "imageRequirements": "## Required Images\n- Racing car texture with bold stripes and a simple number panel (race-car-texture.dim_1024x512.png)",
+  "imageRequirements": "## Required Images\n- Card table felt background texture (teenpatti-table-bg.dim_1536x1024.png)\n- Card back design pattern (teenpatti-card-back.dim_768x1024.png)\n- Simple poker chip icon (teenpatti-chip-icon.dim_256x256.png)",
   "existing_features": [
     {
       "id": "feature-create-a-mobile-first-single-page-app-that-acts-as-an-android-installable-wrapper-for-the-existing-website-https-sites-google-com-view-saanrewards-home-with-a-clear-primary-action-to-open-the-site-in-the-same-tab-default-and-an-alternate-action-to-open-it-in-a-new-tab",
@@ -417,6 +420,222 @@
         "REQ-49"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-in-game-player-vehicle-visuals-to-look-like-a-premium-exotic-racing-supercar-ferrari-inspired-silhouette-while-remaining-an-original-legally-compliant-design-no-brand-logos-no-trademarked-shapes-copied-1-1-and-keep-all-gameplay-logic-unchanged-controls-speed-collisions-scoring-camera-behavior-spawning",
+      "title": "Update the in-game player vehicle visuals to look like a premium exotic racing supercar (Ferrari-inspired silhouette) while remaining an original, legally compliant design (no brand logos, no trademarked shapes copied 1:1), and keep all gameplay logic unchanged (controls, speed, collisions, scoring, camera behavior, spawning).",
+      "reqIds": [
+        "REQ-50"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-refresh-the-player-car-paint-texture-to-a-more-premium-racing-look-e-g-glossy-red-supercar-style-scheme-with-clean-stripes-and-a-number-panel-using-only-original-artwork-and-keeping-the-asset-stored-as-a-static-file-under-frontend-public-assets-generated-referenced-by-the-existing-playercarmodel-texture-path",
+      "title": "Refresh the player car paint/texture to a more premium racing look (e.g., glossy red supercar-style scheme with clean stripes and a number panel), using only original artwork and keeping the asset stored as a static file under frontend/public/assets/generated, referenced by the existing PlayerCarModel texture path.",
+      "reqIds": [
+        "REQ-51"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-primary-open-saan-rewards-action-so-it-can-successfully-open-https-sites-google-com-view-saanrewards-home-even-when-the-app-is-running-inside-an-embedded-preview-iframe-e-g-caffeine-preview-by-navigating-the-top-level-window-not-the-iframe-when-embedded-preserve-normal-same-tab-navigation-behavior-for-the-installed-pwa-regular-browser-usage",
+      "title": "Fix the primary \"Open Saan Rewards\" action so it can successfully open https://sites.google.com/view/saanrewards/home even when the app is running inside an embedded preview/iframe (e.g., Caffeine preview), by navigating the top-level window (not the iframe) when embedded; preserve normal same-tab navigation behavior for the installed PWA/regular browser usage.",
+      "reqIds": [
+        "REQ-52"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-user-facing-error-handling-for-cases-where-opening-the-saan-rewards-site-is-blocked-or-fails-e-g-navigation-attempt-throws-popup-blocked-showing-an-english-message-with-a-clear-fallback-action-to-open-the-site-in-a-new-tab",
+      "title": "Add user-facing error handling for cases where opening the Saan Rewards site is blocked or fails (e.g., navigation attempt throws, popup blocked), showing an English message with a clear fallback action to open the site in a new tab.",
+      "reqIds": [
+        "REQ-53"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-install-download-flow-so-that-tapping-the-install-button-triggers-the-native-pwa-install-prompt-whenever-the-browser-provides-a-beforeinstallprompt-event-without-immediately-falling-back-to-the-manual-how-to-install-dialog",
+      "title": "Update the Install/Download flow so that tapping the Install button triggers the native PWA install prompt whenever the browser provides a `beforeinstallprompt` event, without immediately falling back to the manual “How to Install” dialog.",
+      "reqIds": [
+        "REQ-54"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-the-fallback-behavior-when-the-native-install-prompt-is-not-available-show-a-clear-english-explanation-of-why-the-install-prompt-may-not-appear-and-provide-the-correct-next-steps-e-g-open-in-chrome-use-browser-menu-add-to-home-screen-while-keeping-the-existing-manual-instructions-dialog-as-the-fallback",
+      "title": "Improve the fallback behavior when the native install prompt is not available: show a clear English explanation of why the install prompt may not appear, and provide the correct next steps (e.g., open in Chrome, use browser menu → “Add to Home screen”), while keeping the existing manual instructions dialog as the fallback.",
+      "reqIds": [
+        "REQ-55"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-install-button-s-loading-progress-state-accurately-reflects-the-install-prompt-lifecycle-so-users-understand-something-is-happening-e-g-show-installing-only-while-the-prompt-is-being-shown-awaiting-user-choice-and-reset-appropriately-on-dismiss-failure",
+      "title": "Ensure the Install button’s loading/progress state accurately reflects the install prompt lifecycle so users understand something is happening (e.g., show “Installing…” only while the prompt is being shown/awaiting user choice, and reset appropriately on dismiss/failure).",
+      "reqIds": [
+        "REQ-56"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-share-link-ui-so-users-can-share-a-whatsapp-friendly-public-link-with-clear-next-step-instructions-in-english-including-a-one-tap-copy-action-and-when-supported-a-native-system-share-action",
+      "title": "Update the Share Link UI so users can share a WhatsApp-friendly public link with clear next-step instructions in English, including a one-tap Copy action and (when supported) a native system share action.",
+      "reqIds": [
+        "REQ-57"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-explicit-visible-guidance-in-the-share-flow-and-or-home-screen-warning-users-not-to-paste-the-link-into-google-search-and-to-open-it-in-the-browser-address-bar-instead-english-text",
+      "title": "Add explicit, visible guidance in the Share flow and/or Home screen warning users not to paste the link into Google Search and to open it in the browser address bar instead (English text).",
+      "reqIds": [
+        "REQ-58"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-recipient-experience-reliably-surfaces-a-working-download-install-action-when-they-open-the-shared-link-on-android-chrome-using-the-existing-pwa-install-flow-and-correct-install-state-detection",
+      "title": "Ensure the recipient experience reliably surfaces a working \"Download\" (install) action when they open the shared link on Android Chrome, using the existing PWA install flow and correct install-state detection.",
+      "reqIds": [
+        "REQ-59"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-remove-any-placeholder-example-public-urls-e-g-your-public-app-url-icp0-io-public-app-url-icp0-io-from-all-user-facing-ui-and-ensure-the-app-always-displays-and-copies-the-real-current-public-url-derived-from-the-runtime-location-sanitized-to-remove-any-hash-fragment",
+      "title": "Remove any placeholder/example public URLs (e.g., `YOUR-PUBLIC-APP-URL.icp0.io` / `public-app-url.icp0.io`) from all user-facing UI and ensure the app always displays and copies the real current public URL derived from the runtime location (sanitized to remove any hash fragment).",
+      "reqIds": [
+        "REQ-60"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-share-link-dialog-provides-a-whatsapp-friendly-sharing-path-keep-a-one-tap-copy-link-action-and-add-a-dedicated-share-on-whatsapp-action-that-opens-whatsapp-with-a-prefilled-message-containing-the-sanitized-public-link-and-short-english-install-guidance",
+      "title": "Ensure the Share Link dialog provides a WhatsApp-friendly sharing path: keep a one-tap “Copy link” action and add a dedicated “Share on WhatsApp” action that opens WhatsApp with a prefilled message containing the sanitized public link and short English install guidance.",
+      "reqIds": [
+        "REQ-61"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-on-the-saan-rewards-home-screen-make-the-download-pwa-install-call-to-action-clearly-visible-and-ensure-it-triggers-the-native-pwa-install-prompt-when-available-when-not-available-show-clear-english-instructions-for-installing-via-android-chrome-menu-add-to-home-screen",
+      "title": "On the Saan Rewards home screen, make the “Download” (PWA install) call-to-action clearly visible and ensure it triggers the native PWA install prompt when available; when not available, show clear English instructions for installing via Android Chrome menu (Add to Home screen).",
+      "reqIds": [
+        "REQ-62"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-shareable-deep-link-parameter-e-g-install-1-so-that-when-a-recipient-opens-the-shared-app-url-in-android-chrome-the-app-automatically-brings-the-user-to-the-pwa-install-experience-shows-a-prominent-download-install-call-to-action-immediately-and-if-install-prompting-is-not-available-opens-the-manual-install-instructions-dialog-all-user-facing-text-must-be-english",
+      "title": "Add a shareable deep-link parameter (e.g., `?install=1`) so that when a recipient opens the shared app URL in Android Chrome, the app automatically brings the user to the PWA install experience (shows a prominent Download/Install call-to-action immediately, and if install prompting is not available, opens the manual install instructions dialog). All user-facing text must be English.",
+      "reqIds": [
+        "REQ-63"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-share-link-dialog-so-the-whatsapp-share-action-uses-the-deep-link-install-url-the-sanitized-public-url-plus-install-1-so-recipients-who-tap-the-whatsapp-message-link-land-directly-on-the-download-install-experience-keep-the-shared-url-sanitized-no-hash-fragments-tokens-and-keep-all-user-facing-text-in-english",
+      "title": "Update the Share Link dialog so the WhatsApp share action uses the deep-link install URL (the sanitized public URL plus `?install=1`) so recipients who tap the WhatsApp message link land directly on the Download/Install experience. Keep the shared URL sanitized (no hash fragments/tokens) and keep all user-facing text in English.",
+      "reqIds": [
+        "REQ-64"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-the-saan-rewards-home-screen-layout-so-the-download-install-button-is-unmissable-for-first-time-users-especially-on-mobile-render-a-large-primary-styled-download-button-near-the-top-of-the-main-content-above-secondary-actions-while-keeping-the-existing-open-saan-rewards-actions-available-all-user-facing-text-must-remain-english",
+      "title": "Improve the Saan Rewards home screen layout so the Download/Install button is unmissable for first-time users (especially on mobile): render a large, primary-styled “Download” button near the top of the main content (above secondary actions), while keeping the existing Open Saan Rewards actions available. All user-facing text must remain English.",
+      "reqIds": [
+        "REQ-65"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-primary-app-experience-traffic-jam-game-with-a-new-original-browser-based-game-no-third-party-copyrighted-assets-suitable-for-an-installable-pwa-experience-and-designed-to-be-simple-polished-and-mobile-first",
+      "title": "Replace the current primary app experience (Traffic Jam game) with a new, original browser-based game (no third-party/copyrighted assets), suitable for an installable PWA experience and designed to be simple, polished, and mobile-first.",
+      "reqIds": [
+        "REQ-66"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-complete-gameplay-loop-for-the-new-game-start-screen-play-session-scoring-game-over-restart-with-clear-on-screen-instructions-in-english-and-a-difficulty-curve-that-ramps-gradually",
+      "title": "Implement a complete gameplay loop for the new game: start screen → play session → scoring → game over → restart, with clear on-screen instructions in English and a difficulty curve that ramps gradually.",
+      "reqIds": [
+        "REQ-67"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-creator-controls-settings-panel-english-ui-that-gives-the-user-control-over-key-game-parameters-e-g-difficulty-speed-spawn-rate-session-length-mode-sound-on-off-and-persist-these-settings-locally-on-device",
+      "title": "Add a \"Creator Controls\" settings panel (English UI) that gives the user control over key game parameters (e.g., difficulty/speed, spawn rate, session length mode, sound on/off) and persist these settings locally on-device.",
+      "reqIds": [
+        "REQ-68"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-in-app-legal-ownership-info-section-english-stating-that-the-game-assets-included-in-this-project-are-original-and-that-the-user-controls-the-source-code-and-assets-in-this-project-do-not-promise-play-store-publishing-or-monetization-integrations",
+      "title": "Add an in-app \"Legal & Ownership\" info section (English) stating that the game assets included in this project are original and that the user controls the source code and assets in this project; do not promise Play Store publishing or monetization integrations.",
+      "reqIds": [
+        "REQ-69"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-keep-the-app-install-share-experience-working-for-the-new-game-retain-pwa-install-cta-behavior-and-share-link-sanitization-so-users-can-share-a-public-link-without-any-hash-fragments-tokens-using-english-guidance-text",
+      "title": "Keep the app install/share experience working for the new game: retain PWA install CTA behavior and share-link sanitization so users can share a public link without any hash fragments/tokens, using English guidance text.",
+      "reqIds": [
+        "REQ-70"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-primary-app-experience-sky-dodge-originalgameshell-with-a-new-original-teen-patti-style-card-game-experience-teen-patti-like-gameplay-keeping-the-app-mobile-first-and-playable-in-the-browser-as-a-pwa",
+      "title": "Replace the current primary app experience (Sky Dodge / OriginalGameShell) with a new, original Teen Patti–style card game experience (Teen Patti-like gameplay), keeping the app mobile-first and playable in the browser as a PWA.",
+      "reqIds": [
+        "REQ-71"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-complete-teen-patti-style-gameplay-loop-with-clear-english-ui-start-screen-start-a-hand-deal-cards-player-actions-at-minimum-fold-call-check-raise-opponent-actions-simple-ai-showdown-win-lose-result-play-again",
+      "title": "Implement a complete Teen Patti–style gameplay loop with clear English UI: Start screen → start a hand → deal cards → player actions (at minimum: Fold, Call/Check, Raise) → opponent actions (simple AI) → showdown → win/lose result → play again.",
+      "reqIds": [
+        "REQ-72"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-design-the-teen-patti-style-game-to-be-clearly-non-gambling-use-play-chips-only-do-not-include-any-real-money-wording-cashout-deposits-wallets-or-monetization-claims-include-an-english-disclaimer-in-the-game-ui-that-it-is-for-entertainment-with-no-real-money-gambling",
+      "title": "Design the Teen Patti–style game to be clearly non-gambling: use play chips only, do not include any real-money wording, cashout, deposits, wallets, or monetization claims; include an English disclaimer in the game UI that it is for entertainment with no real-money gambling.",
+      "reqIds": [
+        "REQ-73"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-original-lightweight-card-table-visuals-suitable-for-the-teen-patti-style-game-table-surface-card-back-chip-icon-as-static-assets-stored-under-frontend-public-assets-generated-and-render-them-in-the-game-ui",
+      "title": "Create original, lightweight card-table visuals suitable for the Teen Patti–style game (table surface, card back, chip icon) as static assets stored under frontend/public/assets/generated, and render them in the game UI.",
+      "reqIds": [
+        "REQ-74"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-app-naming-and-user-facing-text-to-match-the-new-teen-patti-style-game-english-only-update-the-header-title-currently-showing-sky-dodge-and-update-the-pwa-manifest-name-description-to-reflect-the-new-card-game",
+      "title": "Update app naming and user-facing text to match the new Teen Patti–style game (English only): update the header title currently showing 'Sky Dodge', and update the PWA manifest name/description to reflect the new card game.",
+      "reqIds": [
+        "REQ-75"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-in-app-help-about-legal-content-to-match-the-new-teen-patti-style-card-game-and-the-user-s-request-for-ownership-access-clearly-state-english-that-the-project-includes-original-assets-and-that-the-user-has-full-access-to-the-source-code-and-included-assets-in-this-project",
+      "title": "Update the in-app help/about/legal content to match the new Teen Patti–style card game and the user's request for ownership/access: clearly state (English) that the project includes original assets and that the user has full access to the source code and included assets in this project.",
+      "reqIds": [
+        "REQ-76"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -515,9 +734,27 @@
       "summary": "Replace the current player car (\"local\" car) with a small, best-looking race car style/model to improve the game’s visuals.",
       "reqIds": [],
       "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Provide a simple, WhatsApp-shareable public link that reliably opens the app/game and shows a working Download/Install button for friends (token-free/safe link).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-18",
+      "summary": "Create a new, high-quality online game (original/copyright-safe) that can be published on the Google Play Store and supports legal monetization, with the project fully under the user’s control (ownership/access to code and assets).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-19",
+      "summary": "Create an original, copyright-safe Teen Patti–style card game (Teen Patti-like gameplay) and provide the user full access to all source code and original assets.",
+      "reqIds": [],
+      "status": "pending"
     }
   ],
-  "gameProjectType": "3d",
+  "gameProjectType": "2d",
   "projectName": "Traffic Jam",
   "clarification_mode": "instant",
   "clarification_rounds": 0
