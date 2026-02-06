@@ -1,74 +1,38 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-05T19:54:40.972Z",
+  "generatedAt": "2026-02-06T02:14:35.887Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 3,
-    "implemented": 3,
+    "total": 2,
+    "implemented": 2,
     "items": [
       {
-        "id": "REQ-41",
-        "summary": "Improve the overall UI/UX presentation so the Traffic Jam PWA feels like a high-quality, Play Store–ready app, with consistent styling across the Start/Home screen, Help/About dialogs, Share/Install flows, and in-game HUD (while keeping all user-facing text in English).",
+        "id": "REQ-48",
+        "summary": "Update the in-game player vehicle visuals to look like a small, best-looking race car (sport/racing style) instead of a basic/local-looking car, without changing any gameplay logic (controls, speed, scoring, collisions, obstacle behavior).",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/TjDialogContent.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/components/StartHomeScreen.tsx",
-          "frontend/src/components/AboutHelp.tsx",
-          "frontend/src/game/ui/GameHud.tsx"
+          "frontend/src/game/scene/PlayerCarModel.tsx",
+          "frontend/src/game/scene/TrafficJamScene.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/TjDialogContent.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/components/StartHomeScreen.tsx",
-          "frontend/src/components/AboutHelp.tsx",
-          "frontend/src/game/ui/GameHud.tsx"
+          "frontend/src/game/scene/PlayerCarModel.tsx"
         ]
       },
       {
-        "id": "REQ-42",
-        "summary": "Upgrade visual styling of key interactive elements to feel production-quality: primary/secondary buttons (Play/Download/Share), touch control buttons, dialog surfaces, and HUD elements (score and game-over overlay), including improved states (hover/pressed/disabled/loading) and consistent shadows/borders.",
+        "id": "REQ-49",
+        "summary": "Replace the player car’s current texture usage with a new racing-style texture asset and apply it to the player car materials so the car looks like a race car (e.g., bold color blocks/stripes/number panel), keeping assets original and stored under frontend/public/assets/generated.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/StartHomeScreen.tsx",
-          "frontend/src/game/controls/TouchControls.tsx",
-          "frontend/src/game/ui/GameHud.tsx",
-          "frontend/src/components/OnlineRequiredBlocker.tsx"
+          "frontend/public/assets/generated/race-car-texture.dim_1024x512.png",
+          "frontend/src/game/scene/PlayerCarModel.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/StartHomeScreen.tsx",
-          "frontend/src/game/controls/TouchControls.tsx",
-          "frontend/src/game/ui/GameHud.tsx",
-          "frontend/src/components/OnlineRequiredBlocker.tsx"
-        ]
-      },
-      {
-        "id": "REQ-43",
-        "summary": "Add lightweight app-like motion polish (subtle transitions/animations) for screen and dialog interactions (e.g., opening Help/About, Share, Install instructions) and for game state overlays (game over / restart) without impacting game performance on mobile.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/TjDialogContent.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/components/StartHomeScreen.tsx",
-          "frontend/src/game/ui/GameHud.tsx",
-          "frontend/src/components/OnlineRequiredBlocker.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/index.css",
-          "frontend/src/components/TjDialogContent.tsx",
-          "frontend/src/App.tsx",
-          "frontend/src/components/StartHomeScreen.tsx",
-          "frontend/src/game/ui/GameHud.tsx",
-          "frontend/src/components/OnlineRequiredBlocker.tsx"
+          "frontend/public/assets/generated/race-car-texture.dim_1024x512.png",
+          "frontend/src/game/scene/PlayerCarModel.tsx"
         ]
       }
     ]
@@ -78,14 +42,8 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/components/AboutHelp.tsx",
-    "frontend/src/components/OnlineRequiredBlocker.tsx",
-    "frontend/src/components/StartHomeScreen.tsx",
-    "frontend/src/components/TjDialogContent.tsx",
-    "frontend/src/game/controls/TouchControls.tsx",
-    "frontend/src/game/ui/GameHud.tsx",
-    "frontend/src/index.css",
+    "frontend/public/assets/generated/race-car-texture.dim_1024x512.png",
+    "frontend/src/game/scene/PlayerCarModel.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

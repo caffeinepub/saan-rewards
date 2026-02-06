@@ -1,14 +1,14 @@
-const CACHE_NAME = 'traffic-jam-v2-online-only';
+const CACHE_NAME = 'saan-rewards-v1';
 const OFFLINE_URL = '/offline.html';
 
-// Only cache the offline fallback page and icons
+// Cache offline page and app icons
 const ASSETS_TO_CACHE = [
   '/offline.html',
-  '/assets/generated/traffic-jam-app-icon.dim_512x512.png',
-  '/assets/generated/traffic-jam-app-icon-maskable.dim_512x512.png'
+  '/assets/generated/saan-rewards-app-icon.dim_512x512.png',
+  '/assets/generated/saan-rewards-app-icon-maskable.dim_512x512.png'
 ];
 
-// Install event - cache only offline page and icons
+// Install event - cache offline page and icons
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -36,7 +36,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch event - network-only for game assets, offline page for navigation failures
+// Fetch event - network-first, offline page for navigation failures
 self.addEventListener('fetch', (event) => {
   // Skip cross-origin requests
   if (!event.request.url.startsWith(self.location.origin)) {
@@ -56,7 +56,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // For icon requests, try cache first
-  if (event.request.url.includes('/assets/generated/traffic-jam-app-icon')) {
+  if (event.request.url.includes('/assets/generated/saan-rewards-app-icon')) {
     event.respondWith(
       caches.match(event.request).then((cachedResponse) => {
         return cachedResponse || fetch(event.request);
@@ -65,7 +65,6 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // For all other requests (game JS, assets, etc.), always use network
-  // Do not cache game assets to prevent offline gameplay
+  // For all other requests, use network
   event.respondWith(fetch(event.request));
 });

@@ -1,123 +1,48 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Traffic Jam PWA UI/UX polish for Play Store–ready visual quality",
+  "title": "Upgrade Traffic Jam player vehicle visuals to a smaller race car with new texture",
   "requirements": [
     {
-      "id": "REQ-41",
-      "summary": "Unify the Start/Home screen, dialogs (Help/About, Share, Install), and in-game HUD into a cohesive mobile-first visual system with consistent typography, spacing, and surfaces (English-only UI text).",
+      "id": "REQ-48",
+      "summary": "Revise the 3D player car model to a clearly recognizable small race-car silhouette while keeping all gameplay behavior unchanged.",
       "acceptanceCriteria": [
-        "Start/Home screen, dialogs, and in-game UI share a cohesive visual system (colors, typography, spacing, button styles) with no mismatched component styling.",
-        "UI layout is mobile-first and app-like: clear hierarchy, strong primary CTA, consistent padding/margins, and no accidental overflow/scrollbars on common Android viewport sizes.",
-        "All user-facing strings shown in the UI remain English-only (no mixed-language labels introduced by the polish pass)."
+        "In gameplay, the only vehicle (player car) has a clearly recognizable race-car style silhouette (e.g., low profile body, sportier proportions, racing details such as a simple spoiler/wing or aerodynamic shapes).",
+        "The player car is visually smaller than before (reduced overall scale) while remaining clearly visible on mobile.",
+        "Gameplay behavior is unchanged: steering, speed progression, scoring, and collision detection outcomes remain the same as before this change.",
+        "No additional vehicles are introduced; only the player car is present as a vehicle."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/index.css",
+          "path": "frontend/src/game/scene/PlayerCarModel.tsx",
           "operation": "modify",
-          "description": "Add a small set of reusable, app-wide styling primitives (e.g., consistent surface, elevated-card, HUD chip, and focus-ring classes) using Tailwind @layer so Start/Home, dialogs, and HUD share the same spacing/typography/shadow language; include safeguards for mobile overflow (e.g., consistent safe-area padding utilities where appropriate)."
+          "description": "Update the player car’s Three.js mesh composition to look like a small sport/race car (lower profile chassis, more aerodynamic front/rear shaping, and a simple spoiler/wing), and reduce the model’s visual scale (e.g., via the returned group scale) while keeping the same public API and without touching any control/speed/score/collision logic."
         },
         {
-          "path": "frontend/src/components/TjDialogContent.tsx",
+          "path": "frontend/src/game/scene/TrafficJamScene.tsx",
+          "operation": "modify",
+          "description": "Confirm the scene continues to use the existing gameplay collision dimensions/constants and player positioning logic unchanged; if any visual scale adjustments require minor positioning tweaks for ground contact, keep them visual-only (do not alter scoring/speed/steering/collision outcomes)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-49",
+      "summary": "Replace the player car body texture with a new generated racing-style texture and ensure it maps cleanly on the car model.",
+      "acceptanceCriteria": [
+        "The player car no longer uses /assets/generated/traffic-jam-player-car-texture.dim_1024x512.png as its primary body texture.",
+        "A new racing-style texture from frontend/public/assets/generated is used on the player car body material(s).",
+        "The new texture appears correctly oriented (not mirrored unintentionally) and looks sharp (no obvious stretching) on the car body."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/generated/race-car-texture.dim_1024x512.png",
           "operation": "create",
-          "description": "Create a lightweight wrapper around shadcn-ui DialogContent to standardize dialog width, padding, scroll behavior, and surface styling across Help/About, Share, and Install flows (compose shadcn-ui; do not edit frontend/src/components/ui). Verify the component's usage instructions before implementing."
+          "description": "Add the new generated racing-style texture asset (bold stripes and a simple number panel) as a static frontend asset at this exact path/filename."
         },
         {
-          "path": "frontend/src/App.tsx",
+          "path": "frontend/src/game/scene/PlayerCarModel.tsx",
           "operation": "modify",
-          "description": "Apply the shared visual system to the in-game shell (header and Help/About dialog) by using the new standardized dialog wrapper, aligning spacing/typography with Start/Home, and ensuring mobile-first layout does not introduce overflow; continue composing shadcn-ui Button/Dialog without editing the ui components. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/StartHomeScreen.tsx",
-          "operation": "modify",
-          "description": "Align Start/Home screen layout and the Share/Install dialogs with the same surface, spacing, and typography primitives; ensure the hero card and CTAs remain app-like on common Android viewports and avoid accidental scrollbars; keep all user-facing strings in English. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/AboutHelp.tsx",
-          "operation": "modify",
-          "description": "Normalize typography hierarchy (section titles/body text) and spacing to match the same dialog content system used elsewhere, without changing the meaning or language of existing English strings. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/game/ui/GameHud.tsx",
-          "operation": "modify",
-          "description": "Update HUD surfaces (score chip and game-over panel) to use the same app-wide surface/shadow/typography primitives so in-game UI matches the Start/Home and dialogs. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-42",
-      "summary": "Upgrade styling and feedback states for primary/secondary buttons, touch controls, dialog surfaces, and HUD elements with consistent shadows/borders and clear pressed/disabled/loading UI states (presentation-only).",
-      "acceptanceCriteria": [
-        "Buttons and controls have clear pressed/active/disabled/loading states and meet basic contrast/readability expectations on both light and dark backgrounds.",
-        "Touch controls and HUD look intentional and consistent with the rest of the app theme (matching shapes, colors, typography).",
-        "No new gameplay behavior is introduced; changes are limited to presentation/styling and UI feedback states."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Define consistent interactive styling helpers (e.g., primary/secondary action styles, pressed/active transforms, disabled opacity, focus-visible ring) that can be applied via className to shadcn-ui Buttons and other interactive elements; keep changes presentation-only."
-        },
-        {
-          "path": "frontend/src/components/StartHomeScreen.tsx",
-          "operation": "modify",
-          "description": "Apply upgraded interactive states to Play/Download/Share buttons (pressed/hover/disabled/loading) and ensure consistent borders/shadows across Card/Dialogs while continuing to compose shadcn-ui components (no edits under frontend/src/components/ui). Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/game/controls/TouchControls.tsx",
-          "operation": "modify",
-          "description": "Polish touch control buttons to match the global theme (consistent shape, shadow, typography) and add clearer pressed/active feedback via styling only; do not change control logic or gameplay behavior. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/game/ui/GameHud.tsx",
-          "operation": "modify",
-          "description": "Enhance HUD readability and production feel (score chip, game-over overlay, restart button) with consistent borders/shadows and button feedback states, without changing any gameplay state transitions. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/OnlineRequiredBlocker.tsx",
-          "operation": "modify",
-          "description": "Align the offline blocker’s Card and Retry button styling with the same surface and interactive state system used across Start/Home and HUD, ensuring strong contrast and mobile-friendly spacing. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-43",
-      "summary": "Add subtle, consistent motion polish for dialogs and overlays (Help/About, Share, Install, game over/restart, offline blocker) with reduced-motion support and no gameplay performance impact.",
-      "acceptanceCriteria": [
-        "Dialogs and overlays animate in/out smoothly and consistently (no jarring jumps).",
-        "Animations remain subtle and do not reduce readability or interfere with gameplay controls.",
-        "No noticeable frame drops are introduced during normal gameplay on mobile due to UI animations."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Add reduced-motion handling (prefers-reduced-motion) to minimize/disable non-essential UI animations and ensure motion remains subtle; keep animations limited to opacity/transform for performance."
-        },
-        {
-          "path": "frontend/src/components/TjDialogContent.tsx",
-          "operation": "modify",
-          "description": "Add consistent, lightweight enter/exit animation classNames for dialog content (subtle fade/slide/scale) using existing Tailwind animation utilities; ensure reduced-motion settings are respected. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Use the standardized dialog motion for the Help/About dialog so it opens/closes smoothly and consistently with other dialogs, without changing any text content. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/StartHomeScreen.tsx",
-          "operation": "modify",
-          "description": "Apply consistent motion polish to Share and Install dialogs and any related overlays (subtle transitions only), ensuring animations do not introduce layout jumps or interfere with touch interactions. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/game/ui/GameHud.tsx",
-          "operation": "modify",
-          "description": "Refine game-over overlay/restart transition timing and consistency (subtle fade/scale), ensuring no impact to gameplay controls and respecting reduced-motion preferences. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/components/OnlineRequiredBlocker.tsx",
-          "operation": "modify",
-          "description": "Add subtle overlay/card entrance motion for the online-required blocker that matches the app’s dialog/overlay motion language, while keeping the overlay fully readable and non-distracting. Verify the component's usage instructions before implementing."
+          "description": "Switch the loaded texture from frontend/public/assets/generated/traffic-jam-player-car-texture.dim_1024x512.png to frontend/public/assets/generated/race-car-texture.dim_1024x512.png, and adjust material/texture settings (e.g., flipY/wrapping/anisotropy as appropriate) to prevent unintended mirroring and reduce visible stretching on the main body surfaces."
         }
       ]
     }

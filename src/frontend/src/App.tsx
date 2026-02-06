@@ -4,12 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { TjDialogContent } from '@/components/TjDialogContent';
 import AboutHelp from '@/components/AboutHelp';
-import TrafficJamGame from '@/game/TrafficJamGame';
-import StartHomeScreen from '@/components/StartHomeScreen';
+import SaanRewardsHomeScreen from '@/components/SaanRewardsHomeScreen';
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
-  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
     // Register service worker for PWA functionality
@@ -21,23 +19,14 @@ function App() {
     }
   }, []);
 
-  const handlePlay = () => {
-    setHasStarted(true);
-  };
-
-  // Show start screen if game hasn't started yet
-  if (!hasStarted) {
-    return <StartHomeScreen onPlay={handlePlay} />;
-  }
-
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Header */}
       <header className="tj-surface z-50 shadow-md flex-shrink-0">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="text-2xl">🚗</div>
-            <h1 className="text-lg font-bold text-foreground">Traffic Jam</h1>
+            <div className="text-2xl">🎁</div>
+            <h1 className="text-lg font-bold text-foreground">Saan Rewards</h1>
           </div>
           <Dialog open={showAbout} onOpenChange={setShowAbout}>
             <DialogTrigger asChild>
@@ -52,8 +41,8 @@ function App() {
             </DialogTrigger>
             <TjDialogContent>
               <DialogHeader>
-                <DialogTitle>About Traffic Jam</DialogTitle>
-                <DialogDescription>How to play and game information</DialogDescription>
+                <DialogTitle>About Saan Rewards</DialogTitle>
+                <DialogDescription>App information and help</DialogDescription>
               </DialogHeader>
               <AboutHelp />
             </TjDialogContent>
@@ -61,13 +50,13 @@ function App() {
         </div>
       </header>
 
-      {/* Main Game Content - takes remaining height */}
+      {/* Main Content */}
       <main className="flex-1 min-h-0 relative">
-        <TrafficJamGame />
+        <SaanRewardsHomeScreen />
       </main>
 
-      {/* Footer - hidden on small screens during gameplay */}
-      <footer className="hidden sm:block border-t border-border bg-card/50 backdrop-blur-sm py-4 flex-shrink-0">
+      {/* Footer */}
+      <footer className="border-t border-border bg-card/50 backdrop-blur-sm py-4 flex-shrink-0">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p>
             © 2026. Built with <span className="text-primary">♥</span> using{' '}

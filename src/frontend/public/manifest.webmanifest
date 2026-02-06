@@ -1,7 +1,7 @@
 {
-  "name": "Traffic Jam",
-  "short_name": "Traffic Jam",
-  "description": "3D endless driving game - Avoid traffic, collect points, and see how far you can go!",
+  "name": "Saan Rewards",
+  "short_name": "Saan Rewards",
+  "description": "Quick access to the Saan Rewards website - Install for convenient access from your home screen",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -12,34 +12,34 @@
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/assets/generated/traffic-jam-app-icon.dim_512x512.png",
+      "src": "/assets/generated/saan-rewards-app-icon.dim_512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/generated/traffic-jam-app-icon-maskable.dim_512x512.png",
+      "src": "/assets/generated/saan-rewards-app-icon-maskable.dim_512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/assets/generated/traffic-jam-app-icon.dim_512x512.png",
+      "src": "/assets/generated/saan-rewards-app-icon.dim_512x512.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     }
   ],
-  "categories": ["games", "entertainment"],
+  "categories": ["utilities", "productivity"],
   "shortcuts": [
     {
-      "name": "Play Game",
-      "short_name": "Play",
-      "description": "Start playing Traffic Jam",
+      "name": "Open Saan Rewards",
+      "short_name": "Open",
+      "description": "Open the Saan Rewards website",
       "url": "/",
       "icons": [
         {
-          "src": "/assets/generated/traffic-jam-app-icon.dim_512x512.png",
+          "src": "/assets/generated/saan-rewards-app-icon.dim_512x512.png",
           "sizes": "512x512"
         }
       ]

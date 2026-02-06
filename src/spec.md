@@ -1,12 +1,11 @@
 # Specification
 
 ## Summary
-**Goal:** Polish the Traffic Jam PWA UI/UX and visual styling so it feels cohesive, high-quality, and Play Store–ready while keeping all user-facing text in English.
+**Goal:** Update the in-game player vehicle visuals to a smaller, better-looking race car style without changing gameplay behavior.
 
 **Planned changes:**
-- Apply a cohesive visual system across Start/Home screen, Help/About dialogs, Share/Install flows, and in-game HUD (consistent colors, typography, spacing, and component styling).
-- Improve mobile-first layout and hierarchy (clear primary CTA, consistent padding/margins, and prevent overflow/accidental scrollbars on common Android viewport sizes).
-- Upgrade interactive element styling and feedback states (primary/secondary buttons, touch controls, dialog surfaces, HUD and game-over overlay) including hover/pressed/disabled/loading states with consistent borders/shadows.
-- Add subtle, lightweight transitions/animations for dialogs, overlays, and screen interactions (including game over/restart overlays) without impacting mobile gameplay performance.
+- Adjust the player car model/material setup so the car has a clear race-car silhouette (sporty proportions and simple racing details) while keeping collisions/controls/scoring unchanged.
+- Reduce the player car’s visual scale so it appears smaller but remains clearly visible on mobile.
+- Replace the current player car body texture with a new racing-style texture asset stored under `frontend/public/assets/generated`, ensuring correct orientation and no obvious stretching.
 
-**User-visible outcome:** The app looks and feels more like a production-quality, app-like Play Store release, with consistent UI styling and subtle motion polish across screens and in-game overlays, while retaining the same gameplay and English-only UI text.
+**User-visible outcome:** The player vehicle looks like a small, recognizable race car with a racing livery, while the game plays exactly the same as before.

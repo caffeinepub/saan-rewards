@@ -2,15 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-improve-the-overall-ui-ux-presentation-so-the-traffic-jam-pwa-feels-like-a-high-quality-play-store-ready-app-with-consistent-styling-across-the-start-home-screen-help-about-dialogs-share-install-flows-and-in-game-hud-while-keeping-all-user-facing-text-in-english",
-      "featureTitle": "Improve the overall UI/UX presentation so the Traffic Jam PWA feels like a high-quality, Play Store–ready app, with consistent styling across the Start/Home screen, Help/About dialogs, Share/Install flows, and in-game HUD (while keeping all user-facing text in English).",
+      "featureId": "feature-update-the-in-game-player-vehicle-visuals-to-look-like-a-small-best-looking-race-car-sport-racing-style-instead-of-a-basic-local-looking-car-without-changing-any-gameplay-logic-controls-speed-scoring-collisions-obstacle-behavior",
+      "featureTitle": "Update the in-game player vehicle visuals to look like a small, best-looking race car (sport/racing style) instead of a basic/local-looking car, without changing any gameplay logic (controls, speed, scoring, collisions, obstacle behavior).",
       "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/AboutHelp.tsx",
-        "frontend/src/components/StartHomeScreen.tsx",
-        "frontend/src/components/TjDialogContent.tsx",
-        "frontend/src/game/ui/GameHud.tsx",
-        "frontend/src/index.css"
+        "frontend/src/game/scene/PlayerCarModel.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -20,19 +15,15 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-41"
+        "REQ-48"
       ],
       "confidence": "high"
     },
     {
-      "featureId": "feature-upgrade-visual-styling-of-key-interactive-elements-to-feel-production-quality-primary-secondary-buttons-play-download-share-touch-control-buttons-dialog-surfaces-and-hud-elements-score-and-game-over-overlay-including-improved-states-hover-pressed-disabled-loading-and-consistent-shadows-borders",
-      "featureTitle": "Upgrade visual styling of key interactive elements to feel production-quality: primary/secondary buttons (Play/Download/Share), touch control buttons, dialog surfaces, and HUD elements (score and game-over overlay), including improved states (hover/pressed/disabled/loading) and consistent shadows/borders.",
+      "featureId": "feature-replace-the-player-car-s-current-texture-usage-with-a-new-racing-style-texture-asset-and-apply-it-to-the-player-car-materials-so-the-car-looks-like-a-race-car-e-g-bold-color-blocks-stripes-number-panel-keeping-assets-original-and-stored-under-frontend-public-assets-generated",
+      "featureTitle": "Replace the player car’s current texture usage with a new racing-style texture asset and apply it to the player car materials so the car looks like a race car (e.g., bold color blocks/stripes/number panel), keeping assets original and stored under frontend/public/assets/generated.",
       "files": [
-        "frontend/src/components/OnlineRequiredBlocker.tsx",
-        "frontend/src/components/StartHomeScreen.tsx",
-        "frontend/src/game/controls/TouchControls.tsx",
-        "frontend/src/game/ui/GameHud.tsx",
-        "frontend/src/index.css"
+        "frontend/src/game/scene/PlayerCarModel.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -42,30 +33,7 @@
         "github-export-icp-cli@1.0.0"
       ],
       "testIds": [
-        "REQ-42"
-      ],
-      "confidence": "high"
-    },
-    {
-      "featureId": "feature-add-lightweight-app-like-motion-polish-subtle-transitions-animations-for-screen-and-dialog-interactions-e-g-opening-help-about-share-install-instructions-and-for-game-state-overlays-game-over-restart-without-impacting-game-performance-on-mobile",
-      "featureTitle": "Add lightweight app-like motion polish (subtle transitions/animations) for screen and dialog interactions (e.g., opening Help/About, Share, Install instructions) and for game state overlays (game over / restart) without impacting game performance on mobile.",
-      "files": [
-        "frontend/src/App.tsx",
-        "frontend/src/components/OnlineRequiredBlocker.tsx",
-        "frontend/src/components/StartHomeScreen.tsx",
-        "frontend/src/components/TjDialogContent.tsx",
-        "frontend/src/game/ui/GameHud.tsx",
-        "frontend/src/index.css"
-      ],
-      "components": [
-        "core-infrastructure@1.0.2",
-        "shadcn-ui@1.0.0",
-        "build-template-react@1.0.0",
-        "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
-      ],
-      "testIds": [
-        "REQ-43"
+        "REQ-49"
       ],
       "confidence": "high"
     }

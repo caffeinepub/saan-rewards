@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "projectStateVersion": 35,
+  "projectStateVersion": 39,
   "summary": "Shift project scope to a legal, browser-based (online) 3D car racing/traffic-jam game with a single vehicle, with an aim to publish on the Google Play Store.",
   "architectural_notes": [
     "Game scope: single vehicle only (legal constraint).",
@@ -24,6 +24,7 @@
     "Road/track currently appears as multiple (three) roads/lanes; must be simplified to a single road/track."
   ],
   "isFixRequest": false,
+  "imageRequirements": "## Required Images\n- Racing car texture with bold stripes and a simple number panel (race-car-texture.dim_1024x512.png)",
   "existing_features": [
     {
       "id": "feature-create-a-mobile-first-single-page-app-that-acts-as-an-android-installable-wrapper-for-the-existing-website-https-sites-google-com-view-saanrewards-home-with-a-clear-primary-action-to-open-the-site-in-the-same-tab-default-and-an-alternate-action-to-open-it-in-a-new-tab",
@@ -368,6 +369,54 @@
         "REQ-43"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-replace-the-current-primary-app-experience-traffic-jam-game-with-a-mobile-first-single-page-website-wrapper-for-https-sites-google-com-view-saanrewards-home-with-a-clear-primary-action-to-open-the-website-in-the-same-tab-and-an-alternate-action-to-open-it-in-a-new-tab",
+      "title": "Replace the current primary app experience (Traffic Jam game) with a mobile-first single-page website wrapper for https://sites.google.com/view/saanrewards/home, with a clear primary action to open the website in the same tab and an alternate action to open it in a new tab.",
+      "reqIds": [
+        "REQ-44"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-pwa-metadata-so-the-installed-experience-represents-the-saan-rewards-website-wrapper-app-name-description-categories-shortcuts-if-any-rather-than-traffic-jam",
+      "title": "Update PWA metadata so the installed experience represents the Saan Rewards website wrapper (app name, description, categories, shortcuts if any) rather than Traffic Jam.",
+      "reqIds": [
+        "REQ-45"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-ensure-the-app-supports-android-installation-as-a-pwa-from-chrome-add-to-home-screen-and-includes-a-minimal-offline-fallback-page-for-navigations-when-the-device-is-offline",
+      "title": "Ensure the app supports Android installation as a PWA from Chrome (Add to Home screen) and includes a minimal offline fallback page for navigations when the device is offline.",
+      "reqIds": [
+        "REQ-46"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-simple-in-app-about-help-area-that-explains-the-app-opens-the-saan-rewards-website-and-provides-the-website-url-as-a-tappable-link",
+      "title": "Add a simple in-app About / Help area that explains the app opens the Saan Rewards website and provides the website URL as a tappable link.",
+      "reqIds": [
+        "REQ-47"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-in-game-player-vehicle-visuals-to-look-like-a-small-best-looking-race-car-sport-racing-style-instead-of-a-basic-local-looking-car-without-changing-any-gameplay-logic-controls-speed-scoring-collisions-obstacle-behavior",
+      "title": "Update the in-game player vehicle visuals to look like a small, best-looking race car (sport/racing style) instead of a basic/local-looking car, without changing any gameplay logic (controls, speed, scoring, collisions, obstacle behavior).",
+      "reqIds": [
+        "REQ-48"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-replace-the-player-car-s-current-texture-usage-with-a-new-racing-style-texture-asset-and-apply-it-to-the-player-car-materials-so-the-car-looks-like-a-race-car-e-g-bold-color-blocks-stripes-number-panel-keeping-assets-original-and-stored-under-frontend-public-assets-generated",
+      "title": "Replace the player car’s current texture usage with a new racing-style texture asset and apply it to the player car materials so the car looks like a race car (e.g., bold color blocks/stripes/number panel), keeping assets original and stored under frontend/public/assets/generated.",
+      "reqIds": [
+        "REQ-49"
+      ],
+      "version": 1
     }
   ],
   "new_feature_requests": [
@@ -458,6 +507,12 @@
     {
       "id": "AR-15",
       "summary": "Improve overall app/game presentation to look high-quality and Play Store–ready (app-like UI/UX polish, production-quality visuals and layout).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Replace the current player car (\"local\" car) with a small, best-looking race car style/model to improve the game’s visuals.",
       "reqIds": [],
       "status": "pending"
     }

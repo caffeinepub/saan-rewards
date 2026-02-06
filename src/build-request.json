@@ -1,83 +1,65 @@
 {
   "kind": "build_request",
-  "title": "Polish UI/UX and visual quality to feel Play Store–ready",
+  "title": "Upgrade player vehicle to a small race car (better-looking)",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-41",
-      "text": "Improve the overall UI/UX presentation so the Traffic Jam PWA feels like a high-quality, Play Store–ready app, with consistent styling across the Start/Home screen, Help/About dialogs, Share/Install flows, and in-game HUD (while keeping all user-facing text in English).",
+      "id": "REQ-48",
+      "text": "Update the in-game player vehicle visuals to look like a small, best-looking race car (sport/racing style) instead of a basic/local-looking car, without changing any gameplay logic (controls, speed, scoring, collisions, obstacle behavior).",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-4"
         ],
         "quotes": [
-          "Aap ek kam aur kar do isko itna achcha banaa do ki jaise yah Play store ke upar main usko public Maine karna to yah ek app ke Tarah dikhe iski Koi aapki Tarah look banaa do acchi wali high quality wala"
+          "Mujhe pahle wali gadi wali Meri game banaa rahe the usko kuchh behtar banaa do aapane uske andar local gadi Dali Hui aap uske andar race wali gadi dalo small jo sabse acchi Lage"
         ]
       },
       "acceptanceCriteria": [
-        "Start/Home screen, dialogs, and in-game UI share a cohesive visual system (colors, typography, spacing, button styles) with no mismatched component styling.",
-        "UI layout is mobile-first and app-like: clear hierarchy, strong primary CTA, consistent padding/margins, and no accidental overflow/scrollbars on common Android viewport sizes.",
-        "All user-facing strings shown in the UI remain English-only (no mixed-language labels introduced by the polish pass)."
+        "In gameplay, the only vehicle (player car) has a clearly recognizable race-car style silhouette (e.g., low profile body, sportier proportions, racing details such as a simple spoiler/wing or aerodynamic shapes).",
+        "The player car is visually smaller than before (reduced overall scale) while remaining clearly visible on mobile.",
+        "Gameplay behavior is unchanged: steering, speed progression, scoring, and collision detection outcomes remain the same as before this change.",
+        "No additional vehicles are introduced; only the player car is present as a vehicle."
       ]
     },
     {
-      "id": "REQ-42",
-      "text": "Upgrade visual styling of key interactive elements to feel production-quality: primary/secondary buttons (Play/Download/Share), touch control buttons, dialog surfaces, and HUD elements (score and game-over overlay), including improved states (hover/pressed/disabled/loading) and consistent shadows/borders.",
+      "id": "REQ-49",
+      "text": "Replace the player car’s current texture usage with a new racing-style texture asset and apply it to the player car materials so the car looks like a race car (e.g., bold color blocks/stripes/number panel), keeping assets original and stored under frontend/public/assets/generated.",
       "target": "frontend",
       "source": {
         "messageIds": [
           "msg-4"
         ],
         "quotes": [
-          "...ek app ke Tarah dikhe... acchi wali high quality wala"
+          "race wali gadi dalo small jo sabse acchi Lage"
         ]
       },
       "acceptanceCriteria": [
-        "Buttons and controls have clear pressed/active/disabled/loading states and meet basic contrast/readability expectations on both light and dark backgrounds.",
-        "Touch controls and HUD look intentional and consistent with the rest of the app theme (matching shapes, colors, typography).",
-        "No new gameplay behavior is introduced; changes are limited to presentation/styling and UI feedback states."
-      ]
-    },
-    {
-      "id": "REQ-43",
-      "text": "Add lightweight app-like motion polish (subtle transitions/animations) for screen and dialog interactions (e.g., opening Help/About, Share, Install instructions) and for game state overlays (game over / restart) without impacting game performance on mobile.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "...high quality wala"
-        ]
-      },
-      "acceptanceCriteria": [
-        "Dialogs and overlays animate in/out smoothly and consistently (no jarring jumps).",
-        "Animations remain subtle and do not reduce readability or interfere with gameplay controls.",
-        "No noticeable frame drops are introduced during normal gameplay on mobile due to UI animations."
+        "The player car no longer uses /assets/generated/traffic-jam-player-car-texture.dim_1024x512.png as its primary body texture.",
+        "A new racing-style texture from frontend/public/assets/generated is used on the player car body material(s).",
+        "The new texture appears correctly oriented (not mirrored unintentionally) and looks sharp (no obvious stretching) on the car body."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui (read-only shadcn components must be composed, not edited).",
-    "Do not edit immutable hook paths: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx.",
-    "Keep the backend as a single Motoko actor; no new backend logic is required for this UI polish request."
+    "Frontend user-facing text (if any is added/changed as part of this work) must be in English.",
+    "Do not modify any files under frontend/src/components/ui (read-only).",
+    "Do not change gameplay rules or physics/collision logic; this change is visual-only."
   ],
   "nonGoals": [
-    "Do not change core gameplay rules, physics, steering logic, collision logic, scoring, or obstacle behavior as part of this request.",
-    "Do not add third-party auth providers or external services.",
-    "Do not add offline gameplay support (the app remains online-only)."
+    "Adding new game modes (laps, timers, opponents) or changing difficulty.",
+    "Adding third-party/copyrighted 3D models or textures."
   ],
   "imageRequirements": {
-    "required": [],
+    "required": [
+      "Racing car texture with bold stripes and a simple number panel (race-car-texture.dim_1024x512.png)"
+    ],
     "edits": []
   },
   "userProfileUpdate": {
     "goalsToAdd": [],
     "goalsToRemove": [],
-    "preferencesToAdd": [
-      "Prefer a high-quality, Play Store–ready, app-like visual polish for the Traffic Jam PWA while keeping all user-facing text in English."
-    ],
+    "preferencesToAdd": [],
     "preferencesToRemove": [],
     "miscToAdd": [],
     "miscToRemove": [],

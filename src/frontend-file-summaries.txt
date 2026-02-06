@@ -1,11 +1,11 @@
 {
-  "frontend/src/App.tsx": "Main application component with full-height layout, polished header with consistent styling, standardized dialog wrapper for Help/About, and enhanced interactive states throughout.",
-  "frontend/src/components/AboutHelp.tsx": "Help and about component with improved typography hierarchy, consistent spacing, enhanced visual structure with icons and bullet points, and better readability for game instructions and information.",
+  "frontend/src/App.tsx": "Main application component with header, footer, and Saan Rewards home screen as primary content, including service worker registration and About/Help dialog integration.",
+  "frontend/src/components/AboutHelp.tsx": "Help and about component explaining the Saan Rewards website wrapper app, installation instructions, usage guide, and clickable website URL.",
   "frontend/src/index.css": "Global styles with OKLCH racing-themed color system, app-wide styling primitives (surfaces, interactive states, touch controls) using inline OKLCH values instead of opacity modifiers to avoid @apply directive limitations, consistent motion animations with reduced-motion support, and mobile viewport fixes.",
-  "frontend/index.html": "HTML entry point with Traffic Jam PWA metadata, theme colors, and icon references.",
-  "frontend/public/manifest.webmanifest": "PWA manifest with Traffic Jam branding, game category, and icon references for installation.",
-  "frontend/public/sw.js": "Service worker configured for online-only gameplay, caching only offline.html and icons while forcing network requests for all game assets to prevent offline play.",
-  "frontend/public/offline.html": "Offline fallback page with Traffic Jam branding and connection status monitoring.",
+  "frontend/index.html": "HTML entry point with Saan Rewards PWA metadata, theme colors, and icon references.",
+  "frontend/public/manifest.webmanifest": "PWA manifest with Saan Rewards branding, utilities category, and icon references for Android installation.",
+  "frontend/public/sw.js": "Service worker configured to cache offline page and Saan Rewards icons, with network-first strategy and offline fallback.",
+  "frontend/public/offline.html": "Offline fallback page with Saan Rewards branding, connection status monitoring, and auto-reload on connectivity restoration.",
   "frontend/tailwind.config.js": "Tailwind configuration with extended theme tokens matching the racing/traffic game color palette.",
   "frontend/src/game/TrafficJamGame.tsx": "Main game component managing game state, score tracking, restart functionality, online status integration, and scene retry handler for error recovery.",
   "frontend/src/game/scene/TrafficJamScene.tsx": "3D game scene using React Three Fiber with single-road continuous steering (no lane markers), smooth left/right movement clamped to drivable road boundaries, realistic multi-mesh player car model, roadside plants, and barrier obstacles only with collision detection using gameplay dimensions.",
@@ -19,6 +19,7 @@
   "frontend/src/components/StartHomeScreen.tsx": "Mobile-first start/home screen with hero image banner, polished primary/secondary buttons with enhanced interactive states, PWA install flow, share feature, and standardized dialogs using TjDialogContent wrapper.",
   "frontend/src/game/ui/CanvasErrorBoundary.tsx": "React error boundary component that catches 3D rendering errors and displays fallback UI instead of crashing or showing blank screen.",
   "frontend/src/game/ui/SceneRenderFallback.tsx": "User-friendly fallback UI component displayed when 3D scene fails to render, showing error explanation and retry button using shadcn Card components.",
-  "frontend/src/game/scene/PlayerCarModel.tsx": "Dedicated React Three Fiber component that renders a realistic 3D player car with 180° Y-axis rotation applied to the root group so the front (headlights/bumper) faces forward along the track direction, using procedural geometry with multiple meshes while keeping geometry lightweight for mobile performance.",
-  "frontend/src/components/TjDialogContent.tsx": "Standardized dialog content wrapper providing consistent width, padding, scroll behavior, surface styling, and motion animations across all Traffic Jam dialogs."
+  "frontend/src/game/scene/PlayerCarModel.tsx": "Dedicated React Three Fiber component rendering a small, sporty race car with low-profile aerodynamic design, rear spoiler, side skirts, and racing details, using the new race-car-texture.dim_1024x512.png with 0.85 scale for smaller visual size while maintaining gameplay collision dimensions.",
+  "frontend/src/components/TjDialogContent.tsx": "Standardized dialog content wrapper providing consistent width, padding, scroll behavior, surface styling, and motion animations across all Traffic Jam dialogs.",
+  "frontend/src/components/SaanRewardsHomeScreen.tsx": "Mobile-first landing screen with primary CTA to open Saan Rewards website in same tab, secondary CTA for new tab, plus install/share functionality and URL display."
 }
