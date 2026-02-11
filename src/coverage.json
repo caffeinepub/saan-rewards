@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-06T07:05:36.035Z",
+  "generatedAt": "2026-02-11T15:22:06.186Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -11,141 +11,131 @@
     "implemented": 6,
     "items": [
       {
-        "id": "REQ-71",
-        "summary": "Replace the current primary app experience (Sky Dodge / OriginalGameShell) with a new, original Teen Patti–style card game experience (Teen Patti-like gameplay), keeping the app mobile-first and playable in the browser as a PWA.",
+        "id": "REQ-80",
+        "summary": "Replace the current primary app experience (Teen Patti game UI) with a mobile-first video editing web app that runs entirely on-device (no uploads) and can be kept/used on the user’s personal phone.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/App.tsx",
-          "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx"
+          "frontend/src/components/VideoEditorScreen.tsx",
+          "frontend/src/hooks/useLocalVideoFile.ts",
+          "frontend/src/components/OnlineRequiredBlocker.tsx"
         ],
         "matchedFiles": [
           "frontend/src/App.tsx",
-          "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx"
+          "frontend/src/components/VideoEditorScreen.tsx",
+          "frontend/src/hooks/useLocalVideoFile.ts"
         ]
       },
       {
-        "id": "REQ-72",
-        "summary": "Implement a complete Teen Patti–style gameplay loop with clear English UI: Start screen → start a hand → deal cards → player actions (at minimum: Fold, Call/Check, Raise) → opponent actions (simple AI) → showdown → win/lose result → play again.",
+        "id": "REQ-81",
+        "summary": "Implement a basic, phone-friendly video editing workflow with at least: import video, trim start/end, mute/unmute audio, and export/save the edited video as a downloadable file.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/game/teenpatti/engine/cards.ts",
-          "frontend/src/game/teenpatti/engine/handRanking.ts",
-          "frontend/src/game/teenpatti/engine/ai.ts",
-          "frontend/src/game/teenpatti/engine/gameState.ts",
-          "frontend/src/game/teenpatti/ui/TeenPattiActionBar.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiResultOverlay.tsx",
-          "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx"
+          "frontend/src/components/editor/TrimControls.tsx",
+          "frontend/src/components/editor/AudioToggle.tsx",
+          "frontend/src/components/editor/ExportPanel.tsx",
+          "frontend/src/lib/videoExport.ts",
+          "frontend/src/components/VideoEditorScreen.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/game/teenpatti/engine/cards.ts",
-          "frontend/src/game/teenpatti/engine/handRanking.ts",
-          "frontend/src/game/teenpatti/engine/ai.ts",
-          "frontend/src/game/teenpatti/engine/gameState.ts",
-          "frontend/src/game/teenpatti/ui/TeenPattiActionBar.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiResultOverlay.tsx",
-          "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx"
+          "frontend/src/components/editor/TrimControls.tsx",
+          "frontend/src/components/editor/AudioToggle.tsx",
+          "frontend/src/components/editor/ExportPanel.tsx",
+          "frontend/src/lib/videoExport.ts",
+          "frontend/src/components/VideoEditorScreen.tsx"
         ]
       },
       {
-        "id": "REQ-73",
-        "summary": "Design the Teen Patti–style game to be clearly non-gambling: use play chips only, do not include any real-money wording, cashout, deposits, wallets, or monetization claims; include an English disclaimer in the game UI that it is for entertainment with no real-money gambling.",
+        "id": "REQ-82",
+        "summary": "Add a clear in-app Help/About dialog for the video editor that explains: the editor works on this device, videos are not uploaded by the app, and how to install the app to the home screen.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/AboutHelp.tsx",
-          "frontend/src/game/original/ui/LegalOwnershipDialog.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx"
+          "frontend/src/components/PwaInstallInstructionsDialog.tsx",
+          "frontend/src/App.tsx"
         ],
         "matchedFiles": [
           "frontend/src/components/AboutHelp.tsx",
-          "frontend/src/game/original/ui/LegalOwnershipDialog.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx"
+          "frontend/src/components/PwaInstallInstructionsDialog.tsx",
+          "frontend/src/App.tsx"
         ]
       },
       {
-        "id": "REQ-74",
-        "summary": "Create original, lightweight card-table visuals suitable for the Teen Patti–style game (table surface, card back, chip icon) as static assets stored under frontend/public/assets/generated, and render them in the game UI.",
+        "id": "REQ-83",
+        "summary": "Update app chrome and metadata to match the new video editor product: header title, favicon/app icons, index.html meta title/description, and the PWA manifest name/short_name/description/categories.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png",
-          "frontend/public/assets/generated/teenpatti-card-back.dim_768x1024.png",
-          "frontend/public/assets/generated/teenpatti-chip-icon.dim_256x256.png",
-          "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiCard.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png",
-          "frontend/public/assets/generated/teenpatti-card-back.dim_768x1024.png",
-          "frontend/public/assets/generated/teenpatti-chip-icon.dim_256x256.png",
-          "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiCard.tsx",
-          "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx"
-        ]
-      },
-      {
-        "id": "REQ-75",
-        "summary": "Update app naming and user-facing text to match the new Teen Patti–style game (English only): update the header title currently showing 'Sky Dodge', and update the PWA manifest name/description to reflect the new card game.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/public/manifest.webmanifest",
           "frontend/index.html",
-          "frontend/src/game/original/ui/GameStartScreen.tsx"
+          "frontend/public/manifest.webmanifest",
+          "frontend/public/assets/generated/video-editor-icon.dim_256x256.png",
+          "frontend/public/assets/generated/video-editor-icon-maskable.dim_256x256.png",
+          "frontend/public/assets/generated/video-editor-icon.dim_192x192.png",
+          "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/App.tsx",
+          "frontend/index.html",
           "frontend/public/manifest.webmanifest",
-          "frontend/index.html"
+          "frontend/public/assets/generated/video-editor-icon.dim_256x256.png",
+          "frontend/public/assets/generated/video-editor-icon-maskable.dim_256x256.png",
+          "frontend/public/assets/generated/video-editor-icon.dim_192x192.png",
+          "frontend/src/App.tsx"
         ]
       },
       {
-        "id": "REQ-76",
-        "summary": "Update the in-app help/about/legal content to match the new Teen Patti–style card game and the user's request for ownership/access: clearly state (English) that the project includes original assets and that the user has full access to the source code and included assets in this project.",
+        "id": "REQ-84",
+        "summary": "Adjust the service worker and offline behavior so the video editor app shell is available offline after first load, enabling the user to open the installed app and edit local videos without an internet connection.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/AboutHelp.tsx",
-          "frontend/src/game/original/ui/LegalOwnershipDialog.tsx"
+          "frontend/public/sw.js",
+          "frontend/public/offline.html",
+          "frontend/src/components/VideoEditorScreen.tsx",
+          "frontend/src/hooks/useOnlineStatus.ts"
         ],
         "matchedFiles": [
-          "frontend/src/components/AboutHelp.tsx",
-          "frontend/src/game/original/ui/LegalOwnershipDialog.tsx"
+          "frontend/public/sw.js",
+          "frontend/public/offline.html",
+          "frontend/src/components/VideoEditorScreen.tsx"
+        ]
+      },
+      {
+        "id": "REQ-85",
+        "summary": "Apply a coherent, non-blue/purple default visual theme suitable for a clean ‘mobile video editor’ app (typography, spacing, surfaces, button hierarchy) and use it consistently across the editor screen and dialogs.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/index.css",
+          "frontend/src/components/TjDialogContent.tsx",
+          "frontend/src/components/VideoEditorScreen.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/index.css",
+          "frontend/src/components/VideoEditorScreen.tsx"
         ]
       }
     ]
   },
   "changedFiles": [
     "build-request.json",
+    "caffeine.lock.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
     "frontend/index.html",
-    "frontend/public/assets/generated/teenpatti-card-back.dim_768x1024.png",
-    "frontend/public/assets/generated/teenpatti-chip-icon.dim_256x256.png",
-    "frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png",
+    "frontend/public/assets/generated/video-editor-icon-maskable.dim_256x256.png",
+    "frontend/public/assets/generated/video-editor-icon.dim_192x192.png",
+    "frontend/public/assets/generated/video-editor-icon.dim_256x256.png",
     "frontend/public/manifest.webmanifest",
     "frontend/public/offline.html",
     "frontend/public/sw.js",
     "frontend/src/App.tsx",
     "frontend/src/components/AboutHelp.tsx",
-    "frontend/src/game/original/ui/LegalOwnershipDialog.tsx",
-    "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
-    "frontend/src/game/teenpatti/engine/ai.ts",
-    "frontend/src/game/teenpatti/engine/cards.ts",
-    "frontend/src/game/teenpatti/engine/gameState.ts",
-    "frontend/src/game/teenpatti/engine/handRanking.ts",
-    "frontend/src/game/teenpatti/ui/TeenPattiActionBar.tsx",
-    "frontend/src/game/teenpatti/ui/TeenPattiCard.tsx",
-    "frontend/src/game/teenpatti/ui/TeenPattiResultOverlay.tsx",
-    "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
-    "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
+    "frontend/src/components/PwaInstallInstructionsDialog.tsx",
+    "frontend/src/components/VideoEditorScreen.tsx",
+    "frontend/src/components/editor/AudioToggle.tsx",
+    "frontend/src/components/editor/ExportPanel.tsx",
+    "frontend/src/components/editor/TrimControls.tsx",
+    "frontend/src/hooks/useLocalVideoFile.ts",
+    "frontend/src/index.css",
+    "frontend/src/lib/videoExport.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

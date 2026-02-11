@@ -1,211 +1,200 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Original Teen Patti–style (chips-only) card game PWA replacing Sky Dodge",
+  "title": "Mobile-first offline-capable on-device video editor PWA (replace Teen Patti UI)",
   "requirements": [
     {
-      "id": "REQ-71",
-      "summary": "Replace the Sky Dodge primary experience with a new, original Teen Patti–style card game that is mobile-first and playable as a PWA in-browser.",
+      "id": "REQ-80",
+      "summary": "Replace the Teen Patti primary UI with a mobile-first on-device video editor home screen (English-only, no uploads).",
       "acceptanceCriteria": [
-        "Opening the app no longer shows the Sky Dodge canvas game; it shows the new Teen Patti–style game start screen.",
-        "The game runs fully in-browser with touch-friendly controls and responsive layout for mobile portrait.",
-        "No third-party/copyrighted card artwork or branded assets are used in the new game."
+        "Launching the app shows a video editor home screen (not the Teen Patti game)",
+        "The app supports selecting a video file from the device and previews it in-app",
+        "All processing is local in the browser (no network requests are required to edit a video)",
+        "All user-facing text in the new video editor UI is in English"
       ],
       "file_operations": [
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Replace OriginalGameShell as the main content with the new TeenPattiGameShell; update the header and About dialog labels to match the new card game. Use existing shadcn/ui primitives already in use (Button/Dialog) for consistent UI—Verify the component's usage instructions before implementing."
+          "description": "Replace Teen Patti shell rendering with the new video editor experience, including updated header title and wiring for Help/About dialog access. Use shadcn-ui Dialog and Button to keep the app chrome consistent; Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
+          "path": "frontend/src/components/VideoEditorScreen.tsx",
           "operation": "create",
-          "description": "Create the main Teen Patti–style game container coordinating game states (start, hand, showdown, result) and rendering the appropriate UI screens in a mobile-first layout. Use shadcn/ui building blocks (e.g., Card, Button) to match the app’s design system—Verify the component's usage instructions before implementing."
+          "description": "Create the main mobile-first editor screen: local file picker, in-app preview, and editor controls container. Use shadcn-ui Button, Card, and other existing UI primitives for a cohesive app-like layout; Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
+          "path": "frontend/src/hooks/useLocalVideoFile.ts",
           "operation": "create",
-          "description": "Create the new start screen for the Teen Patti–style game (English-only), including a primary action to start a hand and an area for quick rules/disclaimer. Use shadcn/ui (Card/Button) for layout—Verify the component's usage instructions before implementing."
+          "description": "Add a React hook to manage local video file selection, object URL creation/revocation, and extraction of basic metadata (duration) from an in-browser preview element, ensuring no uploads/network calls."
         },
         {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
-          "operation": "create",
-          "description": "Create the in-hand table view (the ‘table’ UI) that renders the felt background, player/opponent card areas, chip counts, pot, and action controls in a touch-friendly format. Use shadcn/ui Buttons for actions—Verify the component's usage instructions before implementing."
+          "path": "frontend/src/components/OnlineRequiredBlocker.tsx",
+          "operation": "modify",
+          "description": "Refit this component into a non-blocking offline status banner (or a reusable connectivity notice) appropriate for an offline-capable editor (must not prevent editing local videos). Use shadcn-ui Card/Button styles as needed; Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-72",
-      "summary": "Implement a complete Teen Patti–style gameplay loop with English UI: start screen → deal → player actions (Fold/Call-Check/Raise) → simple AI → showdown → result → play again.",
+      "id": "REQ-81",
+      "summary": "Implement a basic phone-friendly editing workflow: import, trim start/end, mute/unmute, and export as downloadable video with failure handling.",
       "acceptanceCriteria": [
-        "A user can start a new hand from the start screen and complete a full hand to a clear result (win/lose) without errors.",
-        "During a hand, the user can always choose Fold, and at least one non-fold betting action (Call/Check) and one increase action (Raise).",
-        "After the hand ends, the UI shows the outcome and provides a clearly labeled English action to play the next hand."
+        "User can pick a local video file and see duration + a preview",
+        "User can set trim start and trim end (with validation: start < end, within duration)",
+        "User can toggle audio mute for the exported result",
+        "User can export and receive a downloadable edited video file (or a clearly labeled export result)",
+        "If export fails (unsupported browser/device), the app shows an English error message and a retry action"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/game/teenpatti/engine/cards.ts",
+          "path": "frontend/src/components/editor/TrimControls.tsx",
           "operation": "create",
-          "description": "Implement card/deck utilities (card type, ranks/suits, deck generation, shuffle, dealing 3-card hands) for the Teen Patti–style game."
+          "description": "Create trim UI controls optimized for mobile (start/end inputs and/or sliders) and show validation feedback. Use shadcn-ui Input, Slider, and Alert for consistent interaction patterns; Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/game/teenpatti/engine/handRanking.ts",
+          "path": "frontend/src/components/editor/AudioToggle.tsx",
           "operation": "create",
-          "description": "Implement Teen Patti–style 3-card hand evaluation and comparison logic (hand categories and tie-break rules) to support showdown outcomes."
+          "description": "Create a mute/unmute toggle for export settings and show the current audio export state. Use shadcn-ui Switch (or Checkbox) and Label; Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/game/teenpatti/engine/ai.ts",
+          "path": "frontend/src/components/editor/ExportPanel.tsx",
           "operation": "create",
-          "description": "Implement a simple opponent AI that selects Fold/Call-Check/Raise using basic heuristics derived from evaluated hand strength and current bet state."
+          "description": "Create an export panel with progress/state UI, a download action for the exported file, and clear English error + retry on failure. Use shadcn-ui Button, Progress, and Alert; Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/game/teenpatti/engine/gameState.ts",
+          "path": "frontend/src/lib/videoExport.ts",
           "operation": "create",
-          "description": "Define the game state model and pure state transition helpers for a full hand loop (start hand, post blinds/antes if used, player action, AI action, reveal/showdown, settle chips, reset for next hand)."
+          "description": "Implement on-device export logic (trim + optional mute) that produces a downloadable video Blob. Prefer browser-native capabilities when possible; if relying on a bundled WASM transcoder, ensure it runs fully client-side and does not require network calls during editing."
         },
         {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiActionBar.tsx",
-          "operation": "create",
-          "description": "Create the action controls UI that always exposes Fold and provides Call/Check and Raise (with clear English labels and simple raise sizing). Use shadcn/ui Button (and optional input controls if needed) for consistent interactions—Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiResultOverlay.tsx",
-          "operation": "create",
-          "description": "Create a result overlay/panel shown after showdown indicating win/lose, hand names, chip changes, and a clear English ‘Play Next Hand’ action. Use shadcn/ui Card/Button for the overlay—Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/game/teenpatti/TeenPattiGameShell.tsx",
+          "path": "frontend/src/components/VideoEditorScreen.tsx",
           "operation": "modify",
-          "description": "Wire the engine (deal, actions, AI, showdown, settlement) into the UI: Start screen starts a hand, in-hand view handles actions, AI responds, showdown reveals, result allows restarting the loop. Use React state/hooks and keep the flow deterministic and error-free for repeated hands."
-        },
-        {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
-          "operation": "modify",
-          "description": "Render dealt cards (player visible; opponent optionally hidden until showdown), pot/current bet, chip stacks, and integrate TeenPattiActionBar callbacks to drive the gameplay loop. Ensure layout remains usable in mobile portrait and via touch."
+          "description": "Wire import -> preview -> trim/mute settings -> export flow together; display duration and enforce trim validation (start < end, within duration). Use shadcn-ui layout primitives for mobile spacing and clear hierarchy; Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-73",
-      "summary": "Ensure the game is clearly non-gambling: play chips only, no real-money wording/features, and include an English entertainment-only/no real-money gambling disclaimer accessible via help/about/legal UI.",
+      "id": "REQ-82",
+      "summary": "Add an in-app Help/About dialog explaining local-only editing, no uploads, and PWA installation steps (English).",
       "acceptanceCriteria": [
-        "All currency is presented as 'chips' (or equivalent play currency) with no references to real money.",
-        "An in-app English disclaimer is visible from an info/help/legal area stating the game is for entertainment only and involves no real-money gambling.",
-        "There are no UI elements for payments, withdrawals, deposits, or betting with real money."
+        "Help/About content is updated to video-editor context (no Teen Patti/game/online-only text)",
+        "Help/About states in English that the app edits locally on the device and does not upload videos",
+        "Help/About includes short, correct PWA install instructions (English)"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/AboutHelp.tsx",
           "operation": "modify",
-          "description": "Replace Sky Dodge/Saan Rewards website content with Teen Patti–style game help: short rules overview, PWA install guidance (as appropriate), and a clearly labeled English disclaimer stating the game uses play chips only and has no real-money gambling. Keep all user-facing text English."
+          "description": "Rewrite Help/About content for the video editor: clearly state local on-device processing, no uploads, privacy note, and brief install-to-home-screen instructions. Ensure all text is English and remove any game/online-only/payment content. Use shadcn-ui Alert for readable sections; Verify the component's usage instructions before implementing."
         },
         {
-          "path": "frontend/src/game/original/ui/LegalOwnershipDialog.tsx",
+          "path": "frontend/src/components/PwaInstallInstructionsDialog.tsx",
           "operation": "modify",
-          "description": "Update Legal & Ownership dialog content to match the new card game and include a prominent non-gambling disclaimer (entertainment-only; no real-money gambling) alongside ownership/source-code statements. Use existing shadcn/ui Alert/Dialog patterns already in the file—Verify the component's usage instructions before implementing."
+          "description": "Update dialog title/description and wording to match the video editor product and installation steps (English). Keep instructions accurate for common mobile browsers. Use shadcn-ui Dialog/Button as currently structured; Verify the component's usage instructions before implementing."
         },
-        {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
-          "operation": "modify",
-          "description": "Display an on-screen chips-only note (English) on the start screen and ensure all labels refer to ‘chips’ (not money). Keep wording clearly non-gambling."
-        },
-        {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
-          "operation": "modify",
-          "description": "Ensure all in-game counters/values are labeled as chips and avoid any real-money/payment vocabulary. Do not add any payment, wallet, deposit, withdrawal, or cashout UI."
-        }
-      ]
-    },
-    {
-      "id": "REQ-74",
-      "summary": "Add original lightweight Teen Patti–style visuals (table background, card back, chip icon) as generated static assets and render them in the UI.",
-      "acceptanceCriteria": [
-        "All newly created images are stored under frontend/public/assets/generated and are loaded directly by the frontend (not via the backend).",
-        "The Teen Patti–style game UI uses the generated assets (table/background styling, card back design, and chip icon) in a cohesive way.",
-        "The app builds without missing-asset errors (no 404s for required generated images)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png",
-          "operation": "create",
-          "description": "Add the generated original card-table felt background texture asset at this exact path for direct frontend loading."
-        },
-        {
-          "path": "frontend/public/assets/generated/teenpatti-card-back.dim_768x1024.png",
-          "operation": "create",
-          "description": "Add the generated original card back design asset at this exact path for direct frontend loading."
-        },
-        {
-          "path": "frontend/public/assets/generated/teenpatti-chip-icon.dim_256x256.png",
-          "operation": "create",
-          "description": "Add the generated original poker chip icon asset at this exact path for direct frontend loading."
-        },
-        {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiTable.tsx",
-          "operation": "modify",
-          "description": "Render the felt table background using frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png and use the chip icon frontend/public/assets/generated/teenpatti-chip-icon.dim_256x256.png near chip counts/pot for cohesive table UI."
-        },
-        {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiCard.tsx",
-          "operation": "create",
-          "description": "Create a lightweight card rendering component that can show a face-down state using frontend/public/assets/generated/teenpatti-card-back.dim_768x1024.png and a simple original face layout (text + suit symbols) without any third-party artwork."
-        },
-        {
-          "path": "frontend/src/game/teenpatti/ui/TeenPattiStartScreen.tsx",
-          "operation": "modify",
-          "description": "Use frontend/public/assets/generated/teenpatti-table-bg.dim_1536x1024.png as part of the start screen visual identity (e.g., background/hero area) to match the in-game table style."
-        }
-      ]
-    },
-    {
-      "id": "REQ-75",
-      "summary": "Update app naming and user-facing text to match the new Teen Patti–style game (English only), including header title and PWA manifest name/description.",
-      "acceptanceCriteria": [
-        "The in-app header no longer says 'Sky Dodge' and instead uses the new Teen Patti–style game name (English).",
-        "frontend/public/manifest.webmanifest no longer describes Sky Dodge; it describes the new card game and remains a valid PWA manifest JSON.",
-        "All user-facing text changed/introduced by this request is in English."
-      ],
-      "file_operations": [
         {
           "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Update the in-app header title and About dialog title/description from Sky Dodge to the new Teen Patti–style game name (English only). Use existing shadcn/ui Dialog elements already present—Verify the component's usage instructions before implementing."
+          "description": "Ensure Help/About entry point remains available from the new editor header (icon button) and that dialog titles/descriptions match the video editor context. Use shadcn-ui DialogTrigger/Button; Verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-83",
+      "summary": "Update app chrome and PWA metadata (title, description, favicon/icons, manifest) to the new video editor product.",
+      "acceptanceCriteria": [
+        "Header title is updated to an English name for the video editor (no 'Teen Patti')",
+        "frontend/index.html <title> and description reflect the video editor",
+        "frontend/public/manifest.webmanifest reflects the video editor name/description and uses the new icon files",
+        "The installed PWA name on Android matches the updated manifest"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Update meta title/description/application-name/apple-mobile-web-app-title and icon links to the new video editor product. Wire favicon/apple-touch-icon to the generated icon assets at frontend/public/assets/generated/video-editor-icon.dim_256x256.png."
         },
         {
           "path": "frontend/public/manifest.webmanifest",
           "operation": "modify",
-          "description": "Update manifest name/short_name/description/shortcuts text to the new Teen Patti–style card game (English only) while keeping a valid manifest JSON and portrait-primary orientation."
+          "description": "Update name/short_name/description/categories/theme colors and icon entries to use the generated video editor icons: frontend/public/assets/generated/video-editor-icon.dim_256x256.png, frontend/public/assets/generated/video-editor-icon-maskable.dim_256x256.png, frontend/public/assets/generated/video-editor-icon.dim_192x192.png."
         },
         {
-          "path": "frontend/index.html",
-          "operation": "modify",
-          "description": "Update the HTML title and relevant meta tags (application-name, apple-mobile-web-app-title, description) to match the new Teen Patti–style game name/description (English only)."
+          "path": "frontend/public/assets/generated/video-editor-icon.dim_256x256.png",
+          "operation": "create",
+          "description": "Add the generated app icon asset and ensure it is referenced by index.html and manifest.webmanifest exactly as frontend/public/assets/generated/video-editor-icon.dim_256x256.png."
         },
         {
-          "path": "frontend/src/game/original/ui/GameStartScreen.tsx",
+          "path": "frontend/public/assets/generated/video-editor-icon-maskable.dim_256x256.png",
+          "operation": "create",
+          "description": "Add the generated maskable app icon asset and ensure it is referenced by manifest.webmanifest exactly as frontend/public/assets/generated/video-editor-icon-maskable.dim_256x256.png."
+        },
+        {
+          "path": "frontend/public/assets/generated/video-editor-icon.dim_192x192.png",
+          "operation": "create",
+          "description": "Add the generated 192x192 app icon asset and ensure it is referenced by manifest.webmanifest exactly as frontend/public/assets/generated/video-editor-icon.dim_192x192.png."
+        },
+        {
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Remove or de-emphasize Sky Dodge-specific English copy (title/alt text) so it does not appear in the primary app experience; keep file consistent if still referenced anywhere inadvertently. Use existing shadcn/ui components already in the file—Verify the component's usage instructions before implementing."
+          "description": "Update in-app header title and iconography to match the new English video editor name (remove any Teen Patti/game imagery). Use shadcn-ui Button for header actions; Verify the component's usage instructions before implementing."
         }
       ]
     },
     {
-      "id": "REQ-76",
-      "summary": "Update help/about/legal content for the new card game and explicitly state (English) the user has full access to the source code and included original assets within the project.",
+      "id": "REQ-84",
+      "summary": "Adjust service worker and offline behavior so the editor app shell works offline after first load and local editing does not require connectivity.",
       "acceptanceCriteria": [
-        "The help/about/legal content no longer describes Sky Dodge gameplay.",
-        "The content includes an English statement that the project source code and included original assets are available to the user within the project.",
-        "The content does not promise Play Store publishing, monetization integrations, or real-money gambling functionality."
+        "After visiting once, the PWA can be opened while offline and shows the editor UI (not only offline.html)",
+        "Offline editing works for local videos without requiring network connectivity",
+        "If a required asset is missing in offline mode, the app shows a clear English message and a retry option when online"
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/AboutHelp.tsx",
+          "path": "frontend/public/sw.js",
           "operation": "modify",
-          "description": "Rewrite the About/Help content to describe the Teen Patti–style game (rules + controls), include the entertainment-only/no real-money gambling disclaimer, and include a clear English statement that the user has full access to the project source code and included original assets within this project. Remove references to Sky Dodge gameplay and any monetization/publishing promises."
+          "description": "Update caching strategy for an offline-capable editor shell: pre-cache core app shell assets and serve the app shell for navigation requests when offline (so the editor UI loads, not only offline.html). Update cache name/version and cached asset list to match the new product icons."
         },
         {
-          "path": "frontend/src/game/original/ui/LegalOwnershipDialog.tsx",
+          "path": "frontend/public/offline.html",
           "operation": "modify",
-          "description": "Update the legal/ownership statements to explicitly say the project source code and included original assets are available to the user within this project, and ensure it does not promise Play Store publishing, monetization integrations, or real-money gambling functionality. Use existing shadcn/ui Alert/Dialog structures already present—Verify the component's usage instructions before implementing."
+          "description": "Update offline fallback copy to the video editor context (English) and include a clear retry action. Ensure messaging does not claim the app requires internet for editing."
+        },
+        {
+          "path": "frontend/src/components/VideoEditorScreen.tsx",
+          "operation": "modify",
+          "description": "Add offline-aware UI messaging for missing required assets/runtime limitations: show a clear English message and a retry action when the app detects an unavailable editor capability or failed export while offline/low-resource."
+        },
+        {
+          "path": "frontend/src/hooks/useOnlineStatus.ts",
+          "operation": "modify",
+          "description": "Ensure the online/offline hook supports non-blocking editor UX (signal status changes and enable retry UI) without forcing an online requirement for local editing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-85",
+      "summary": "Apply a coherent non-blue/purple default visual theme suitable for a clean mobile video editor and use it consistently across screens and dialogs.",
+      "acceptanceCriteria": [
+        "Primary/secondary buttons and dialog surfaces look consistent and app-like on mobile",
+        "No default blue/purple-dominant palette is introduced unless already present; keep styling cohesive and modern",
+        "The layout is mobile-first with no horizontal scrolling on common phone sizes"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Adjust global theme tokens (OKLCH variables), surfaces, and shared utility classes to a clean editor aesthetic (non-blue/purple dominant), ensuring consistent buttons/dialog surfaces and mobile-first spacing without horizontal scrolling."
+        },
+        {
+          "path": "frontend/src/components/TjDialogContent.tsx",
+          "operation": "modify",
+          "description": "Update dialog wrapper styling class names/intent (while keeping existing structure) so dialogs match the new editor theme and remain mobile-friendly. Use existing shadcn-ui Dialog primitives already referenced here; Verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/VideoEditorScreen.tsx",
+          "operation": "modify",
+          "description": "Ensure the editor screen layout uses a mobile-first structure (safe spacing, scrollable panels where appropriate, no horizontal overflow) and consistent button hierarchy using shadcn-ui components; Verify the component's usage instructions before implementing."
         }
       ]
     }

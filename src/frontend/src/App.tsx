@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { TjDialogContent } from '@/components/TjDialogContent';
 import AboutHelp from '@/components/AboutHelp';
-import { TeenPattiGameShell } from '@/game/teenpatti/TeenPattiGameShell';
+import { VideoEditorScreen } from '@/components/VideoEditorScreen';
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
@@ -19,25 +19,21 @@ function App() {
     }
   }, []);
 
-  const handleShowRules = () => {
-    setShowAbout(true);
-  };
-
   return (
     <div className="h-screen flex flex-col bg-background overflow-hidden">
       {/* Header */}
       <header className="tj-surface z-50 shadow-md flex-shrink-0">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="text-2xl">🃏</div>
-            <h1 className="text-lg font-bold text-foreground">Teen Patti</h1>
+            <div className="text-2xl">🎬</div>
+            <h1 className="text-lg font-bold text-foreground">Video Editor</h1>
           </div>
           <Dialog open={showAbout} onOpenChange={setShowAbout}>
             <DialogTrigger asChild>
               <Button 
                 variant="ghost" 
                 size="icon" 
-                aria-label="Help and About"
+                aria-label="Help and Information"
                 className="tj-interactive tj-interactive-pressed tj-focus-ring"
               >
                 <Info className="h-5 w-5" />
@@ -45,8 +41,8 @@ function App() {
             </DialogTrigger>
             <TjDialogContent>
               <DialogHeader>
-                <DialogTitle>About Teen Patti</DialogTitle>
-                <DialogDescription>Game rules and information</DialogDescription>
+                <DialogTitle>About Video Editor</DialogTitle>
+                <DialogDescription>Local editing, privacy, and installation guide</DialogDescription>
               </DialogHeader>
               <AboutHelp />
             </TjDialogContent>
@@ -56,16 +52,16 @@ function App() {
 
       {/* Main Content */}
       <main className="flex-1 min-h-0 relative">
-        <TeenPattiGameShell onShowRules={handleShowRules} />
+        <VideoEditorScreen />
       </main>
 
       {/* Footer */}
       <footer className="border-t border-border bg-card/50 backdrop-blur-sm py-4 flex-shrink-0">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p>
-            © 2026. Built with <span className="text-primary">♥</span> using{' '}
+            © {new Date().getFullYear()}. Built with <span className="text-primary">♥</span> using{' '}
             <a
-              href="https://caffeine.ai"
+              href={`https://caffeine.ai/?utm_source=Caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(typeof window !== 'undefined' ? window.location.hostname : 'video-editor')}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline font-medium tj-interactive"

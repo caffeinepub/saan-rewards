@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teen Patti - Offline</title>
+    <title>Video Editor - Offline</title>
     <style>
         * {
             margin: 0;
@@ -21,90 +21,125 @@
             padding: 20px;
         }
         .container {
-            text-align: center;
             max-width: 400px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .icon {
             font-size: 64px;
             margin-bottom: 20px;
         }
         h1 {
-            font-size: 28px;
+            font-size: 24px;
             margin-bottom: 12px;
-            color: #16a34a;
+            color: #ffffff;
         }
         p {
             font-size: 16px;
             line-height: 1.6;
-            color: #a0a0a0;
+            color: rgba(255, 255, 255, 0.7);
             margin-bottom: 24px;
         }
         .status {
             display: inline-block;
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 8px;
             font-size: 14px;
-            margin-bottom: 20px;
-        }
-        .status.offline {
-            color: #ef4444;
+            color: #fca5a5;
+            margin-bottom: 24px;
         }
         .status.online {
-            color: #16a34a;
+            background: rgba(34, 197, 94, 0.2);
+            border-color: rgba(34, 197, 94, 0.3);
+            color: #86efac;
         }
         button {
-            background: #16a34a;
+            background: #7c3aed;
             color: white;
             border: none;
-            padding: 12px 32px;
+            padding: 14px 32px;
             font-size: 16px;
+            font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            width: 100%;
         }
         button:hover {
-            background: #15803d;
+            background: #6d28d9;
+            transform: translateY(-1px);
+        }
+        button:active {
+            transform: translateY(0);
         }
         button:disabled {
-            background: #4a4a4a;
+            opacity: 0.5;
             cursor: not-allowed;
+        }
+        .note {
+            margin-top: 24px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="icon">🃏</div>
-        <h1>Teen Patti</h1>
-        <div class="status offline" id="status">Offline</div>
-        <p>You're currently offline. Please check your internet connection to play Teen Patti.</p>
-        <button id="retryBtn" onclick="location.reload()">Try Again</button>
+        <div class="icon">🎬</div>
+        <h1>Video Editor</h1>
+        <p>You're currently offline. The app needs to load its core files before you can edit videos offline.</p>
+        
+        <div class="status" id="status">
+            📡 Offline
+        </div>
+        
+        <button id="retryBtn" onclick="location.reload()">
+            Retry Connection
+        </button>
+        
+        <p class="note">
+            Once loaded, you can edit local videos without an internet connection. 
+            Your videos are never uploaded and stay on your device.
+        </p>
     </div>
 
     <script>
-        function updateOnlineStatus() {
-            const status = document.getElementById('status');
+        // Monitor connection status
+        function updateStatus() {
+            const statusEl = document.getElementById('status');
             const retryBtn = document.getElementById('retryBtn');
             
             if (navigator.onLine) {
-                status.textContent = 'Back Online';
-                status.className = 'status online';
-                retryBtn.disabled = false;
+                statusEl.textContent = '✓ Online';
+                statusEl.classList.add('online');
+                retryBtn.textContent = 'Reload App';
+                // Auto-reload when back online
                 setTimeout(() => {
                     location.reload();
                 }, 1000);
             } else {
-                status.textContent = 'Offline';
-                status.className = 'status offline';
-                retryBtn.disabled = false;
+                statusEl.textContent = '📡 Offline';
+                statusEl.classList.remove('online');
+                retryBtn.textContent = 'Retry Connection';
             }
         }
 
-        window.addEventListener('online', updateOnlineStatus);
-        window.addEventListener('offline', updateOnlineStatus);
-        
         // Check status on load
-        updateOnlineStatus();
+        updateStatus();
+
+        // Listen for connection changes
+        window.addEventListener('online', updateStatus);
+        window.addEventListener('offline', updateStatus);
+
+        // Periodic check
+        setInterval(updateStatus, 3000);
     </script>
 </body>
 </html>

@@ -1,134 +1,133 @@
 {
   "kind": "build_request",
-  "title": "Replace current game with an original Teen Patti–style card game (no real-money gambling)",
+  "title": "Replace current app with a mobile-friendly offline-capable video editing PWA",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-71",
-      "text": "Replace the current primary app experience (Sky Dodge / OriginalGameShell) with a new, original Teen Patti–style card game experience (Teen Patti-like gameplay), keeping the app mobile-first and playable in the browser as a PWA.",
+      "id": "REQ-80",
+      "text": "Replace the current primary app experience (Teen Patti game UI) with a mobile-first video editing web app that runs entirely on-device (no uploads) and can be kept/used on the user’s personal phone.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-user-latest"
         ],
         "quotes": [
-          "Maine game banvani teen patti game jaisi ab banaa kar do sab de sakte ho mujhe"
+          "Hello assalamu alaikum aap mujhe ek aisi website taiyar karke de sakte ho Jo video edit wali ho vah maine apne personal phone mein rakhne hain"
         ]
       },
       "acceptanceCriteria": [
-        "Opening the app no longer shows the Sky Dodge canvas game; it shows the new Teen Patti–style game start screen.",
-        "The game runs fully in-browser with touch-friendly controls and responsive layout for mobile portrait.",
-        "No third-party/copyrighted card artwork or branded assets are used in the new game."
+        "Launching the app shows a video editor home screen (not the Teen Patti game)",
+        "The app supports selecting a video file from the device and previews it in-app",
+        "All processing is local in the browser (no network requests are required to edit a video)",
+        "All user-facing text in the new video editor UI is in English"
       ]
     },
     {
-      "id": "REQ-72",
-      "text": "Implement a complete Teen Patti–style gameplay loop with clear English UI: Start screen → start a hand → deal cards → player actions (at minimum: Fold, Call/Check, Raise) → opponent actions (simple AI) → showdown → win/lose result → play again.",
+      "id": "REQ-81",
+      "text": "Implement a basic, phone-friendly video editing workflow with at least: import video, trim start/end, mute/unmute audio, and export/save the edited video as a downloadable file.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-user-latest"
         ],
         "quotes": [
-          "Maine game banvani teen patti game jaisi ab banaa kar do sab de sakte ho mujhe"
+          "ek aisi website ... Jo video edit wali ho"
         ]
       },
       "acceptanceCriteria": [
-        "A user can start a new hand from the start screen and complete a full hand to a clear result (win/lose) without errors.",
-        "During a hand, the user can always choose Fold, and at least one non-fold betting action (Call/Check) and one increase action (Raise).",
-        "After the hand ends, the UI shows the outcome and provides a clearly labeled English action to play the next hand."
+        "User can pick a local video file and see duration + a preview",
+        "User can set trim start and trim end (with validation: start < end, within duration)",
+        "User can toggle audio mute for the exported result",
+        "User can export and receive a downloadable edited video file (or a clearly labeled export result)",
+        "If export fails (unsupported browser/device), the app shows an English error message and a retry action"
       ]
     },
     {
-      "id": "REQ-73",
-      "text": "Design the Teen Patti–style game to be clearly non-gambling: use play chips only, do not include any real-money wording, cashout, deposits, wallets, or monetization claims; include an English disclaimer in the game UI that it is for entertainment with no real-money gambling.",
+      "id": "REQ-82",
+      "text": "Add a clear in-app Help/About dialog for the video editor that explains: the editor works on this device, videos are not uploaded by the app, and how to install the app to the home screen.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-user-latest"
         ],
         "quotes": [
-          "teen patti game jaisi"
+          "... apne personal phone mein rakhne hain"
         ]
       },
       "acceptanceCriteria": [
-        "All currency is presented as 'chips' (or equivalent play currency) with no references to real money.",
-        "An in-app English disclaimer is visible from an info/help/legal area stating the game is for entertainment only and involves no real-money gambling.",
-        "There are no UI elements for payments, withdrawals, deposits, or betting with real money."
+        "Help/About content is updated to video-editor context (no Teen Patti/game/online-only text)",
+        "Help/About states in English that the app edits locally on the device and does not upload videos",
+        "Help/About includes short, correct PWA install instructions (English)"
       ]
     },
     {
-      "id": "REQ-74",
-      "text": "Create original, lightweight card-table visuals suitable for the Teen Patti–style game (table surface, card back, chip icon) as static assets stored under frontend/public/assets/generated, and render them in the game UI.",
+      "id": "REQ-83",
+      "text": "Update app chrome and metadata to match the new video editor product: header title, favicon/app icons, index.html meta title/description, and the PWA manifest name/short_name/description/categories.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-user-latest"
         ],
         "quotes": [
-          "ab banaa kar do"
+          "website ... Jo video edit wali ho"
         ]
       },
       "acceptanceCriteria": [
-        "All newly created images are stored under frontend/public/assets/generated and are loaded directly by the frontend (not via the backend).",
-        "The Teen Patti–style game UI uses the generated assets (table/background styling, card back design, and chip icon) in a cohesive way.",
-        "The app builds without missing-asset errors (no 404s for required generated images)."
+        "Header title is updated to an English name for the video editor (no 'Teen Patti')",
+        "frontend/index.html <title> and description reflect the video editor",
+        "frontend/public/manifest.webmanifest reflects the video editor name/description and uses the new icon files",
+        "The installed PWA name on Android matches the updated manifest"
       ]
     },
     {
-      "id": "REQ-75",
-      "text": "Update app naming and user-facing text to match the new Teen Patti–style game (English only): update the header title currently showing 'Sky Dodge', and update the PWA manifest name/description to reflect the new card game.",
+      "id": "REQ-84",
+      "text": "Adjust the service worker and offline behavior so the video editor app shell is available offline after first load, enabling the user to open the installed app and edit local videos without an internet connection.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-user-latest"
         ],
         "quotes": [
-          "teen patti game jaisi"
+          "... apne personal phone mein rakhne hain"
         ]
       },
       "acceptanceCriteria": [
-        "The in-app header no longer says 'Sky Dodge' and instead uses the new Teen Patti–style game name (English).",
-        "frontend/public/manifest.webmanifest no longer describes Sky Dodge; it describes the new card game and remains a valid PWA manifest JSON.",
-        "All user-facing text changed/introduced by this request is in English."
+        "After visiting once, the PWA can be opened while offline and shows the editor UI (not only offline.html)",
+        "Offline editing works for local videos without requiring network connectivity",
+        "If a required asset is missing in offline mode, the app shows a clear English message and a retry option when online"
       ]
     },
     {
-      "id": "REQ-76",
-      "text": "Update the in-app help/about/legal content to match the new Teen Patti–style card game and the user's request for ownership/access: clearly state (English) that the project includes original assets and that the user has full access to the source code and included assets in this project.",
+      "id": "REQ-85",
+      "text": "Apply a coherent, non-blue/purple default visual theme suitable for a clean ‘mobile video editor’ app (typography, spacing, surfaces, button hierarchy) and use it consistently across the editor screen and dialogs.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
-        ],
-        "quotes": [
-          "sab de sakte ho mujhe"
+          "msg-user-latest"
         ]
       },
       "acceptanceCriteria": [
-        "The help/about/legal content no longer describes Sky Dodge gameplay.",
-        "The content includes an English statement that the project source code and included original assets are available to the user within the project.",
-        "The content does not promise Play Store publishing, monetization integrations, or real-money gambling functionality."
+        "Primary/secondary buttons and dialog surfaces look consistent and app-like on mobile",
+        "No default blue/purple-dominant palette is introduced unless already present; keep styling cohesive and modern",
+        "The layout is mobile-first with no horizontal scrolling on common phone sizes"
       ]
     }
   ],
   "constraints": [
-    "Keep the backend as a single Motoko actor; do not introduce additional backend services.",
-    "Do not edit files under frontend/src/components/ui or any frontend immutable paths listed in SYSTEM_CONTEXT.",
-    "Use English for all user-facing text.",
-    "All assets used for the Teen Patti–style game must be original (no copied/trademarked card decks, casino brands, or third-party artwork)."
+    "Frontend immutable paths must not be edited: frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useInternetIdentity.tsx, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, frontend/src/components/ui",
+    "Do not add any real-money payments, ads integrations, or third-party authentication beyond what already exists",
+    "Keep backend as single-actor Motoko; only change backend if strictly necessary (video editing should be frontend-only)"
   ],
   "nonGoals": [
-    "Implementing real-money gambling features (deposits/withdrawals/cash games) or any payments integration.",
-    "Multiplayer over the network or real-time play with other users.",
-    "Adding third-party authentication providers (only Internet Identity is supported, but not required for this change).",
-    "Creating or integrating a backend database or external storage for player accounts/chips."
+    "Building a server-side video processing pipeline or uploading/storing user videos on the backend",
+    "Adding real-money monetization (subscriptions, in-app purchases, ads)",
+    "Multi-user accounts, sharing edited videos via in-app social features, or cloud syncing"
   ],
   "imageRequirements": {
     "required": [
-      "Card table felt background texture (teenpatti-table-bg.dim_1536x1024.png)",
-      "Card back design pattern (teenpatti-card-back.dim_768x1024.png)",
-      "Simple poker chip icon (teenpatti-chip-icon.dim_256x256.png)"
+      "Minimal, modern video editor app icon (video-editor-icon.dim_256x256.png)",
+      "Minimal, modern video editor app icon (maskable) (video-editor-icon-maskable.dim_256x256.png)",
+      "Minimal, modern video editor app icon (video-editor-icon.dim_192x192.png)"
     ],
     "edits": []
   },

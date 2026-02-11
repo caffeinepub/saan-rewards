@@ -1,45 +1,45 @@
 {
-  "name": "Teen Patti - Card Game",
-  "short_name": "Teen Patti",
-  "description": "Classic 3-card poker game - Play with chips and enjoy this entertainment-only card game. No real money gambling.",
+  "name": "Video Editor - Mobile Video Editing",
+  "short_name": "Video Editor",
+  "description": "Edit videos on your phone with complete privacy. Trim, mute audio, and export - all on your device. No uploads required.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "display_override": ["standalone", "minimal-ui"],
   "background_color": "#1a1a1a",
-  "theme_color": "#16a34a",
+  "theme_color": "#7c3aed",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/assets/generated/teenpatti-chip-icon.dim_256x256.png",
+      "src": "/assets/generated/video-editor-icon.dim_256x256.png",
       "sizes": "256x256",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/assets/generated/teenpatti-chip-icon.dim_256x256.png",
+      "src": "/assets/generated/video-editor-icon-maskable.dim_256x256.png",
       "sizes": "256x256",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/assets/generated/teenpatti-chip-icon.dim_256x256.png",
+      "src": "/assets/generated/video-editor-icon.dim_192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     }
   ],
-  "categories": ["games", "entertainment"],
+  "categories": ["utilities", "productivity"],
   "shortcuts": [
     {
-      "name": "Play Teen Patti",
-      "short_name": "Play",
-      "description": "Start playing Teen Patti",
+      "name": "Edit Video",
+      "short_name": "Edit",
+      "description": "Start editing a video",
       "url": "/",
       "icons": [
         {
-          "src": "/assets/generated/teenpatti-chip-icon.dim_256x256.png",
+          "src": "/assets/generated/video-editor-icon.dim_256x256.png",
           "sizes": "256x256"
         }
       ]

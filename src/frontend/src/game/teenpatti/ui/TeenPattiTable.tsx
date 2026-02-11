@@ -1,6 +1,8 @@
 import { GameState } from '../engine/gameState';
 import { TeenPattiCard } from './TeenPattiCard';
 import { TeenPattiActionBar } from './TeenPattiActionBar';
+import { useVirtualCurrency } from '@/hooks/useVirtualCurrency';
+import { Gem, Coins } from 'lucide-react';
 
 interface TeenPattiTableProps {
   gameState: GameState;
@@ -21,6 +23,7 @@ export function TeenPattiTable({
 }: TeenPattiTableProps) {
   const callAmount = gameState.currentBet - gameState.player.currentBet;
   const minRaise = 20;
+  const { diamonds, coins } = useVirtualCurrency();
 
   return (
     <div 
@@ -33,6 +36,18 @@ export function TeenPattiTable({
     >
       {/* Overlay for better readability */}
       <div className="absolute inset-0 bg-black/30" />
+
+      {/* Virtual Currency Display - Top Right */}
+      <div className="absolute top-4 right-4 z-10 flex gap-2">
+        <div className="flex items-center gap-1.5 bg-card/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg border border-primary/20">
+          <Gem className="h-4 w-4 text-blue-500" />
+          <span className="text-sm font-bold text-foreground">{diamonds}</span>
+        </div>
+        <div className="flex items-center gap-1.5 bg-card/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-lg border border-primary/20">
+          <Coins className="h-4 w-4 text-yellow-500" />
+          <span className="text-sm font-bold text-foreground">{coins}</span>
+        </div>
+      </div>
 
       {/* Content */}
       <div className="relative flex-1 flex flex-col p-4 gap-4">
